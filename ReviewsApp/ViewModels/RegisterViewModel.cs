@@ -3,7 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels
 {
-    //todo: del
     public class RegisterViewModel
     {
         [Required]

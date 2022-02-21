@@ -1,3 +1,6 @@
+using Azure.Extensions.AspNetCore.Configuration.Secrets;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -11,8 +14,25 @@ using System;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.ConfigureAppConfiguration((context, config) =>
+{
+    var builtConfiguration = config.Build();
+
+    string vaultUrl = builtConfiguration["KeyVaultConfig:VaultURL"];
+    string tenantId = builtConfiguration["KeyVaultConfig:TenantId"];
+    string clientId = builtConfiguration["KeyVaultConfig:ClientId"];
+    string clientSecret = builtConfiguration["KeyVaultConfig:ClientSecretId"];
+
+    var credentials = new ClientSecretCredential(tenantId, clientId, clientSecret);
+
+    var client = new SecretClient(new Uri(vaultUrl), credentials);
+    config.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
+});
+
+
 builder.Configuration.Bind("Data:Roles", new AppRoles());
 builder.Configuration.Bind("Data:ProjectConfigs", new AppConfigs());
+builder.Configuration.Bind("Data:Secrets", new Secrets());
 
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseSqlServer(
@@ -21,6 +41,7 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {
         opts.User.RequireUniqueEmail = true;
+        opts.User.AllowedUserNameCharacters = Constrains.AllowedUserNameCharacters;
 
         opts.Password.RequireDigit = false;
         opts.Password.RequireLowercase = false;
@@ -38,6 +59,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         opts.SlidingExpiration = true;
         opts.AccessDeniedPath = "/Account/Login";
     });
+
+builder.Services.AddAuthentication().AddFacebook(options =>
+{
+    options.AppId = builder.Configuration[Secrets.FacebookWebAppId];
+    options.AppSecret = builder.Configuration[Secrets.FacebookWebAppSecret];
+    options.AccessDeniedPath = "/";
+});
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();

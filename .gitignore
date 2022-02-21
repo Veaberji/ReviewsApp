@@ -361,3 +361,8 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Publish settings
+/ReviewsApp/Properties/ServiceDependencies/
+/ReviewsApp/Properties/serviceDependencies.json
+/ReviewsApp/Properties/serviceDependencies.ReviewsAppTask - Web Deploy.json
