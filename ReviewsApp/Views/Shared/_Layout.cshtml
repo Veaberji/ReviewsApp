@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    @{
+        await Html.RenderPartialAsync("_Head");
+    }
+</head>
+<body>
+
+    @{
+        await Html.RenderPartialAsync("_Navbar");
+    }
+    <div class="app-content shadow">
+        <div class="card">@RenderBody()</div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("_Scripts");
+    }
+</body>
+</html>
