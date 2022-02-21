@@ -1,4 +1,4 @@
-﻿namespace Auth.Models
+﻿namespace ReviewsApp.Models.Settings
 {
     public class AppRoles
     {

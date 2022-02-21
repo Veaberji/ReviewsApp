@@ -13,22 +13,22 @@ namespace ReviewsApp.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<User> userManager,
+            SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
         [AllowAnonymous]
-        public IActionResult Create()
+        public IActionResult Register()
         {
             return View();
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<IActionResult> Create(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -39,12 +39,12 @@ namespace ReviewsApp.Controllers
                 UserName = model.Login,
                 Email = model.Email,
             };
-            var createResult = await _userManager.CreateAsync(user, model.Password);
-            if (createResult.Succeeded)
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
             {
-                return RedirectToHomePage();
+                return RedirectToLoginPage();
             }
-            AddErrorsFromResult(createResult);
+            AddErrorsFromResult(result);
             return View(model);
         }
 
@@ -89,6 +89,11 @@ namespace ReviewsApp.Controllers
         private IActionResult RedirectToHomePage()
         {
             return RedirectToAction("Index", "Home");
+        }
+
+        private IActionResult RedirectToLoginPage()
+        {
+            return RedirectToAction("Login");
         }
 
         private void AddLoginError()

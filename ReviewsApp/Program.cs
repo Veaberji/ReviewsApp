@@ -1,4 +1,3 @@
-using Auth.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -15,9 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.Bind("Data:Roles", new AppRoles());
 builder.Configuration.Bind("Data:ProjectConfigs", new AppConfigs());
 
-builder.Services.AddDbContext<AppIdentityDbContext>(
+builder.Services.AddDbContext<AppDbContext>(
     options => options.UseSqlServer(
-        builder.Configuration.GetConnectionString(nameof(AppIdentityDbContext))));
+        builder.Configuration.GetConnectionString(nameof(AppDbContext))));
 
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {
@@ -30,7 +29,7 @@ builder.Services.AddIdentity<User, IdentityRole>(opts =>
         opts.Password.RequiredLength = 1;
         opts.Password.RequiredUniqueChars = 0;
     })
-    .AddEntityFrameworkStores<AppIdentityDbContext>();
+    .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opts =>
@@ -39,7 +38,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         opts.SlidingExpiration = true;
         opts.AccessDeniedPath = "/Account/Login";
     });
-
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
