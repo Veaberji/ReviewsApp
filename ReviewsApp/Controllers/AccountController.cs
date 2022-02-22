@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
 using ReviewsApp.Models;
-using ReviewsApp.Models.Settings;
+using ReviewsApp.Utils;
 using ReviewsApp.ViewModels;
-using System;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
@@ -88,14 +85,7 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
-        [AllowAnonymous]
-        public IActionResult FacebookLogin()
-        {
-            string redirectUrl = Url.Action("FacebookResponse");
-            var properties = _signInManager
-                .ConfigureExternalAuthenticationProperties("Facebook", redirectUrl);
-            return new ChallengeResult("Facebook", properties);
-        }
+
 
         [AllowAnonymous]
         public async Task<IActionResult> FacebookResponse()
@@ -112,8 +102,12 @@ namespace ReviewsApp.Controllers
             {
                 return RedirectToHomePage();
             }
-
             var user = CreateUser(info);
+            if (await UserAlreadyRegistered(user))
+            {
+                TempData["message"] = $"User with email '{user.Email}' already registered";
+                return RedirectToLoginPage();
+            }
             var identityResult = await _userManager.CreateAsync(user);
             if (!identityResult.Succeeded)
             {
@@ -130,49 +124,98 @@ namespace ReviewsApp.Controllers
 
         }
 
+        //todo:del
+        [AllowAnonymous]
+        public async Task<IActionResult> GoogleResponse()
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToLoginPage();
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(
+                info.LoginProvider, info.ProviderKey, false);
+            if (result.Succeeded)
+            {
+                return RedirectToHomePage();
+            }
+
+            var user = CreateUser(info);
+            if (await UserAlreadyRegistered(user))
+            {
+                TempData["message"] = $"User with email '{user.Email}' already registered";
+                return RedirectToLoginPage();
+            }
+            var identityResult = await _userManager.CreateAsync(user);
+            if (!identityResult.Succeeded)
+            {
+                return RedirectToHomePage();
+            }
+            var loginResult = await _userManager
+                .AddLoginAsync(user, info);
+            if (!loginResult.Succeeded)
+            {
+                return RedirectToHomePage();
+            }
+            await _signInManager.SignInAsync(user, false);
+            return RedirectToHomePage();
+        }
+
+
+
+        [AllowAnonymous]
+        public async Task<IActionResult> SocialResponse()
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return RedirectToLoginPage();
+            }
+
+            var result = await _signInManager.ExternalLoginSignInAsync(
+                info.LoginProvider, info.ProviderKey, false);
+            if (result.Succeeded)
+            {
+                return RedirectToHomePage();
+            }
+
+            var user = CreateUser(info);
+            if (await UserAlreadyRegistered(user))
+            {
+                TempData["message"] = $"User with email '{user.Email}' already registered";
+                return RedirectToLoginPage();
+            }
+            var identityResult = await _userManager.CreateAsync(user);
+            if (!identityResult.Succeeded)
+            {
+                return RedirectToHomePage();
+            }
+            var loginResult = await _userManager
+                .AddLoginAsync(user, info);
+            if (!loginResult.Succeeded)
+            {
+                return RedirectToHomePage();
+            }
+            await _signInManager.SignInAsync(user, false);
+            return RedirectToHomePage();
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> FacebookDelete()
         {
             string signedRequest = Request.Form["signed_request"];
-
             if (string.IsNullOrEmpty(signedRequest))
             {
                 return BadRequest();
             }
-            var split = signedRequest.Split('.');
-            if (string.IsNullOrWhiteSpace(split[0]) == false)
-            {
-                int mod4 = split[0].Length % 4;
-                if (mod4 > 0) split[0] += new string('=', 4 - mod4);
-
-                split[0] = split[0]
-                    .Replace('-', '+')
-                    .Replace('_', '/');
-            }
-            if (string.IsNullOrWhiteSpace(split[1]) == false)
-            {
-                int mod4 = split[1].Length % 4;
-                if (mod4 > 0) split[1] += new string('=', 4 - mod4);
-
-                split[1] = split[1]
-                    .Replace('-', '+')
-                    .Replace('_', '/');
-            }
-            var dataRaw = Encoding.UTF8.GetString(Convert.FromBase64String(split[1]));
-            var json = JObject.Parse(dataRaw);
-
-            var appSecretBytes = Encoding.UTF8.GetBytes(Secrets.FacebookWebAppSecret);
-            var hmac = new System.Security.Cryptography.HMACSHA256(appSecretBytes);
-            var expectedHash = Convert.ToBase64String(hmac.ComputeHash(
-                    Encoding.UTF8.GetBytes(signedRequest.Split('.')[1])))
-                .Replace('-', '+')
-                .Replace('_', '/');
-
-            if (expectedHash != split[0])
+            var helper = new FacebookHelper(signedRequest);
+            if (helper.GetExpectedHash() != helper.GetEncodedSignature())
             {
                 return BadRequest();
             }
-
+            var json = helper.GetJsonObject();
             var userId = json.GetValue("user_id").ToString();
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -200,6 +243,19 @@ namespace ReviewsApp.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
+        }
+
+        private ChallengeResult GetSocialLoginResult(string scheme)
+        {
+            string redirectUrl = Url.Action("SocialResponse");
+            var properties = _signInManager
+                .ConfigureExternalAuthenticationProperties(scheme, redirectUrl);
+            return new ChallengeResult(scheme, properties);
+        }
+
+        private async Task<bool> UserAlreadyRegistered(User user)
+        {
+            return await _userManager.FindByEmailAsync(user.Email) != null;
         }
 
         private IActionResult RedirectToHomePage()

@@ -62,10 +62,18 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthentication().AddFacebook(options =>
 {
-    options.AppId = builder.Configuration[Secrets.FacebookWebAppId];
-    options.AppSecret = builder.Configuration[Secrets.FacebookWebAppSecret];
+    //todo: local works
+    options.AppId = builder.Configuration["Authentication:Facebook:LocalAppId"];
+    options.AppSecret = builder.Configuration["Authentication:Facebook:LocalAppSecret"];
+
     options.AccessDeniedPath = "/";
-});
+})
+    .AddGoogle(options =>
+    {
+        //todo:local
+        options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    });
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
