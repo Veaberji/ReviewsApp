@@ -6,8 +6,10 @@
 
 <div class="card-header fs-3">Log In</div>
 <div class="card-body">
+    @{
+        await Html.RenderPartialAsync("_SocialLogins");
+    }
     <div asp-validation-summary="All" class="alert-danger"></div>
-
     <form asp-action="Login" method="post">
         <div class="mb-3">
             <label class="form-label" asp-for="Login"></label>
@@ -24,11 +26,12 @@
     </form>
 </div>
 
-<div class="card-body">
+
+@*<div class="card-body">
     <a class="btn btn-info" asp-action="FacebookLogin">Log in With FaceBook</a>
     <a class="btn btn-success" asp-action="GoogleLogin">Log in With Google</a>
-</div>
-@if (TempData["message"] != null)
-{
+    </div>
+    @if (TempData["message"] != null)
+    {
     <div class="card-footer alert-info">@TempData["message"]</div>
-}
+    }*@

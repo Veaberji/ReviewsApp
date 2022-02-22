@@ -1,16 +1,17 @@
-﻿<div class="card">
-    <div class="card-header">AccessDenied</div>
+﻿<head>
+    <title>@AppConfigs.Title - Access Denied</title>
+</head>
+<div class="card">
+    <div class="card-header">Access Denied</div>
     <div class="card-body">
-        <p class="card-text">
-            <ul>
-                <li>Remote authentication was canceled.</li>
-                <li>This app requires authentication.</li>
-                <li>
-                    To try sign-in again, select the
-                    <a asp-action="Login" asp-controller="Account">Login</a>
-                    link.
-                </li>
-            </ul>
-        </p>
+        <ul>
+            <li>Remote authentication was canceled.</li>
+            <li>This app requires authentication.</li>
+            <li>
+                To try sign-in again, select the
+                <a asp-action="Login" asp-controller="Account">Login</a>
+                link.
+            </li>
+        </ul>
     </div>
 </div>

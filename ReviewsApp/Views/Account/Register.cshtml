@@ -4,8 +4,12 @@
     <title>@AppConfigs.Title - Register now</title>
 </head>
 
-<div class="card-header fs-3">Create User</div>
+<div class="card-header fs-3">Register now</div>
+
 <div class="card-body">
+    @{
+        await Html.RenderPartialAsync("_SocialLogins");
+    }
     <div asp-validation-summary="All" class="alert-danger"></div>
     <form asp-action="Register" method="post">
         <div class="mb-3">
