@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.Facebook;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -17,13 +18,15 @@ namespace ReviewsApp.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly AppDbContext _context;
+        private readonly IMapper _mapper;
 
         public AccountController(UserManager<User> userManager,
-            SignInManager<User> signInManager, AppDbContext context)
+            SignInManager<User> signInManager, AppDbContext context, IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _context = context;
+            _mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -40,11 +43,12 @@ namespace ReviewsApp.Controllers
             {
                 return View(model);
             }
-            var user = new User
-            {
-                UserName = model.Login,
-                Email = model.Email,
-            };
+            //var user = new User
+            //{
+            //    UserName = model.Login,
+            //    Email = model.Email,
+            //};
+            var user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {

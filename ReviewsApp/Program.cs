@@ -51,7 +51,6 @@ builder.Services.AddIdentity<User, IdentityRole>(opts =>
         opts.Password.RequiredUniqueChars = 0;
     })
     .AddEntityFrameworkStores<AppDbContext>();
-
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(opts =>
     {
@@ -59,7 +58,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         opts.SlidingExpiration = true;
         opts.AccessDeniedPath = "/Account/Login";
     });
-
 builder.Services.AddAuthentication().AddFacebook(options =>
 {
     options.AppId = builder.Configuration[Secrets.FacebookWebAppId];
@@ -74,6 +72,8 @@ builder.Services.AddAuthentication().AddFacebook(options =>
     });
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
