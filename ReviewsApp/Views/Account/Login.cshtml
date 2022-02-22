@@ -1,4 +1,4 @@
-﻿@model ReviewsApp.ViewModels.LoginViewModel
+﻿@model LoginViewModel
 
 <head>
     <title>@AppConfigs.Title - Log In</title>
@@ -25,13 +25,3 @@
         <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-
-
-@*<div class="card-body">
-    <a class="btn btn-info" asp-action="FacebookLogin">Log in With FaceBook</a>
-    <a class="btn btn-success" asp-action="GoogleLogin">Log in With Google</a>
-    </div>
-    @if (TempData["message"] != null)
-    {
-    <div class="card-footer alert-info">@TempData["message"]</div>
-    }*@

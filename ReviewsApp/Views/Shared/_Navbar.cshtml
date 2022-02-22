@@ -3,7 +3,7 @@
         <a class="navbar-brand"
            asp-controller="Home"
            asp-action="Index">
-            Auth App
+            @AppConfigs.Title
         </a>
         <a class="btn btn-outline-info"
            asp-controller="Home"
@@ -11,6 +11,11 @@
             Privacy Policy
         </a>
 
+        <a class="btn btn-outline-info"
+           asp-controller="Settings"
+           asp-action="SetSettings">
+            <i class="fas fa-user-cog"></i> Settings
+        </a>
         <div class="d-flex">
             @if (User?.Identity?.IsAuthenticated ?? false)
             {
@@ -18,7 +23,7 @@
                 <a class="btn btn-outline-warning me-2"
                asp-controller="Account"
                asp-action="Logout">
-                    Logout
+                    Logout <i class="fas fa-sign-out-alt"></i>
                 </a>
             }
             else
@@ -26,7 +31,7 @@
                 <a class="btn btn-outline-success me-2"
                asp-controller="Account"
                asp-action="Login">
-                    Login
+                    Login <i class="fas fa-sign-in-alt"></i>
                 </a>
                 <a class="btn btn-outline-success"
                asp-controller="Account"

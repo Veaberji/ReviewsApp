@@ -116,7 +116,7 @@ namespace ReviewsApp.Controllers
             }
 
             var user = CreateUser(info);
-            if (await UserAlreadyRegistered(user))
+            if (await UserWithSameEmailRegistered(user))
             {
                 TempData["message"] = $"User with email '{user.Email}' already registered";
                 return RedirectToLoginPage();
@@ -124,7 +124,7 @@ namespace ReviewsApp.Controllers
             var identityResult = await _userManager.CreateAsync(user);
             if (!identityResult.Succeeded)
             {
-                return RedirectToHomePage();
+                return RedirectToLoginPage();
             }
             var loginResult = await _userManager
                 .AddLoginAsync(user, info);
@@ -135,7 +135,6 @@ namespace ReviewsApp.Controllers
             await _signInManager.SignInAsync(user, false);
             return RedirectToHomePage();
         }
-
 
         [HttpPost]
         public async Task<IActionResult> FacebookDelete()
@@ -194,7 +193,7 @@ namespace ReviewsApp.Controllers
             return new ChallengeResult(scheme, properties);
         }
 
-        private async Task<bool> UserAlreadyRegistered(User user)
+        private async Task<bool> UserWithSameEmailRegistered(User user)
         {
             return await _userManager.FindByEmailAsync(user.Email) != null;
         }
