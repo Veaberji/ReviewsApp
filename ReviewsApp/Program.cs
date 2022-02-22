@@ -62,15 +62,25 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddAuthentication().AddFacebook(options =>
 {
+    //todo: local works
+    //options.AppId = builder.Configuration["Authentication:Facebook:LocalAppId"];
+    //options.AppSecret = builder.Configuration["Authentication:Facebook:LocalAppSecret"];
+
+    //todo: return before publish
     options.AppId = builder.Configuration[Secrets.FacebookWebAppId];
     options.AppSecret = builder.Configuration[Secrets.FacebookWebAppSecret];
-    options.AccessDeniedPath = "/";
+    options.AccessDeniedPath = "/Account/AccessDenied";
 })
     .AddGoogle(options =>
     {
+        //todo:local
+        //options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+        //options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+
+        //todo: return before publish
         options.ClientId = builder.Configuration[Secrets.GoogleWebClientId];
         options.ClientSecret = builder.Configuration[Secrets.GoogleWebClientSecret];
-        options.AccessDeniedPath = "/";
+        options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
 builder.Services.AddControllersWithViews();

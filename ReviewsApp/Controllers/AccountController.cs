@@ -180,6 +180,12 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
         private ChallengeResult GetSocialLoginResult(string scheme)
         {
             string redirectUrl = Url.Action("SocialResponse");
