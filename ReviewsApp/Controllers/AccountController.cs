@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.Facebook;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models;
@@ -85,84 +87,17 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
-
-
         [AllowAnonymous]
-        public async Task<IActionResult> FacebookResponse()
+        public IActionResult FacebookLogin()
         {
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return RedirectToLoginPage();
-            }
-
-            var result = await _signInManager.ExternalLoginSignInAsync(
-                info.LoginProvider, info.ProviderKey, false);
-            if (result.Succeeded)
-            {
-                return RedirectToHomePage();
-            }
-            var user = CreateUser(info);
-            if (await UserAlreadyRegistered(user))
-            {
-                TempData["message"] = $"User with email '{user.Email}' already registered";
-                return RedirectToLoginPage();
-            }
-            var identityResult = await _userManager.CreateAsync(user);
-            if (!identityResult.Succeeded)
-            {
-                return RedirectToHomePage();
-            }
-            var loginResult = await _userManager
-                .AddLoginAsync(user, info);
-            if (!loginResult.Succeeded)
-            {
-                return RedirectToHomePage();
-            }
-            await _signInManager.SignInAsync(user, false);
-            return RedirectToHomePage();
-
+            return GetSocialLoginResult(FacebookDefaults.AuthenticationScheme);
         }
 
-        //todo:del
         [AllowAnonymous]
-        public async Task<IActionResult> GoogleResponse()
+        public IActionResult GoogleLogin()
         {
-            var info = await _signInManager.GetExternalLoginInfoAsync();
-            if (info == null)
-            {
-                return RedirectToLoginPage();
-            }
-
-            var result = await _signInManager.ExternalLoginSignInAsync(
-                info.LoginProvider, info.ProviderKey, false);
-            if (result.Succeeded)
-            {
-                return RedirectToHomePage();
-            }
-
-            var user = CreateUser(info);
-            if (await UserAlreadyRegistered(user))
-            {
-                TempData["message"] = $"User with email '{user.Email}' already registered";
-                return RedirectToLoginPage();
-            }
-            var identityResult = await _userManager.CreateAsync(user);
-            if (!identityResult.Succeeded)
-            {
-                return RedirectToHomePage();
-            }
-            var loginResult = await _userManager
-                .AddLoginAsync(user, info);
-            if (!loginResult.Succeeded)
-            {
-                return RedirectToHomePage();
-            }
-            await _signInManager.SignInAsync(user, false);
-            return RedirectToHomePage();
+            return GetSocialLoginResult(GoogleDefaults.AuthenticationScheme);
         }
-
-
 
         [AllowAnonymous]
         public async Task<IActionResult> SocialResponse()
