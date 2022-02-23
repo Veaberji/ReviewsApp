@@ -11,12 +11,14 @@
     @{
         await Html.RenderPartialAsync("_Navbar");
     }
-    <div class="app-content shadow">
-        <div class="card">@RenderBody()</div>
+    <div class="app-content shadow text-center mt-3">
+        <div class="card text-break">@RenderBody()</div>
     </div>
+    @{
+        await Html.RenderPartialAsync("_Footer");
+    }
     @{
         await Html.RenderPartialAsync("_Scripts");
     }
 </body>
-@*todo: add footer, move privacy*@
 </html>

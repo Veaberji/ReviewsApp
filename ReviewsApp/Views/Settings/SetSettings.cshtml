@@ -4,14 +4,14 @@
     <title>@AppConfigs.Title - Settings</title>
 </head>
 
-<div class="card-body">
+<div class="card-body col-3 align-self-center">
     <div asp-validation-summary="All" class="alert-danger"></div>
     <form asp-action="SetSettings" method="post">
         <div class="mb-3">
             <label class="form-label" asp-for="Theme">Select Theme</label>
             <select class="form-control" asp-for="Theme">
-                <option value="@Themes.Light">@Themes.Light.ToString()</option>
-                <option value="@Themes.Dark">@Themes.Dark.ToString()</option>
+                <option value="@Themes.Light" class="text-center">@Themes.Light.ToString()</option>
+                <option value="@Themes.Dark" class="text-center">@Themes.Dark.ToString()</option>
             </select>
         </div>
 

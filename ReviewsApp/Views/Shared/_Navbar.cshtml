@@ -1,44 +1,75 @@
-﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
         <a class="navbar-brand"
            asp-controller="Home"
            asp-action="Index">
             @AppConfigs.Title
         </a>
-        <a class="btn btn-outline-info"
-           asp-controller="Home"
-           asp-action="PrivacyPolicy">
-            Privacy Policy
-        </a>
+        <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarColor02"
+                aria-controls="navbarColor02"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-        <a class="btn btn-outline-info"
-           asp-controller="Settings"
-           asp-action="SetSettings">
-            <i class="fas fa-user-cog"></i> Settings
-        </a>
-        <div class="d-flex">
-            @if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                <div class="card-header user">Hello, @User.Identity.Name !</div>
-                <a class="btn btn-outline-warning me-2"
-               asp-controller="Account"
-               asp-action="Logout">
-                    Logout <i class="fas fa-sign-out-alt"></i>
-                </a>
-            }
-            else
-            {
-                <a class="btn btn-outline-success me-2"
-               asp-controller="Account"
-               asp-action="Login">
-                    Login <i class="fas fa-sign-in-alt"></i>
-                </a>
-                <a class="btn btn-outline-success"
-               asp-controller="Account"
-               asp-action="Register">
-                    Register now
-                </a>
-            }
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       asp-controller="Home"
+                       asp-action="PrivacyPolicy">
+                        Privacy Policy
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       data-bs-toggle="dropdown"
+                       href="#"
+                       role="button"
+                       aria-haspopup="true"
+                       aria-expanded="false">Menu</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/">Temp link</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"
+                           asp-controller="Settings"
+                           asp-action="SetSettings">
+                            <i class="fas fa-user-cog"></i> Settings
+                        </a>
+                    </div>
+                </li>
+            </ul>
+            <form class="d-flex me-4 my-1">
+                <input class="form-control me-sm-2" type="text" placeholder="Search">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <div class="d-flex">
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <div class="card-header user">Hello, @User.Identity.Name !</div>
+                    <a class="btn btn-outline-warning me-2"
+                   asp-controller="Account"
+                   asp-action="Logout">
+                        Logout <i class="fas fa-sign-out-alt"></i>
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-outline-success me-2"
+                   asp-controller="Account"
+                   asp-action="Login">
+                        Login <i class="fas fa-sign-in-alt"></i>
+                    </a>
+                    <a class="btn btn-outline-success"
+                   asp-controller="Account"
+                   asp-action="Register">
+                        Register now
+                    </a>
+                }
+            </div>
         </div>
     </div>
 </nav>

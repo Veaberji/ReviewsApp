@@ -1,8 +1,11 @@
-﻿
-<a class="btn btn-info" asp-action="FacebookLogin">Log in With FaceBook</a>
-<a class="btn btn-success" asp-action="GoogleLogin">Log in With Google</a>
+﻿<div class="card-body align-self-center">
+    <a class="btn btn-info" asp-action="FacebookLogin">Log in With FaceBook</a>
+    <a class="btn btn-success" asp-action="GoogleLogin">Log in With Google</a>
 
-@if (TempData["message"] != null)
-{
-    <div class="card-footer alert-info">@TempData["message"]</div>
-}
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-dismissible alert-danger mt-3 mb-0">
+            @TempData["message"]
+        </div>
+    }
+</div>

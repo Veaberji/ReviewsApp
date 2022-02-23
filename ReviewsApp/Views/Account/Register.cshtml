@@ -5,11 +5,11 @@
 </head>
 
 <div class="card-header fs-3">Register now</div>
+@{
+    await Html.RenderPartialAsync("_SocialLogins");
+}
+<div class="card-body col-4 align-self-center pt-0">
 
-<div class="card-body">
-    @{
-        await Html.RenderPartialAsync("_SocialLogins");
-    }
     <div asp-validation-summary="All" class="alert-danger"></div>
     <form asp-action="Register" method="post">
         <div class="mb-3">
