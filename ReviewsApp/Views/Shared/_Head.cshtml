@@ -7,7 +7,7 @@
 
 @{
     var theme = _httpContextAccessor.HttpContext.Request.Cookies[AppConfigs.ThemeCookie];
-    if (theme == ((int)Themes.Dark).ToString())
+    if (theme == Themes.Dark.ToString())
     {
         <link rel="stylesheet" href="~/css/Themes/CyborgBootstrap.min.css" />
     }

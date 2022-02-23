@@ -43,11 +43,6 @@ namespace ReviewsApp.Controllers
             {
                 return View(model);
             }
-            //var user = new User
-            //{
-            //    UserName = model.Login,
-            //    Email = model.Email,
-            //};
             var user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)

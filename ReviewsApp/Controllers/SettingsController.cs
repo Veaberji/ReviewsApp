@@ -17,16 +17,11 @@ namespace ReviewsApp.Controllers
         public IActionResult SetSettings(SettingsViewModel model)
         {
             var theme = model.Theme;
-            if (!Enum.IsDefined(typeof(Themes), theme))
-            {
-                return View(model);
-            }
-
             var cookie = new CookieOptions
             {
                 Expires = DateTime.Now.AddYears(AppConfigs.CookieLivePeriodYears)
             };
-            Response.Cookies.Append(AppConfigs.ThemeCookie, ((int)theme).ToString(), cookie);
+            Response.Cookies.Append(AppConfigs.ThemeCookie, theme.ToString(), cookie);
             return RedirectToAction("SetSettings");
         }
     }
