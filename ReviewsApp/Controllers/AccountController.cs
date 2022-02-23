@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models;
+using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Utils;
 using ReviewsApp.ViewModels;
 using System.Security.Claims;
@@ -17,16 +18,18 @@ namespace ReviewsApp.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
 
         public AccountController(UserManager<User> userManager,
-            SignInManager<User> signInManager, AppDbContext context, IMapper mapper)
+            SignInManager<User> signInManager,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         [AllowAnonymous]
@@ -155,8 +158,8 @@ namespace ReviewsApp.Controllers
             {
                 return BadRequest("User not found");
             }
-            _context.Remove(user);
-            await _context.SaveChangesAsync();
+            _unitOfWork.Users.Remove(user);
+            await _unitOfWork.CompleteAsync();
 
             return Json(new
             {

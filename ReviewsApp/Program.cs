@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReviewsApp.Data;
 using ReviewsApp.Models;
+using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
 using System;
 
@@ -24,11 +26,9 @@ builder.Host.ConfigureAppConfiguration(config =>
     string clientSecret = builtConfiguration["KeyVaultConfig:ClientSecretId"];
 
     var credentials = new ClientSecretCredential(tenantId, clientId, clientSecret);
-
     var client = new SecretClient(new Uri(vaultUrl), credentials);
     config.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
 });
-
 
 builder.Configuration.Bind("Data:Roles", new AppRoles());
 builder.Configuration.Bind("Data:ProjectConfigs", new AppConfigs());
@@ -71,6 +71,8 @@ builder.Services.AddAuthentication().AddFacebook(options =>
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -106,7 +108,6 @@ app.UseEndpoints(endpoints =>
             pattern: "Settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
         endpoints.MapDefaultControllerRoute();
-
     });
 
 app.Run();
