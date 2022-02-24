@@ -24,6 +24,24 @@
                         Privacy Policy
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       asp-controller="Review"
+                       asp-action="LastReviews">
+                        All Reviews
+                    </a>
+                </li>
+                @if (User?.Identity?.IsAuthenticated ?? false)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link"
+                       asp-controller="Review"
+                       asp-action="CreateReview">
+                            New Review <i class="fas fa-plus"></i>
+                        </a>
+                    </li>
+                }
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"
                        data-bs-toggle="dropdown"

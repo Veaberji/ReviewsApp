@@ -1,0 +1,25 @@
+﻿@model Review
+
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="..." class="img-fluid rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title">@Model.Title</h5>
+                <h5 class="card-header">Author: @Model.Author</h5>
+                <p class="card-text text-start">
+                    @StringUtils.FormatTextWithLastWord(
+                    Model.Body.Take(ReviewConstrains.PreviewBodySize))
+                    ...
+                </p>
+                <p class="card-text">
+                    <small class="text-muted">
+                        Added: @Model.DateAdded.ToLocalTime()
+                    </small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

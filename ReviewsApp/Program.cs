@@ -12,6 +12,7 @@ using ReviewsApp.Data;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
+using ReviewsApp.Models.Settings.Constrains;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +42,7 @@ builder.Services.AddDbContext<AppDbContext>(
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {
         opts.User.RequireUniqueEmail = true;
-        opts.User.AllowedUserNameCharacters = Constrains.AllowedUserNameCharacters;
+        opts.User.AllowedUserNameCharacters = UserRegistrationConstrains.AllowedUserNameCharacters;
 
         opts.Password.RequireDigit = false;
         opts.Password.RequireLowercase = false;

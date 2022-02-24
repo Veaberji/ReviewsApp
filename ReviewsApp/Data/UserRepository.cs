@@ -8,6 +8,4 @@ public class UserRepository : Repository<User, string>, IUserRepository
     public UserRepository(AppDbContext context) : base(context)
     {
     }
-
-    private AppDbContext AppDbContext => Context as AppDbContext;
 }

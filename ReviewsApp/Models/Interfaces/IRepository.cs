@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ namespace ReviewsApp.Models.Interfaces
         Task<TEntity> GetByIdAsync(TId id);
         Task<IEnumerable<TEntity>> GetAllAsync();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        Task AddAsync(TEntity entity);
-        void Remove(TEntity entity);
+        Task<EntityEntry<TEntity>> AddAsync(TEntity entity);
+        EntityEntry<TEntity> Remove(TEntity entity);
     }
 }

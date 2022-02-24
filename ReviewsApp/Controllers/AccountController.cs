@@ -59,6 +59,10 @@ namespace ReviewsApp.Controllers
         [AllowAnonymous]
         public IActionResult Login()
         {
+            if (HttpContext.User.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToHomePage();
+            }
             return View();
         }
 

@@ -27,3 +27,7 @@ ul {
 a {
     text-decoration: none;
 }
+
+textarea {
+    height: 20rem;
+}

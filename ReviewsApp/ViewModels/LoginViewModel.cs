@@ -1,4 +1,4 @@
-﻿using ReviewsApp.Models.Settings;
+﻿using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels
@@ -6,12 +6,12 @@ namespace ReviewsApp.ViewModels
     public class LoginViewModel
     {
         [Required]
-        [MaxLength(Constrains.MaxStringLength)]
+        [MaxLength(UserRegistrationConstrains.MaxStringLength)]
         public string Login { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [MaxLength(Constrains.MaxStringLength)]
+        [MaxLength(UserRegistrationConstrains.MaxStringLength)]
         public string Password { get; set; }
     }
 }

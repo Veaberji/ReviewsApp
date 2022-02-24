@@ -11,8 +11,10 @@ public class UnitOfWork : IUnitOfWork
     {
         _context = context;
         Users = new UserRepository(_context);
+        Reviews = new ReviewRepository(_context);
     }
     public IUserRepository Users { get; }
+    public IReviewRepository Reviews { get; }
 
     public async Task<int> CompleteAsync()
     {

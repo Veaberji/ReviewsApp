@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using ReviewsApp.Models.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -33,14 +34,14 @@ namespace ReviewsApp.Data
             return Context.Set<TEntity>().Where(predicate);
         }
 
-        public async Task AddAsync(TEntity entity)
+        public async Task<EntityEntry<TEntity>> AddAsync(TEntity entity)
         {
-            await Context.Set<TEntity>().AddAsync(entity);
+            return await Context.Set<TEntity>().AddAsync(entity);
         }
 
-        public void Remove(TEntity entity)
+        public EntityEntry<TEntity> Remove(TEntity entity)
         {
-            Context.Set<TEntity>().Remove(entity);
+            return Context.Set<TEntity>().Remove(entity);
         }
     }
 }

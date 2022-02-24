@@ -1,0 +1,41 @@
+﻿@model ReviewViewModel
+
+<head>
+    <title>@AppConfigs.Title - Create New Review</title>
+</head>
+
+<div class="card-body col-12 align-self-center pt-0 justify-content-center">
+
+    <div asp-validation-summary="All" class="alert-danger"></div>
+    <form asp-action="CreateReview" method="post">
+
+        <div class="mb-3">
+            <div class="row">
+                <div class="col-10">
+                    <label class="form-label" asp-for="Title"></label>
+                    <input class="form-control" asp-for="Title" />
+                </div>
+                <div class="col-2">
+                    <label class="form-label" asp-for="AuthorGrade"></label>
+                    <select class="form-select" asp-for="AuthorGrade">
+                        @for (int i = ReviewConstrains.AuthorMinGrade; i <= ReviewConstrains.AuthorMaxGrade; i++)
+                        {
+                            <option value="@i" class="text-center">@i</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label" asp-for="Body"></label>
+            <textarea class="form-control" asp-for="Body"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">
+            Create
+        </button>
+        @{
+            await Html.RenderPartialAsync("_CancelDialog");
+        }
+    </form>
+</div>
