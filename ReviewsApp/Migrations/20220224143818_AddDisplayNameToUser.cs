@@ -8,6 +8,7 @@ namespace ReviewsApp.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("DELETE FROM [dbo].[AspNetUsers]");
             migrationBuilder.AddColumn<string>(
                 name: "DisplayName",
                 table: "AspNetUsers",
