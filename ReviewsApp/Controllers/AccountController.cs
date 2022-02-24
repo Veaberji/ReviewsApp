@@ -8,6 +8,7 @@ using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Utils;
 using ReviewsApp.ViewModels;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -127,6 +128,7 @@ namespace ReviewsApp.Controllers
                 TempData["message"] = $"User with email '{user.Email}' already registered";
                 return RedirectToLoginPage();
             }
+
             var identityResult = await _userManager.CreateAsync(user);
             if (!identityResult.Succeeded)
             {
@@ -214,13 +216,35 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("Login");
         }
 
-        private static User CreateUser(ExternalLoginInfo info)
+        private User CreateUser(ExternalLoginInfo info)
         {
             return new User
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-                UserName = info.Principal.FindFirst(ClaimTypes.Name).Value
+                UserName = InitSocialUserName(info),
+                DisplayName = GetNameFromExternalInfo(info)
+
             };
+        }
+
+        private string InitSocialUserName(ExternalLoginInfo info)
+        {
+            string name = GetNameFromExternalInfo(info);
+            var users = _userManager.Users
+                .Where(u => u.UserName.Contains(name))
+                .ToList();
+            int count = users.Count;
+            if (count != 0)
+            {
+                name += (count + 1).ToString();
+            }
+
+            return name;
+        }
+
+        private static string GetNameFromExternalInfo(ExternalLoginInfo info)
+        {
+            return info.Principal.FindFirst(ClaimTypes.Name).Value;
         }
 
         private void AddLoginError()

@@ -8,7 +8,7 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h5 class="card-title">@Model.Title</h5>
-                <h5 class="card-header">Author: @Model.Author</h5>
+                <h5 class="card-header">Author: @Model.Author.UserName</h5>
                 <p class="card-text text-start">
                     @StringUtils.FormatTextWithLastWord(
                     Model.Body.Take(ReviewConstrains.PreviewBodySize))

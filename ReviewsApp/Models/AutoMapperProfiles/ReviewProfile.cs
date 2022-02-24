@@ -6,7 +6,6 @@ namespace ReviewsApp.Models.AutoMapperProfiles
 {
     public class ReviewProfile : Profile
     {
-
         public ReviewProfile()
         {
             CreateMap<ReviewViewModel, Review>()
@@ -14,6 +13,5 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => DateTime.Now))
                 .ReverseMap();
         }
-
     }
 }

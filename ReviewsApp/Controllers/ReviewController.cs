@@ -29,7 +29,7 @@ namespace ReviewsApp.Controllers
         {
             var reviews =
                  await _unitOfWork.Reviews.GetReviewsWithAuthorsAsync(pageIndex);
-            //todo: pass viewmodel
+            //todo: add pagination
             return View(reviews);
         }
 
@@ -39,6 +39,7 @@ namespace ReviewsApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateReview(ReviewViewModel model)
         {
             if (!ModelState.IsValid)
@@ -58,6 +59,8 @@ namespace ReviewsApp.Controllers
 
             return View(model);
         }
+
+        //todo: add Review(int id)
 
         private IActionResult RedirectToCreateReviewPage()
         {

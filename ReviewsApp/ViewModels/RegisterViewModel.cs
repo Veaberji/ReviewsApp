@@ -9,6 +9,11 @@ namespace ReviewsApp.ViewModels
         [MaxLength(UserRegistrationConstrains.MaxStringLength)]
         public string Login { get; set; }
 
+        [Required]
+        [MaxLength(UserRegistrationConstrains.MaxStringLength)]
+        [Display(Name = "Your displayed Name")]
+        public string DisplayName { get; set; }
+
         [DataType(DataType.Password)]
         [MaxLength(UserRegistrationConstrains.MaxStringLength)]
         public string Password { get; set; }
