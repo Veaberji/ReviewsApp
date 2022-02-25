@@ -14,8 +14,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Product,
                     o => o.MapFrom(r => new Product
                     {
-                        Name = r.ProductName,
-                        Type = r.ProductType
+                        Name = r.ProductViewModel.ProductName,
+                        Type = r.ProductViewModel.ProductType
                     }))
                 .ReverseMap();
         }

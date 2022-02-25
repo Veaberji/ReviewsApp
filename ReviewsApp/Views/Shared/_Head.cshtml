@@ -6,8 +6,6 @@
 }
 
 @{
-    //var themeName = _httpContextAccessor.HttpContext?.Request.Cookies[AppConfigs.ThemeCookie] ?? "";
-    //var theme = (themeName.Length > 0 ? themeName : AppConfigs.DefaultTheme) + ".min.css";
     <link rel="stylesheet" href="~/css/Themes/@_service.GetTheme()" />
 }
 
