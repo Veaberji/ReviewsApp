@@ -13,6 +13,7 @@ using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
 using ReviewsApp.Models.Settings.Constrains;
+using ReviewsApp.Services;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -73,8 +74,8 @@ builder.Services.AddAuthentication().AddFacebook(options =>
     });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
