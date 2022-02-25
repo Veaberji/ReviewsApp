@@ -1,4 +1,4 @@
-﻿@inject IHttpContextAccessor _httpContextAccessor
+﻿@inject SettingsService _service
 
 <meta name="viewport" content="width=device-width" />
 @{
@@ -6,9 +6,9 @@
 }
 
 @{
-    var themeName = _httpContextAccessor.HttpContext?.Request.Cookies[AppConfigs.ThemeCookie] ?? "";
-    var theme = (themeName.Length > 0 ? themeName : AppConfigs.DefaultTheme) + ".min.css";
-    <link rel="stylesheet" href="~/css/Themes/@theme" />
+    //var themeName = _httpContextAccessor.HttpContext?.Request.Cookies[AppConfigs.ThemeCookie] ?? "";
+    //var theme = (themeName.Length > 0 ? themeName : AppConfigs.DefaultTheme) + ".min.css";
+    <link rel="stylesheet" href="~/css/Themes/@_service.GetTheme()" />
 }
 
 <link rel="stylesheet" href="~/css/site.min.css" />

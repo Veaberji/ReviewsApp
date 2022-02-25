@@ -76,6 +76,7 @@ builder.Services.AddAuthentication().AddFacebook(options =>
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<SettingsService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
