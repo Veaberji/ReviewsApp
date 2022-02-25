@@ -14,10 +14,11 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
     {
     }
 
-    public async Task<IEnumerable<Review>> GetReviewsWithAuthorsAsync(int pageIndex)
+    public async Task<IEnumerable<Review>> GetReviewsWithAllInclusions(int pageIndex)
     {
         return await AppDbContext.Reviews
             .Include(r => r.Author)
+            .Include(r => r.Product)
             .OrderByDescending(r => r.DateAdded)
             .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
             .Take(ReviewConstrains.ReviewsPageSize)

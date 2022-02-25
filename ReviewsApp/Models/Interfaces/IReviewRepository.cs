@@ -5,5 +5,5 @@ namespace ReviewsApp.Models.Interfaces;
 
 public interface IReviewRepository : IRepository<Review, int>
 {
-    Task<IEnumerable<Review>> GetReviewsWithAuthorsAsync(int pageIndex);
+    Task<IEnumerable<Review>> GetReviewsWithAllInclusions(int pageIndex);
 }

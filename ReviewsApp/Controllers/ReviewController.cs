@@ -28,7 +28,7 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> LastReviews(int pageIndex = 1)
         {
             var reviews =
-                 await _unitOfWork.Reviews.GetReviewsWithAuthorsAsync(pageIndex);
+                 await _unitOfWork.Reviews.GetReviewsWithAllInclusions(pageIndex);
             //todo: add pagination
             return View(reviews);
         }

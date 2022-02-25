@@ -11,6 +11,11 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             CreateMap<ReviewViewModel, Review>()
                 .ForMember(d => d.DateAdded,
                     o => o.MapFrom(r => DateTime.Now))
+                .ForMember(d => d.Product,
+                    o => o.MapFrom(r => new Product
+                    {
+                        Name = r.ProductName
+                    }))
                 .ReverseMap();
         }
     }

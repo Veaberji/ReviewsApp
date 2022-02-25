@@ -5,20 +5,25 @@ namespace ReviewsApp.ViewModels
 {
     public class ReviewViewModel
     {
-        [MaxLength(ReviewConstrains.TitleMaxLength)]
         [Required]
+        [MaxLength(ReviewConstrains.TitleMaxLength)]
         public string Title { get; set; }
 
         public string AuthorId { get; set; }
 
-        [MaxLength(ReviewConstrains.BodyMaxLength)]
+        [Required]
+        [Display(Name = "Title of the described product")]
+        [MaxLength(ProductConstrains.NameMaxLength)]
+        public string ProductName { get; set; }
+
         [Required]
         [Display(Name = "Your Review")]
+        [MaxLength(ReviewConstrains.BodyMaxLength)]
         public string Body { get; set; }
 
-        [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         [Required]
         [Display(Name = "Your Grade")]
+        [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         public int AuthorGrade { get; set; }
 
     }
