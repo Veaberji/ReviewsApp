@@ -6,15 +6,9 @@
 }
 
 @{
-    var theme = _httpContextAccessor.HttpContext.Request.Cookies[AppConfigs.ThemeCookie];
-    if (theme == Themes.Dark.ToString())
-    {
-        <link rel="stylesheet" href="~/css/Themes/CyborgBootstrap.min.css" />
-    }
-    else
-    {
-        <link rel="stylesheet" href="~/css/Themes/LumenBootstrap.min.css" />
-    }
+    var themeName = _httpContextAccessor.HttpContext?.Request.Cookies[AppConfigs.ThemeCookie] ?? "";
+    var theme = (themeName.Length > 0 ? themeName : AppConfigs.DefaultTheme) + ".min.css";
+    <link rel="stylesheet" href="~/css/Themes/@theme" />
 }
 
 <link rel="stylesheet" href="~/css/site.min.css" />
