@@ -9,23 +9,26 @@ namespace ReviewsApp.Models
     {
         public int Id { get; set; }
 
-        [MaxLength(ReviewConstrains.TitleMaxLength)]
         [Required]
+        [MaxLength(ReviewConstrains.TitleMaxLength)]
         public string Title { get; set; }
 
-
-
-        [ForeignKey("Author")]
         [Required]
+        [ForeignKey("Product")]
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
+
+        [Required]
+        [ForeignKey("Author")]
         public string AuthorId { get; set; }
         public User Author { get; set; }
 
-        [MaxLength(ReviewConstrains.BodyMaxLength)]
         [Required]
+        [MaxLength(ReviewConstrains.BodyMaxLength)]
         public string Body { get; set; }
 
-        [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         [Required]
+        [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         public int AuthorGrade { get; set; }
         public DateTime DateAdded { get; set; }
     }
