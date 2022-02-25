@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ReviewsApp.Models;
 
-namespace ReviewsApp.Data
+namespace ReviewsApp.Models
 {
     public class AppDbContext : IdentityDbContext<User>
     {
