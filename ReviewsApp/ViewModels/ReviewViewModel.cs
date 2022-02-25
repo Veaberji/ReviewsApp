@@ -1,4 +1,5 @@
-﻿using ReviewsApp.Models.Settings.Constrains;
+﻿using ReviewsApp.Models;
+using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels
@@ -11,10 +12,15 @@ namespace ReviewsApp.ViewModels
 
         public string AuthorId { get; set; }
 
+        //todo: movo to another viewmodel
         [Required]
         [Display(Name = "Title of the described product")]
         [MaxLength(ProductConstrains.NameMaxLength)]
         public string ProductName { get; set; }
+
+        [Required]
+        [Display(Name = "Product type")]
+        public ProductType ProductType { get; set; }
 
         [Required]
         [Display(Name = "Your Review")]

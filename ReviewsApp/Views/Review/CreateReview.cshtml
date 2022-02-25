@@ -34,7 +34,15 @@
                     <input class="form-control" asp-for="ProductName" />
                 </div>
                 <div class="col-2">
-                    Product type will be here soon
+                    <label class="form-label" asp-for="ProductType"></label>
+                    <select class="form-control" asp-for="ProductType">
+                        @foreach (var value in EnumUtils.GetValues<ProductType>())
+                        {
+                            <option value="@value" class="text-center">
+                                @value
+                            </option>
+                        }
+                    </select>
                 </div>
             </div>
         </div>
