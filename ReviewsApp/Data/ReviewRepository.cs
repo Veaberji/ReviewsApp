@@ -19,6 +19,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
         return await AppDbContext.Reviews
             .Include(r => r.Author)
             .Include(r => r.Product)
+            .Include(r => r.Product.Grades)
             .OrderByDescending(r => r.DateAdded)
             .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
             .Take(ReviewConstrains.ReviewsPageSize)

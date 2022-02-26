@@ -1,0 +1,13 @@
+﻿@model Review
+
+@{
+    var rating = Model.Product.GetAverageUserRating();
+    if (rating.HasValue)
+    {
+        <span>@rating</span>
+    }
+    else
+    {
+        <span>Not Rated</span>
+    }
+}
