@@ -17,7 +17,7 @@ namespace ReviewsApp.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<string> GetCurrentUserName()
+        public async Task<string> GetCurrentDisplayName()
         {
             var userId = _httpContextAccessor.HttpContext?.User
                 .FindFirst(ClaimTypes.NameIdentifier)?.Value;
