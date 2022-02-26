@@ -10,5 +10,6 @@ namespace ReviewsApp.Models
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<UserGrade> UserGrades { get; set; }
+        public DbSet<Tag> Tags { get; set; }
     }
 }
