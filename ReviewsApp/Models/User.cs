@@ -10,9 +10,11 @@ namespace ReviewsApp.Models
         [MaxLength(255)]
         public string DisplayName { get; set; }
         public IList<Review> Reviews { get; set; }
+        public IList<UserGrade> Grades { get; set; }
         public User()
         {
             Reviews = new List<Review>();
+            Grades = new List<UserGrade>();
         }
 
     }

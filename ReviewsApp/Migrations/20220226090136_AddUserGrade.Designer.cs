@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReviewsApp.Models;
 
@@ -11,9 +12,10 @@ using ReviewsApp.Models;
 namespace ReviewsApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220226090136_AddUserGrade")]
+    partial class AddUserGrade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,18 +299,7 @@ namespace ReviewsApp.Migrations
                     b.Property<int?>("Grade")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserGrades");
                 });
@@ -383,34 +374,8 @@ namespace ReviewsApp.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ReviewsApp.Models.UserGrade", b =>
-                {
-                    b.HasOne("ReviewsApp.Models.Product", "Product")
-                        .WithMany("Grades")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ReviewsApp.Models.User", "User")
-                        .WithMany("Grades")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ReviewsApp.Models.Product", b =>
-                {
-                    b.Navigation("Grades");
-                });
-
             modelBuilder.Entity("ReviewsApp.Models.User", b =>
                 {
-                    b.Navigation("Grades");
-
                     b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618

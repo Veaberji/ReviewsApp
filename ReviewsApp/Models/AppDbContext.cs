@@ -9,5 +9,6 @@ namespace ReviewsApp.Models
             : base(options) { }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<UserGrade> UserGrades { get; set; }
     }
 }
