@@ -208,7 +208,7 @@ namespace ReviewsApp.Controllers
 
         private IActionResult RedirectToHomePage()
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("LastReviews", "Review");
         }
 
         private IActionResult RedirectToLoginPage()

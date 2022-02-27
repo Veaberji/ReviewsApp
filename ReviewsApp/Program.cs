@@ -107,10 +107,12 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllerRoute(
-            name: "Settings",
+            name: "settings",
             pattern: "Settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
-        endpoints.MapDefaultControllerRoute();
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Review}/{action=LastReviews}/{id?}");
     });
 
 app.Run();
