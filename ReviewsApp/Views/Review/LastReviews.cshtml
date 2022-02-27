@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Review>
+﻿@model HomePageViewModel
 
 <head>
     <title>@AppConfigs.Title - Home</title>
@@ -9,7 +9,17 @@
     There are 10 last reviews with authors bellow
 </div>
 
-@foreach (var review in Model)
-{
-    await Html.RenderPartialAsync("_Preview", review);
-}
+<div class="position-relative row">
+    <div class="col-10">
+        @foreach (var review in Model.Reviews)
+        {
+            await Html.RenderPartialAsync("_Preview", review);
+        }
+    </div>
+    <div class="col-2">
+        @foreach (var tag in Model.Tags)
+        {
+            <span class="@tag.CssClass">@tag.Text</span>
+        }
+    </div>
+</div>

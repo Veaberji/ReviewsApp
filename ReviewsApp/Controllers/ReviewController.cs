@@ -6,6 +6,7 @@ using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
@@ -30,8 +31,16 @@ namespace ReviewsApp.Controllers
         {
             var reviews =
                  await _unitOfWork.Reviews.GetReviewsWithAllInclusions(pageIndex);
+            var tags = _unitOfWork.Tags.GetTopTags();
+            var tagViewModels = tags.Select(tag =>
+                _mapper.Map<TagCloudViewModel>(tag)).ToList();
             //todo: add pagination
-            return View(reviews);
+            var model = new HomePageViewModel
+            {
+                Reviews = reviews,
+                Tags = tagViewModels
+            };
+            return View(model);
         }
 
         public IActionResult CreateReview()
