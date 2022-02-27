@@ -1,4 +1,5 @@
 ﻿using ReviewsApp.Models.Settings.Constrains;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.Models
@@ -13,5 +14,12 @@ namespace ReviewsApp.Models
 
         [Required]
         public int Count { get; set; }
+
+        public IList<Review> Reviews { get; set; }
+
+        public Tag()
+        {
+            Reviews = new List<Review>();
+        }
     }
 }

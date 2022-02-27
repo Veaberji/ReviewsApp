@@ -1,5 +1,6 @@
 ﻿using ReviewsApp.Models.Settings.Constrains;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -31,5 +32,7 @@ namespace ReviewsApp.Models
         [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         public int AuthorGrade { get; set; }
         public DateTime DateAdded { get; set; }
+
+        public IList<Tag> Tags { get; set; }
     }
 }
