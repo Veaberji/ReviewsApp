@@ -10,5 +10,8 @@ namespace ReviewsApp.Models
         [Required]
         [MaxLength(TagConstrains.TextMaxLength)]
         public string Text { get; set; }
+
+        [Required]
+        public int Count { get; set; }
     }
 }
