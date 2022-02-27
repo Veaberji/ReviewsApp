@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.ViewModels;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
@@ -49,6 +50,7 @@ namespace ReviewsApp.Controllers
 
             var review = _mapper.Map<Review>(model);
             review.AuthorId = _userManager.GetUserId(HttpContext.User);
+            await ChangeTags(review);
             await _unitOfWork.Reviews.AddAsync(review);
             var result = await _unitOfWork.CompleteAsync();
             if (result > 0)
@@ -67,5 +69,28 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("CreateReview");
         }
 
+        //todo: change
+        private async Task ChangeTags(Review review)
+        {
+            var tempTags = new List<Tag>();
+            foreach (var tag in review.Tags)
+            {
+                if (tag.Text.Length == 0)
+                {
+                    continue;
+                }
+                var tagInDb = await _unitOfWork.Tags.GetByTextAsync(tag.Text);
+                if (tagInDb != null && tagInDb.Text == tag.Text)
+                {
+                    tagInDb.Count++;
+                    tempTags.Add(tagInDb);
+                }
+                else
+                {
+                    tempTags.Add(tag);
+                }
+            }
+            review.Tags = tempTags;
+        }
     }
 }

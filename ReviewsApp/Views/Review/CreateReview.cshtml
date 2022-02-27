@@ -9,46 +9,42 @@
     <div asp-validation-summary="All" class="alert-danger"></div>
     <form asp-action="CreateReview" method="post">
 
-        <div class="mb-3">
-            <div class="row">
-                <div class="col-10">
-                    <label class="form-label" asp-for="Title"></label>
-                    <input class="form-control" asp-for="Title" />
-                </div>
-                <div class="col-2">
-                    <label class="form-label" asp-for="AuthorGrade"></label>
-                    <select class="form-select" asp-for="AuthorGrade">
-                        @for (int i = ReviewConstrains.AuthorMinGrade;
-                        i <= ReviewConstrains.AuthorMaxGrade; i++)
-                        {
-                            <option value="@i" class="text-center">@i</option>
-                        }
-                    </select>
-                </div>
+        <div class="mb-3 row">
+            <div class="col-10">
+                <label class="form-label" asp-for="Title"></label>
+                <input class="form-control" asp-for="Title" />
+            </div>
+            <div class="col-2">
+                <label class="form-label" asp-for="AuthorGrade"></label>
+                <select class="form-select" asp-for="AuthorGrade">
+                    @for (int i = ReviewConstrains.AuthorMinGrade;
+                    i <= ReviewConstrains.AuthorMaxGrade; i++)
+                    {
+                        <option value="@i" class="text-center">@i</option>
+                    }
+                </select>
             </div>
         </div>
 
-        <div class="mb-3">
-            <div class="row">
-                <div class="col-10">
-                    <label class="form-label"
-                           asp-for="ProductViewModel.ProductName"></label>
-                    <input class="form-control"
-                           asp-for="ProductViewModel.ProductName" />
-                </div>
-                <div class="col-2">
-                    <label class="form-label"
-                           asp-for="ProductViewModel.ProductType"></label>
-                    <select class="form-control"
-                            asp-for="ProductViewModel.ProductType">
-                        @foreach (var value in EnumUtils.GetValues<ProductType>())
-                        {
-                            <option value="@value" class="text-center">
-                                @value
-                            </option>
-                        }
-                    </select>
-                </div>
+        <div class="mb-3 row">
+            <div class="col-10">
+                <label class="form-label"
+                       asp-for="ProductViewModel.ProductName"></label>
+                <input class="form-control"
+                       asp-for="ProductViewModel.ProductName" />
+            </div>
+            <div class="col-2">
+                <label class="form-label"
+                       asp-for="ProductViewModel.ProductType"></label>
+                <select class="form-control"
+                        asp-for="ProductViewModel.ProductType">
+                    @foreach (var value in EnumUtils.GetValues<ProductType>())
+                    {
+                        <option value="@value" class="text-center">
+                            @value
+                        </option>
+                    }
+                </select>
             </div>
         </div>
 
@@ -56,6 +52,29 @@
             <label class="form-label" asp-for="Body"></label>
             <textarea class="form-control" asp-for="Body"></textarea>
         </div>
+
+        <div class="mb-3 row">
+            <div class="col-1">
+                <label class="form-label">Tags:</label>
+            </div>
+            <div class="col-2">
+                <input class="form-control" asp-for="TagViewModel.Tag1">
+            </div>
+            <div class="col-2">
+                <input class="form-control" asp-for="TagViewModel.Tag2">
+            </div>
+            <div class="col-2">
+                <input class="form-control" asp-for="TagViewModel.Tag3">
+            </div>
+            <div class="col-2">
+                <input class="form-control" asp-for="TagViewModel.Tag4">
+            </div>
+            <div class="col-2">
+                <input class="form-control" asp-for="TagViewModel.Tag5">
+            </div>
+
+        </div>
+
         <button type="submit" class="btn btn-primary">
             Create
         </button>

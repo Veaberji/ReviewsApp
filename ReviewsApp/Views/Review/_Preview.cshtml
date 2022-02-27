@@ -21,6 +21,14 @@
                     Model.Body.Take(ReviewConstrains.PreviewBodySize))
                     ...
                 </p>
+
+                <p class="text-start">
+                    @foreach (var tag in Model.Tags)
+                    {
+                        <small class="text-info">@tag.Text</small>
+                    }
+                </p>
+
                 <p class="card-text">
                     <small class="text-muted">
                         Added: @Model.DateAdded.ToLocalTime()

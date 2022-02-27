@@ -34,5 +34,10 @@ namespace ReviewsApp.Models
         public DateTime DateAdded { get; set; }
 
         public IList<Tag> Tags { get; set; }
+
+        public Review()
+        {
+            Tags = new List<Tag>();
+        }
     }
 }

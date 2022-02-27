@@ -23,5 +23,6 @@ namespace ReviewsApp.ViewModels
         [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         public int AuthorGrade { get; set; }
 
+        public TagViewModel TagViewModel { get; set; }
     }
 }
