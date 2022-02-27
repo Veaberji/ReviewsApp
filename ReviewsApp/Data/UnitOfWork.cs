@@ -14,21 +14,17 @@ public class UnitOfWork : IUnitOfWork
         Users = new UserRepository(_context);
         Reviews = new ReviewRepository(_context);
         Products = new ProductRepository(_context);
+        Tags = new TagRepository(_context);
     }
     public IUserRepository Users { get; }
     public IReviewRepository Reviews { get; }
     public IProductRepository Products { get; }
+    public ITagRepository Tags { get; }
 
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();
     }
-
-    //public void Dispose()
-    //{
-    //    _context.Dispose();
-    //    GC.SuppressFinalize(this);
-    //}
 
     public void Dispose()
     {

@@ -5,8 +5,9 @@ namespace ReviewsApp.Models.Interfaces;
 
 public interface IUnitOfWork : IDisposable, IAsyncDisposable
 {
-    public IUserRepository Users { get; }
-    public IReviewRepository Reviews { get; }
-    public IProductRepository Products { get; }
+    IUserRepository Users { get; }
+    IReviewRepository Reviews { get; }
+    IProductRepository Products { get; }
+    ITagRepository Tags { get; }
     Task<int> CompleteAsync();
 }
