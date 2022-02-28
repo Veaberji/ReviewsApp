@@ -52,12 +52,13 @@
             <textarea class="form-control" asp-for="Body"></textarea>
         </div>
 
-        <div class="mb-3 row text-start">
-            <div class="col-4">
-                <label class="form-label" for="TagText">
+        <div class="row g-3 align-items-center">
+            <div class="col-auto">
+                <label class="col-form-label" for="TagText">
                     Input tag, press enter (max 5 tags):
                 </label>
             </div>
+
             <div class="col-3" id="TagInputs" name="TagInputs">
                 <input class="form-control"
                        type="text"
@@ -69,15 +70,18 @@
                        hidden />
             </div>
         </div>
-        <div class="mb-3 row">
-            <div class="col-1">
-                <label class="form-label">Tags:</label>
-            </div>
+        @*todo: refactor to partial view*@
+        <div class="mb-3 row m-2">
             <div class="col-2 position-relative pe-0"
                  id="Tag1"
                  hidden>
-                <input class="form-control" asp-for="TagViewModel.Tag1" disabled>
-                <input class="form-control" asp-for="TagViewModel.Tag1Id" hidden>
+                <input class="form-control text-center"
+                       asp-for="TagViewModel.Tag1"
+                       readonly>
+                <input class="form-control"
+                       asp-for="TagViewModel.Tag1Id"
+                       value="0"
+                       hidden>
                 <button class="btn btn-sm btn-close position-absolute top-0 end-0"
                         id="@nameof(TagViewModel.Tag1)btn">
                 </button>
@@ -85,8 +89,13 @@
             <div class="col-2 position-relative pe-0"
                  id="Tag2"
                  hidden>
-                <input class="form-control" asp-for="TagViewModel.Tag2" disabled>
-                <input class="form-control" asp-for="TagViewModel.Tag2Id" hidden>
+                <input class="form-control text-center"
+                       asp-for="TagViewModel.Tag2"
+                       readonly>
+                <input class="form-control"
+                       asp-for="TagViewModel.Tag2Id"
+                       value="0"
+                       hidden>
                 <button class="btn btn-sm btn-close position-absolute top-0 end-0"
                         id="@nameof(TagViewModel.Tag2)btn">
                 </button>
@@ -94,8 +103,13 @@
             <div class="col-2 position-relative pe-0"
                  id="Tag3"
                  hidden>
-                <input class="form-control" asp-for="TagViewModel.Tag3" disabled>
-                <input class="form-control" asp-for="TagViewModel.Tag3Id" hidden>
+                <input class="form-control text-center"
+                       asp-for="TagViewModel.Tag3"
+                       readonly>
+                <input class="form-control"
+                       asp-for="TagViewModel.Tag3Id"
+                       value="0"
+                       hidden>
                 <button class="btn btn-sm btn-close position-absolute top-0 end-0"
                         id="@nameof(TagViewModel.Tag3)btn">
                 </button>
@@ -103,8 +117,13 @@
             <div class="col-2 position-relative pe-0"
                  id="Tag4"
                  hidden>
-                <input class="form-control" asp-for="TagViewModel.Tag4" disabled>
-                <input class="form-control" asp-for="TagViewModel.Tag4Id" hidden>
+                <input class="form-control text-center"
+                       asp-for="TagViewModel.Tag4"
+                       readonly>
+                <input class="form-control"
+                       asp-for="TagViewModel.Tag4Id"
+                       value="0"
+                       hidden>
                 <button class="btn btn-sm btn-close position-absolute top-0 end-0"
                         id="@nameof(TagViewModel.Tag4)btn">
                 </button>
@@ -112,8 +131,13 @@
             <div class="col-2 position-relative pe-0"
                  id="Tag5"
                  hidden>
-                <input class="form-control" asp-for="TagViewModel.Tag5" disabled>
-                <input class="form-control" asp-for="TagViewModel.Tag5Id" hidden>
+                <input class="form-control text-center"
+                       asp-for="TagViewModel.Tag5"
+                       readonly>
+                <input class="form-control"
+                       asp-for="TagViewModel.Tag5Id"
+                       value="0"
+                       hidden>
                 <button class="btn btn-sm btn-close position-absolute top-0 end-0"
                         id="@nameof(TagViewModel.Tag5)btn">
                 </button>
@@ -126,11 +150,6 @@
             await Html.RenderPartialAsync("_CancelDialog");
         }
     </form>
-</div>
-
-
-
-<div class="row">
 </div>
 
 @{

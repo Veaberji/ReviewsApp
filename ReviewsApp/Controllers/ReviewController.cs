@@ -103,8 +103,8 @@ namespace ReviewsApp.Controllers
                 {
                     continue;
                 }
-                var tagInDb = await _unitOfWork.Tags.GetByTextAsync(tag.Text);
-                if (tagInDb != null && tagInDb.Text == tag.Text)
+                var tagInDb = await _unitOfWork.Tags.GetByIdAsync(tag.Id);
+                if (tagInDb is { Id: > 0 })
                 {
                     tagInDb.Count++;
                     tempTags.Add(tagInDb);

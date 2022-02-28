@@ -4,6 +4,5 @@
     {
         public const int TextMaxLength = 50;
         public const int MaxTagsInReview = 5;
-
     }
 }

@@ -26,41 +26,34 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                             {
                                 Id = r.TagViewModel.Tag1Id,
                                 Text = (r.TagViewModel.Tag1 ?? "").ToLower(),
-                                Count = GetTagCount(r.TagViewModel.Tag1Id)
+                                Count = 1
                             },
                             new()
                             {
                                 Id = r.TagViewModel.Tag2Id,
                                 Text = (r.TagViewModel.Tag2 ?? "").ToLower(),
-                                Count = GetTagCount(r.TagViewModel.Tag2Id)
+                                Count = 1
                             },
                             new()
                             {
                                 Id = r.TagViewModel.Tag3Id,
                                 Text = (r.TagViewModel.Tag3 ?? "").ToLower(),
-                                Count = GetTagCount(r.TagViewModel.Tag3Id)
+                                Count = 1
                             },
                             new()
                             {
                                 Id = r.TagViewModel.Tag4Id,
                                 Text = (r.TagViewModel.Tag4 ?? "").ToLower(),
-                                Count = GetTagCount(r.TagViewModel.Tag4Id)
+                                Count = 1
                             },
                             new()
                             {
                                 Id = r.TagViewModel.Tag5Id,
                                 Text = (r.TagViewModel.Tag5 ?? "").ToLower(),
-                                Count = GetTagCount(r.TagViewModel.Tag5Id)
+                                Count = 1
                             }
                         }))
                 .ReverseMap();
-        }
-
-        private int GetTagCount(int id)
-        {
-            bool isExistingTag = id < 1;
-            const int firstTagId = 1;
-            return isExistingTag ? firstTagId : id;
         }
     }
 }

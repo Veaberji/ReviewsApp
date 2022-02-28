@@ -72,9 +72,10 @@
 
     function setTagId(i) {
         let inputTagId = getAutoCompleteTagIdElement();
-        const notFoundTagId = -1;
         let tagIdElement = getTagIdElement(i);
-        tagIdElement.value = inputTagId.value ? inputTagId.value : notFoundTagId;
+        if (inputTagId.value) {
+          tagIdElement.value = inputTagId.value ;
+        }
         showTagDiv(i);
     }
 
