@@ -30,7 +30,7 @@ public class TagRepository : Repository<Tag, int>, ITagRepository
     public List<Tag> GetTagsStartWith(string prefix)
     {
         return AppDbContext.Tags
-            .Where(tag => tag.Text.StartsWith(prefix))
+            .Where(tag => tag.Text.StartsWith(prefix.ToLower()))
             .ToList();
     }
 

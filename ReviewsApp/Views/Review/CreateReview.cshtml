@@ -47,34 +47,78 @@
                 </select>
             </div>
         </div>
-
         <div class="mb-3">
             <label class="form-label" asp-for="Body"></label>
             <textarea class="form-control" asp-for="Body"></textarea>
         </div>
 
+        <div class="mb-3 row text-start">
+            <div class="col-4">
+                <label class="form-label" for="TagText">
+                    Input tag, press enter (max 5 tags):
+                </label>
+            </div>
+            <div class="col-3" id="TagInputs" name="TagInputs">
+                <input class="form-control"
+                       type="text"
+                       id="TagText"
+                       name="TagText" />
+                <input class="form-control"
+                       type="text" id="TagId"
+                       name="TagId"
+                       hidden />
+            </div>
+        </div>
         <div class="mb-3 row">
             <div class="col-1">
                 <label class="form-label">Tags:</label>
             </div>
-            <div class="col-2">
-                <input class="form-control" asp-for="TagViewModel.Tag1">
+            <div class="col-2 position-relative pe-0"
+                 id="Tag1"
+                 hidden>
+                <input class="form-control" asp-for="TagViewModel.Tag1" disabled>
+                <input class="form-control" asp-for="TagViewModel.Tag1Id" hidden>
+                <button class="btn btn-sm btn-close position-absolute top-0 end-0"
+                        id="@nameof(TagViewModel.Tag1)btn">
+                </button>
             </div>
-            <div class="col-2">
-                <input class="form-control" asp-for="TagViewModel.Tag2">
+            <div class="col-2 position-relative pe-0"
+                 id="Tag2"
+                 hidden>
+                <input class="form-control" asp-for="TagViewModel.Tag2" disabled>
+                <input class="form-control" asp-for="TagViewModel.Tag2Id" hidden>
+                <button class="btn btn-sm btn-close position-absolute top-0 end-0"
+                        id="@nameof(TagViewModel.Tag2)btn">
+                </button>
             </div>
-            <div class="col-2">
-                <input class="form-control" asp-for="TagViewModel.Tag3">
+            <div class="col-2 position-relative pe-0"
+                 id="Tag3"
+                 hidden>
+                <input class="form-control" asp-for="TagViewModel.Tag3" disabled>
+                <input class="form-control" asp-for="TagViewModel.Tag3Id" hidden>
+                <button class="btn btn-sm btn-close position-absolute top-0 end-0"
+                        id="@nameof(TagViewModel.Tag3)btn">
+                </button>
             </div>
-            <div class="col-2">
-                <input class="form-control" asp-for="TagViewModel.Tag4">
+            <div class="col-2 position-relative pe-0"
+                 id="Tag4"
+                 hidden>
+                <input class="form-control" asp-for="TagViewModel.Tag4" disabled>
+                <input class="form-control" asp-for="TagViewModel.Tag4Id" hidden>
+                <button class="btn btn-sm btn-close position-absolute top-0 end-0"
+                        id="@nameof(TagViewModel.Tag4)btn">
+                </button>
             </div>
-            <div class="col-2">
-                <input class="form-control" asp-for="TagViewModel.Tag5">
+            <div class="col-2 position-relative pe-0"
+                 id="Tag5"
+                 hidden>
+                <input class="form-control" asp-for="TagViewModel.Tag5" disabled>
+                <input class="form-control" asp-for="TagViewModel.Tag5Id" hidden>
+                <button class="btn btn-sm btn-close position-absolute top-0 end-0"
+                        id="@nameof(TagViewModel.Tag5)btn">
+                </button>
             </div>
-
         </div>
-
         <button type="submit" class="btn btn-primary">
             Create
         </button>
@@ -84,12 +128,11 @@
     </form>
 </div>
 
+
+
+<div class="row">
+</div>
+
 @{
     await Html.RenderPartialAsync("_AutocompleteTag");
 }
-
-@*todo: test auto complete*@
-<div class="row">
-    <input type="text" id="TagText" name="TagText" />
-    <input type="text" id="TagId" name="TagId" hidden />
-</div>

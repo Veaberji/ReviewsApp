@@ -10,18 +10,18 @@
                     url: '/Review/AutoCompleteTag/',
                     headers: { "RequestVerificationToken":
                         $('input[name="__RequestVerificationToken"]').val() },
-                    data: { "prefix": request.term },
+                    data: { "prefix": $.trim(request.term)},
                     type: "POST",
                     success: function (data) {
                         response($.map(data, function (item) {
                             return item;
                         }));
                     },
-                    error: function (response) {
-                        console.log(response.responseText);
+                    error: function (errorResponse) {
+                        console.log(errorResponse.responseText);
                     },
-                    failure: function (response) {
-                        console.log(response.responseText);
+                    failure: function (failureResponse) {
+                        console.log(failureResponse.responseText);
                     }
                 });
             },
@@ -31,4 +31,104 @@
             minLength: 2
         });
     });
+</script>
+<script type="text/javascript">
+    const maxTagsInReview = 5;
+    let tagsEntered = 0;
+    document.getElementById("TagText")
+        .addEventListener("keypress", function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                setTag();
+                clearAutoCompleteTagInput();
+            }
+        });
+    for (let i = 1; i <= maxTagsInReview; i++) {
+        document.getElementById(`Tag${i}btn`)
+            .addEventListener("click", function (event) {
+                event.preventDefault();
+                hideTagDiv(i);
+                clearTagInput(i);
+                enableInput(getAutoCompleteTagTextElement());
+                tagsEntered--;
+            });
+    }
+
+    function setTag() {
+        let inputTagText = getValueById("TagText");
+        for (let i = 1; i <= maxTagsInReview; i++) {
+            let tagTextElement = getTagTextElement(i);
+            if (tagTextElement.value.trim().length === 0) {
+                tagTextElement.value = inputTagText;
+                setTagId(i);
+                tagsEntered++;
+                if (tagsEntered === maxTagsInReview) {
+                    disableInput(getAutoCompleteTagTextElement());
+                }
+                break;
+            }
+        }
+    }
+
+    function setTagId(i) {
+        let inputTagId = getAutoCompleteTagIdElement();
+        const notFoundTagId = -1;
+        let tagIdElement = getTagIdElement(i);
+        tagIdElement.value = inputTagId.value ? inputTagId.value : notFoundTagId;
+        showTagDiv(i);
+    }
+
+    function showTagDiv(i) {
+        getDivForTag(i).hidden = false;
+    }
+
+    function hideTagDiv(i) {
+        getDivForTag(i).hidden = true;
+    }
+
+    function getDivForTag(i) {
+        return  getElementById(`Tag${i}`);
+    }
+
+    function disableInput(element) {
+        element.disabled = true;
+    }
+
+    function enableInput(element) {
+        element.disabled = false;
+    }
+
+    function clearAutoCompleteTagInput() {
+        getAutoCompleteTagIdElement().value = "";
+        getAutoCompleteTagTextElement().value = "";
+    }
+
+    function getAutoCompleteTagIdElement() {
+        return getElementById("TagId");
+    }
+
+    function getAutoCompleteTagTextElement() {
+        return getElementById("TagText");
+    }
+
+    function clearTagInput(i) {
+        getTagIdElement(i).value = "";
+        getTagTextElement(i).value = "";
+    }
+
+    function getTagIdElement(i) {
+        return getElementById(`TagViewModel_Tag${i}Id`);
+    }
+
+    function getTagTextElement(i) {
+        return getElementById(`TagViewModel_Tag${i}`);
+    }
+
+    function getElementById(id) {
+        return document.getElementById(id);
+    }
+
+    function getValueById(id) {
+        return getElementById(id).value;
+    }
 </script>

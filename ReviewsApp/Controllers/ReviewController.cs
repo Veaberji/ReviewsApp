@@ -77,6 +77,10 @@ namespace ReviewsApp.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult AutoCompleteTag(string prefix)
         {
+            if (string.IsNullOrWhiteSpace(prefix))
+            {
+                return Json(new TagAutoCompeteViewModel());
+            }
             var tags = _unitOfWork.Tags.GetTagsStartWith(prefix);
             var tagsViewModels = tags.Select(tag =>
                 _mapper.Map<TagAutoCompeteViewModel>(tag)).ToList();
