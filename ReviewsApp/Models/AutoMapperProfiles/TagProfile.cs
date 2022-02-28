@@ -12,6 +12,12 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Text))
                 .ForMember(d => d.CssClass,
                     o => o.MapFrom(r => GetTagCssClass(r.Count)));
+
+            CreateMap<Tag, TagAutoCompeteViewModel>()
+                .ForMember(d => d.Val,
+                    o => o.MapFrom(r => r.Id))
+                .ForMember(d => d.Label,
+                    o => o.MapFrom(r => r.Text));
         }
 
         private string GetTagCssClass(int count)

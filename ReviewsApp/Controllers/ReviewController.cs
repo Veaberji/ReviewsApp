@@ -73,6 +73,17 @@ namespace ReviewsApp.Controllers
 
         //todo: add Review(int id)
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult AutoCompleteTag(string prefix)
+        {
+            var tags = _unitOfWork.Tags.GetTagsStartWith(prefix);
+            var tagsViewModels = tags.Select(tag =>
+                _mapper.Map<TagAutoCompeteViewModel>(tag)).ToList();
+
+            return Json(tagsViewModels);
+        }
+
         private IActionResult RedirectToCreateReviewPage()
         {
             return RedirectToAction("CreateReview");

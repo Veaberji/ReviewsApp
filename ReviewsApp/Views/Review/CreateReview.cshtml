@@ -83,3 +83,13 @@
         }
     </form>
 </div>
+
+@{
+    await Html.RenderPartialAsync("_AutocompleteTag");
+}
+
+@*todo: test auto complete*@
+<div class="row">
+    <input type="text" id="TagText" name="TagText" />
+    <input type="text" id="TagId" name="TagId" hidden />
+</div>
