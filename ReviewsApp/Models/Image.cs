@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReviewsApp.Models
 {
@@ -8,5 +9,9 @@ namespace ReviewsApp.Models
 
         [Required]
         public string Url { get; set; }
+
+        [ForeignKey("Review")]
+        public int ReviewId { get; set; }
+        public Review Review { get; set; }
     }
 }
