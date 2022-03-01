@@ -7,5 +7,8 @@
 
         public static string GoogleWebClientId { get; set; }
         public static string GoogleWebClientSecret { get; set; }
+
+        public static string AzureBlobConnectionString { get; set; }
+
     }
 }

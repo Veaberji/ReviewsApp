@@ -1,6 +1,7 @@
 using Azure.Extensions.AspNetCore.Configuration.Secrets;
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ReviewsApp.Common.Logic;
 using ReviewsApp.Data;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
@@ -39,6 +41,10 @@ builder.Configuration.Bind("Data:Secrets", new Secrets());
 builder.Services.AddDbContext<AppDbContext>(
     options => options.UseSqlServer(
         builder.Configuration.GetConnectionString(nameof(AppDbContext))));
+
+builder.Services.AddScoped(_ => new BlobServiceClient(
+    builder.Configuration[Secrets.AzureBlobConnectionString]));
+builder.Services.AddScoped<FileManager>();
 
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {
