@@ -9,5 +9,6 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     IReviewRepository Reviews { get; }
     IProductRepository Products { get; }
     ITagRepository Tags { get; }
+    IImageRepository Images { get; }
     Task<int> CompleteAsync();
 }
