@@ -11,5 +11,6 @@ namespace ReviewsApp.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<UserGrade> UserGrades { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Image> Images { get; set; }
     }
 }
