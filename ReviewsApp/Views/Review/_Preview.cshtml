@@ -1,9 +1,16 @@
 ﻿@model Review
 
-<div class="card mb-3">
+<div class="card mb-3 ms-2">
     <div class="row g-0">
         <div class="col-md-4">
-            <img src="..." class="img-fluid rounded-start" alt="...">
+            @if (Model.Images.Count > 0)
+            {
+                <img src="@Model.Images.First().Url" class="img-fluid rounded">
+            }
+            else
+            {
+                <img src="@AppConfigs.DefaultImageUrl" class="img-fluid rounded">
+            }
         </div>
         <div class="col-md-8">
             <div class="card-body">

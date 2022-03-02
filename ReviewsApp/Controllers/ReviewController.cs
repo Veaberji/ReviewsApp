@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ReviewsApp.Common.Logic;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,13 +19,17 @@ namespace ReviewsApp.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly FileManager _fileManager;
 
-
-        public ReviewController(IUnitOfWork unitOfWork, IMapper mapper, UserManager<User> userManager)
+        public ReviewController(IUnitOfWork unitOfWork,
+            IMapper mapper,
+            UserManager<User> userManager,
+            FileManager fileManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
+            _fileManager = fileManager;
         }
 
         [AllowAnonymous]
@@ -58,6 +64,21 @@ namespace ReviewsApp.Controllers
             }
 
             var review = _mapper.Map<Review>(model);
+            try
+            {
+                if (model.ImagesFiles != null)
+                {
+                    var imageUrls = await _fileManager
+                        .UploadImages(model.ImagesFiles);
+                    review.Images = MapImages(imageUrls);
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return View(model);
+            }
+
             review.AuthorId = _userManager.GetUserId(HttpContext.User);
             await ChangeTags(review);
             await _unitOfWork.Reviews.AddAsync(review);
@@ -93,7 +114,6 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("CreateReview");
         }
 
-        //todo: change
         private async Task ChangeTags(Review review)
         {
             var tempTags = new List<Tag>();
@@ -115,6 +135,12 @@ namespace ReviewsApp.Controllers
                 }
             }
             review.Tags = tempTags;
+        }
+
+        private IList<Image> MapImages(List<string> imageUrls)
+        {
+            return imageUrls.Select(url =>
+                _mapper.Map<Image>(url)).ToList();
         }
     }
 }

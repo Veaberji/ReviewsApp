@@ -1,4 +1,6 @@
-﻿using ReviewsApp.Models.Settings.Constrains;
+﻿using Microsoft.AspNetCore.Http;
+using ReviewsApp.Models.Settings.Constrains;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels
@@ -24,5 +26,7 @@ namespace ReviewsApp.ViewModels
         public int AuthorGrade { get; set; }
 
         public TagViewModel TagViewModel { get; set; }
+
+        public IEnumerable<IFormFile> ImagesFiles { get; set; }
     }
 }
