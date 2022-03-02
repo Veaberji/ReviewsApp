@@ -17,7 +17,7 @@ namespace ReviewsApp.Common.Logic
             _blobServiceClient = blobServiceClient;
         }
 
-        public async Task<string> UploadImage(IFormFile file)
+        public async Task<string> UploadImageAsync(IFormFile file)
         {
             CheckFile(file);
             var blobContainer = _blobServiceClient
@@ -31,24 +31,24 @@ namespace ReviewsApp.Common.Logic
             return url;
         }
 
-        //public async Task<string> DeleteImage(string url)
-        //{
-        //    var blobContainer = _blobServiceClient
-        //        .GetBlobContainerClient(AppConfigs.AzureImagesContainer);
-        //    var blobClient = blobContainer.GetBlobClient(
-        //        GetUniqueFileName(file.FileName));
+        public async Task<bool> DeleteImageAsync(string url)
+        {
+            var blobContainer = _blobServiceClient
+                .GetBlobContainerClient(AppConfigs.AzureImagesContainer);
+            var fileName = url.Replace(@AppConfigs.BaseImagesUrl, "");
+            var blobClient = blobContainer.GetBlobClient(fileName);
 
-        //    await blobClient.UploadAsync(file.OpenReadStream());
+            var response = await blobClient.DeleteIfExistsAsync();
 
-        //    return url;
-        //}
+            return response.Value;
+        }
 
-        public async Task<List<string>> UploadImages(IEnumerable<IFormFile> files)
+        public async Task<List<string>> UploadImagesAsync(IEnumerable<IFormFile> files)
         {
             var urls = new List<string>();
             foreach (var file in files)
             {
-                urls.Add(await UploadImage(file));
+                urls.Add(await UploadImageAsync(file));
             }
             return urls;
         }

@@ -69,7 +69,7 @@ namespace ReviewsApp.Controllers
                 if (model.ImagesFiles != null)
                 {
                     var imageUrls = await _fileManager
-                        .UploadImages(model.ImagesFiles);
+                        .UploadImagesAsync(model.ImagesFiles);
                     review.Images = MapImages(imageUrls);
                 }
             }
@@ -124,7 +124,8 @@ namespace ReviewsApp.Controllers
                     continue;
                 }
                 var tagInDb = await _unitOfWork.Tags.GetByIdAsync(tag.Id);
-                if (tagInDb is { Id: > 0 })
+                var isExistingTag = tagInDb is { Id: > 0 };
+                if (isExistingTag)
                 {
                     tagInDb.Count++;
                     tempTags.Add(tagInDb);
