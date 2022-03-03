@@ -55,29 +55,6 @@ namespace ReviewsApp.Controllers
             return View();
         }
 
-
-
-
-        //todo: del
-        public IActionResult Dropzone()
-        {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Drug(ImagesViewModel urls)
-        {
-            //todo: to create review
-            var names = urls.ImagesUrls.Split(",");
-            //todo: map Image from each string
-
-
-            return View("Dropzone");
-        }
-        //todo: del
-
-
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateReview(ReviewViewModel model)
@@ -88,19 +65,10 @@ namespace ReviewsApp.Controllers
             }
 
             var review = _mapper.Map<Review>(model);
-            try
+            if (!string.IsNullOrEmpty(model.ImagesUrls))
             {
-                if (model.ImagesFiles != null)
-                {
-                    var imageUrls = await _imageManager
-                        .UploadImagesAsync(model.ImagesFiles);
-                    review.Images = MapImages(imageUrls);
-                }
-            }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("", e.Message);
-                return View(model);
+                var imageUrls = model.ImagesUrls.Split(",");
+                review.Images = MapImages(imageUrls);
             }
 
             review.AuthorId = _userManager.GetUserId(HttpContext.User);
@@ -137,7 +105,7 @@ namespace ReviewsApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UploadImages()
         {
-            var imageUrls = new List<string>();
+            List<string> imageUrls;
             try
             {
                 //IEnumerable<IFormFile> from parameter won't work
@@ -148,7 +116,7 @@ namespace ReviewsApp.Controllers
             catch (Exception e)
             {
                 ModelState.AddModelError("", e.Message);
-                return View("Dropzone");
+                return View("CreateReview");
             }
 
             return Json(imageUrls);
@@ -196,7 +164,7 @@ namespace ReviewsApp.Controllers
             review.Tags = tempTags;
         }
 
-        private IList<Image> MapImages(List<string> imageUrls)
+        private IList<Image> MapImages(IEnumerable<string> imageUrls)
         {
             return imageUrls.Select(url =>
                 _mapper.Map<Image>(url)).ToList();

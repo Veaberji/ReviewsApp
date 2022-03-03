@@ -38,7 +38,7 @@ namespace ReviewsApp.Common.Logic
             var fileName = url.Replace(@AppConfigs.BaseImagesUrl, "");
             var blobClient = blobContainer.GetBlobClient(fileName);
 
-            var response = await blobClient.DeleteIfExistsAsync();
+            await blobClient.DeleteIfExistsAsync();
         }
 
         public async Task DeleteImagesAsync(string[] urls)

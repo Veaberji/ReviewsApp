@@ -25,11 +25,11 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             string cssClass;
             if (count <= 1)
                 cssClass = "tagSize1";
-            else if (count <= 2)
-                cssClass = "tagSize2";
             else if (count <= 3)
-                cssClass = "tagSize3";
+                cssClass = "tagSize2";
             else if (count <= 5)
+                cssClass = "tagSize3";
+            else if (count <= 8)
                 cssClass = "tagSize4";
             else cssClass = "tagSize5";
             return cssClass;

@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using ReviewsApp.Models.Settings.Constrains;
-using System.Collections.Generic;
+﻿using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels
@@ -27,6 +25,6 @@ namespace ReviewsApp.ViewModels
 
         public TagViewModel TagViewModel { get; set; }
 
-        public IEnumerable<IFormFile> ImagesFiles { get; set; }
+        public string ImagesUrls { get; set; }
     }
 }

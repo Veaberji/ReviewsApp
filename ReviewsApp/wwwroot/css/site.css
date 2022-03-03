@@ -61,3 +61,14 @@ textarea {
     font-size: 3.8rem;
     color: #9900FF;
 }
+
+.buttom-right {
+    right: 1rem;
+    bottom: 1rem;
+}
+
+.buttom-center {
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+}
