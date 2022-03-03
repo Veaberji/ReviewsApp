@@ -44,7 +44,7 @@ builder.Services.AddDbContext<AppDbContext>(
 
 builder.Services.AddScoped(_ => new BlobServiceClient(
     builder.Configuration[Secrets.AzureBlobConnectionString]));
-builder.Services.AddScoped<FileManager>();
+builder.Services.AddScoped<ImageManager>();
 
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {

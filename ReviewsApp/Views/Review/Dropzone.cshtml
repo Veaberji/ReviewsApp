@@ -1,0 +1,75 @@
+﻿@model ImagesViewModel
+
+<head>
+    <link href="~/lib/dropzone/min/dropzone.min.css" rel="Stylesheet" type="text/css" />
+</head>
+<script src="~/lib/jquery/jquery.min.js" type="text/javascript"></script>
+<script src="~/lib/jqueryui/jquery-ui.min.js" type="text/javascript"></script>
+<script src="~/lib/dropzone/min/dropzone.min.js" type="text/javascript"></script>
+
+
+<form id="images-dropzone"
+      asp-action="UploadImages"
+      class="dropzone"
+      enctype="multipart/form-data"></form>
+<button id="clear-dropzone">Clear Dropzone</button>
+
+
+<form asp-action="Drug" method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="ImagesUrls"></label>
+        <input class="form-control" asp-for="ImagesUrls" />
+    </div>
+    <button type="submit" class="btn btn-primary">
+        Create
+    </button>
+</form>
+
+<script language="javascript">
+    Dropzone.options.imagesDropzone = {
+    init: function() {
+            this.on("successmultiple", function(file, responseText) {
+                $('#ImagesUrls').val(responseText);
+            });
+
+            let imagesDropzone = this;
+            $('#clear-dropzone')
+                .on("click", function () {
+                    imagesDropzone.removeAllFiles();
+                    if ($('#ImagesUrls').val()) {
+                       deleteUploadedFiles();
+                    }
+                });
+        },
+        accept(file, done) {
+            return done();
+        },
+        acceptedFiles: "image/*",
+        autoDiscover: false,
+        uploadMultiple: true,
+        parallelUploads: 10,
+        maxFiles: 10,
+        maxFilesize: 2
+    };
+
+    function deleteUploadedFiles() {
+        $.ajax({
+            url: '/Review/DeleteImages',
+            headers: { "RequestVerificationToken":
+                $('input[name="__RequestVerificationToken"]').val() },
+            data: { "urls": $('#ImagesUrls').val() },
+            type: "POST",
+            success: function () {
+                $('#ImagesUrls').val("");
+            },
+            error: function (errorResponse) {
+                console.log(errorResponse.responseText);
+            },
+            failure: function (failureResponse) {
+                console.log(failureResponse.responseText);
+            }
+        });
+    }
+
+</script>
+

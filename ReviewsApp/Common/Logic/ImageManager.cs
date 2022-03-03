@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ReviewsApp.Common.Logic
 {
-    public class FileManager
+    public class ImageManager
     {
         private readonly BlobServiceClient _blobServiceClient;
 
-        public FileManager(BlobServiceClient blobServiceClient)
+        public ImageManager(BlobServiceClient blobServiceClient)
         {
             _blobServiceClient = blobServiceClient;
         }
@@ -31,7 +31,7 @@ namespace ReviewsApp.Common.Logic
             return url;
         }
 
-        public async Task<bool> DeleteImageAsync(string url)
+        public async Task DeleteImageAsync(string url)
         {
             var blobContainer = _blobServiceClient
                 .GetBlobContainerClient(AppConfigs.AzureImagesContainer);
@@ -39,8 +39,14 @@ namespace ReviewsApp.Common.Logic
             var blobClient = blobContainer.GetBlobClient(fileName);
 
             var response = await blobClient.DeleteIfExistsAsync();
+        }
 
-            return response.Value;
+        public async Task DeleteImagesAsync(string[] urls)
+        {
+            foreach (var url in urls)
+            {
+                await DeleteImageAsync(url);
+            }
         }
 
         public async Task<List<string>> UploadImagesAsync(IEnumerable<IFormFile> files)
@@ -55,6 +61,10 @@ namespace ReviewsApp.Common.Logic
 
         private void CheckFile(IFormFile file)
         {
+            if (file == null)
+            {
+                throw new ArgumentNullException($"{nameof(file)} can not be nul");
+            }
             if (!IsValidType(file))
             {
                 throw new ArgumentException(

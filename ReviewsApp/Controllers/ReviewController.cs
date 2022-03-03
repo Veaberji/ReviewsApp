@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Common.Logic;
@@ -19,17 +20,17 @@ namespace ReviewsApp.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private readonly FileManager _fileManager;
+        private readonly ImageManager _imageManager;
 
         public ReviewController(IUnitOfWork unitOfWork,
             IMapper mapper,
             UserManager<User> userManager,
-            FileManager fileManager)
+            ImageManager imageManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
-            _fileManager = fileManager;
+            _imageManager = imageManager;
         }
 
         [AllowAnonymous]
@@ -54,6 +55,29 @@ namespace ReviewsApp.Controllers
             return View();
         }
 
+
+
+
+        //todo: del
+        public IActionResult Dropzone()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Drug(ImagesViewModel urls)
+        {
+            //todo: to create review
+            var names = urls.ImagesUrls.Split(",");
+            //todo: map Image from each string
+
+
+            return View("Dropzone");
+        }
+        //todo: del
+
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateReview(ReviewViewModel model)
@@ -68,7 +92,7 @@ namespace ReviewsApp.Controllers
             {
                 if (model.ImagesFiles != null)
                 {
-                    var imageUrls = await _fileManager
+                    var imageUrls = await _imageManager
                         .UploadImagesAsync(model.ImagesFiles);
                     review.Images = MapImages(imageUrls);
                 }
@@ -108,6 +132,40 @@ namespace ReviewsApp.Controllers
 
             return Json(tagsViewModels);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadImages()
+        {
+            var imageUrls = new List<string>();
+            try
+            {
+                //IEnumerable<IFormFile> from parameter won't work
+                var files = HttpContext.Request.Form.Files;
+                imageUrls = await _imageManager
+                    .UploadImagesAsync(files);
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.Message);
+                return View("Dropzone");
+            }
+
+            return Json(imageUrls);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task DeleteImages(string urls)
+        {
+            if (string.IsNullOrWhiteSpace(urls))
+            {
+                return;
+            }
+            var files = urls.Split(",");
+            await _imageManager
+                .DeleteImagesAsync(files);
+        }
+
 
         private IActionResult RedirectToCreateReviewPage()
         {
