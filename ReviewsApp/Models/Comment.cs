@@ -20,5 +20,9 @@ namespace ReviewsApp.Models
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
         public User Author { get; set; }
+
+        [ForeignKey("Review")]
+        public int? ReviewId { get; set; }
+        public Review Review { get; set; }
     }
 }

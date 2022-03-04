@@ -35,11 +35,13 @@ namespace ReviewsApp.Models
 
         public IList<Tag> Tags { get; set; }
         public IList<Image> Images { get; set; }
+        public IList<Comment> Comments { get; set; }
 
         public Review()
         {
             Tags = new List<Tag>();
             Images = new List<Image>();
+            Comments = new List<Comment>();
         }
     }
 }
