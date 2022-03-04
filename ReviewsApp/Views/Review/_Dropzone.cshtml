@@ -13,9 +13,7 @@
             $('#clear-dropzone')
                 .on("click", function () {
                     imagesDropzone.removeAllFiles();
-                    if ($('#ImagesUrls').val()) {
-                       deleteUploadedFiles();
-                    }
+                    deleteUploadedFiles();
                 });
         },
         accept(file, done) {
@@ -29,22 +27,29 @@
         maxFilesize: 2
     };
 
-    function deleteUploadedFiles() {
-        $.ajax({
-            url: '/Review/DeleteImages',
-            headers: { "RequestVerificationToken":
-                $('input[name="__RequestVerificationToken"]').val() },
-            data: { "urls": $('#ImagesUrls').val() },
-            type: "POST",
-            success: function () {
-                $('#ImagesUrls').val("");
-            },
-            error: function (errorResponse) {
-                console.log(errorResponse.responseText);
-            },
-            failure: function (failureResponse) {
-                console.log(failureResponse.responseText);
-            }
+    $(window).on("beforeunload",
+        function() {
+            deleteUploadedFiles();
         });
+
+    function deleteUploadedFiles() {
+        if ($('#ImagesUrls').val()) {
+            $.ajax({
+                url: '/Review/DeleteImages',
+                headers: { "RequestVerificationToken":
+                    $('input[name="__RequestVerificationToken"]').val() },
+                data: { "urls": $('#ImagesUrls').val() },
+                type: "POST",
+                success: function () {
+                    $('#ImagesUrls').val("");
+                },
+                error: function (errorResponse) {
+                    console.log(errorResponse.responseText);
+                },
+                failure: function (failureResponse) {
+                    console.log(failureResponse.responseText);
+                }
+            });
+        }
     }
 </script>

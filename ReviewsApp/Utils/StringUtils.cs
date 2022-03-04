@@ -8,7 +8,7 @@ namespace ReviewsApp.Utils
         {
             var text = string.Concat(chars);
             var lastSpaceIndex = text.LastIndexOf(' ');
-            return text[..lastSpaceIndex];
+            return lastSpaceIndex == -1 ? text : text[..lastSpaceIndex];
         }
     }
 }

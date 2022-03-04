@@ -166,8 +166,7 @@ namespace ReviewsApp.Controllers
 
         private IList<Image> MapImages(IEnumerable<string> imageUrls)
         {
-            return imageUrls.Select(url =>
-                _mapper.Map<Image>(url)).ToList();
+            return _mapper.Map<IEnumerable<string>, List<Image>>(imageUrls);
         }
     }
 }
