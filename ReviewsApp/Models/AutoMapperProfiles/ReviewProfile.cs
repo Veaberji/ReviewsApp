@@ -3,6 +3,7 @@ using ReviewsApp.Models.MainReview;
 using ReviewsApp.ViewModels.MainReview;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ReviewsApp.Models.AutoMapperProfiles
 {
@@ -10,14 +11,14 @@ namespace ReviewsApp.Models.AutoMapperProfiles
     {
         public ReviewProfile()
         {
-            CreateMap<CreateReviewViewModel, MainReview.Review>()
+            CreateMap<CreateReviewViewModel, Review>()
                 .ForMember(d => d.DateAdded,
                     o => o.MapFrom(r => DateTime.UtcNow))
                 .ForMember(d => d.Product,
                     o => o.MapFrom(r => new Product
                     {
-                        Name = r.ProductViewModel.ProductName,
-                        Type = r.ProductViewModel.ProductType
+                        Name = r.ProductViewModel.Name,
+                        Type = r.ProductViewModel.Type
                     }))
                 .ForMember(d => d.Tags,
                     o => o.MapFrom(r =>
@@ -54,6 +55,18 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                                 Count = 1
                             }
                         }));
+
+            CreateMap<Review, PreviewViewModel>()
+                .ForMember(d => d.AuthorName,
+                    o => o.MapFrom(r => r.Author.DisplayName))
+                .ForMember(d => d.AverageUserRating,
+                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                .ForMember(d => d.PreviewImageUrl,
+                    o => o.MapFrom(r => r.Images.FirstOrDefault().Url))
+                .ForMember(d => d.Tags,
+                    o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
+                .ForMember(d => d.ProductViewModel,
+                    o => o.MapFrom(r => r.Product));
         }
     }
 }

@@ -38,16 +38,17 @@ namespace ReviewsApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LastReviews(int pageIndex = 1)
         {
-            //todo: change to view model
             var reviews =
-                 await _unitOfWork.Reviews.GetReviewsWithAllInclusions(pageIndex);
+                 await _unitOfWork.Reviews.GetReviewsForPreviews(pageIndex);
             var tags = _unitOfWork.Tags.GetTopTags();
             var tagViewModels = tags.Select(tag =>
                 _mapper.Map<TagCloudViewModel>(tag)).ToList();
+            var reviewsViewModels =
+                _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
             //todo: add pagination
             var model = new HomePageViewModel
             {
-                Reviews = reviews,
+                Reviews = reviewsViewModels,
                 Tags = tagViewModels
             };
             return View(model);
@@ -154,6 +155,7 @@ namespace ReviewsApp.Controllers
 
             return Json(imageUrls);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task DeleteImages(string urls)
@@ -166,7 +168,6 @@ namespace ReviewsApp.Controllers
             await _imageManager
                 .DeleteImagesAsync(files);
         }
-
 
         private IActionResult RedirectToCreateReviewPage()
         {

@@ -1,11 +1,11 @@
-﻿@model Review
+﻿@model PreviewViewModel
 
 <div class="card mb-3 ms-2">
     <div class="row g-0">
         <div class="col-md-4">
-            @if (Model.Images.Count > 0)
+            @if (!string.IsNullOrWhiteSpace(Model.PreviewImageUrl))
             {
-                <img src="@Model.Images.First().Url" class="img-fluid rounded">
+                <img src="@Model.PreviewImageUrl" class="img-fluid rounded">
             }
             else
             {
@@ -16,14 +16,15 @@
             <div class="card-body">
                 <h5 class="card-title">@Model.Title</h5>
                 <h6 class="text-warning">
-                    Review on @Model.Product.Type : @Model.Product.Name |
+                    Review on @Model.ProductViewModel.Type :
+                    @Model.ProductViewModel.Name |
                     Author`s rating: @Model.AuthorGrade |
                     User`s rating:
                     @{
                         await Html.RenderPartialAsync("_AverageUserRating", Model);
                     }
                 </h6>
-                <h5 class="card-header">Author: @Model.Author.UserName</h5>
+                <h5 class="card-header">Author: @Model.AuthorName</h5>
                 <p class="card-text text-start">
                     @StringUtils.FormatTextWithLastWord(
                     Model.Body.Take(ReviewConstrains.PreviewBodySize))
@@ -33,7 +34,7 @@
                 <p class="text-start">
                     @foreach (var tag in Model.Tags)
                     {
-                        <small class="text-info">@tag.Text</small>
+                        <small class="text-info">@tag</small>
                     }
                 </p>
 

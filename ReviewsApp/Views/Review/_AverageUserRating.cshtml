@@ -1,7 +1,7 @@
-﻿@model Review
+﻿@model PreviewViewModel
 
 @{
-    var rating = Model.Product.GetAverageUserRating();
+    var rating = Model.AverageUserRating;
     if (rating.HasValue)
     {
         <span>@rating</span>

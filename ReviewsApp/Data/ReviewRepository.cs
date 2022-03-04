@@ -15,6 +15,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
     {
     }
 
+    //todo: split and delete
     public async Task<IEnumerable<Review>> GetReviewsWithAllInclusions(int pageIndex)
     {
         return await AppDbContext.Reviews
@@ -24,6 +25,20 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Tags)
             .Include(r => r.Images)
             .Include(r => r.Comments)
+            .OrderByDescending(r => r.DateAdded)
+            .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
+            .Take(ReviewConstrains.ReviewsPageSize)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Review>> GetReviewsForPreviews(int pageIndex)
+    {
+        return await AppDbContext.Reviews
+            .Include(r => r.Author)
+            .Include(r => r.Product)
+            .Include(r => r.Product.Grades)
+            .Include(r => r.Tags)
+            .Include(r => r.Images)
             .OrderByDescending(r => r.DateAdded)
             .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
             .Take(ReviewConstrains.ReviewsPageSize)

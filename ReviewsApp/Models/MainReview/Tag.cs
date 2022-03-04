@@ -15,7 +15,7 @@ namespace ReviewsApp.Models.MainReview
         [Required]
         public int Count { get; set; }
 
-        public IList<MainReview.Review> Reviews { get; set; }
+        public IList<Review> Reviews { get; set; }
 
         public Tag()
         {

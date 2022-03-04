@@ -9,10 +9,10 @@ namespace ReviewsApp.ViewModels.MainReview.Components
         [Required]
         [Display(Name = "Title of the described product")]
         [MaxLength(ProductConstrains.NameMaxLength)]
-        public string ProductName { get; set; }
+        public string Name { get; set; }
 
         [Required]
         [Display(Name = "Product type")]
-        public ProductType ProductType { get; set; }
+        public ProductType Type { get; set; }
     }
 }
