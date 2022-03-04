@@ -4,13 +4,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels.Review
 {
-    public class ReviewViewModel
+    public class BaseReviewViewModel
     {
         [Required]
         [MaxLength(ReviewConstrains.TitleMaxLength)]
         public string Title { get; set; }
-
-        public string AuthorId { get; set; }
 
         public ProductViewModel ProductViewModel { get; set; }
 
@@ -23,9 +21,5 @@ namespace ReviewsApp.ViewModels.Review
         [Display(Name = "Your Grade")]
         [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
         public int AuthorGrade { get; set; }
-
-        public TagViewModel TagViewModel { get; set; }
-
-        public string ImagesUrls { get; set; }
     }
 }

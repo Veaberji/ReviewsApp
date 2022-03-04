@@ -10,7 +10,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
     {
         public ReviewProfile()
         {
-            CreateMap<ReviewViewModel, Review.Review>()
+            CreateMap<CreateReviewViewModel, Review.Review>()
                 .ForMember(d => d.DateAdded,
                     o => o.MapFrom(r => DateTime.UtcNow))
                 .ForMember(d => d.Product,

@@ -60,7 +60,7 @@ namespace ReviewsApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReview(ReviewViewModel model)
+        public async Task<IActionResult> CreateReview(CreateReviewViewModel model)
         {
             if (!ModelState.IsValid)
             {

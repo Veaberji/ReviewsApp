@@ -17,6 +17,7 @@
                 <h5 class="card-title">@Model.Title</h5>
                 <h6 class="text-warning">
                     Review on @Model.Product.Type : @Model.Product.Name |
+                    Author`s rating: @Model.AuthorGrade |
                     User`s rating:
                     @{
                         await Html.RenderPartialAsync("_AverageUserRating", Model);
