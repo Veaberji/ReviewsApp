@@ -1,4 +1,4 @@
-﻿using ReviewsApp.Models.Review;
+﻿using ReviewsApp.Models.MainReview;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

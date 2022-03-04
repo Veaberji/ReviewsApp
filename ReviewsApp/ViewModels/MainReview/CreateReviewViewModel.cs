@@ -1,6 +1,6 @@
-﻿using ReviewsApp.ViewModels.Review.Components;
+﻿using ReviewsApp.ViewModels.MainReview.Components;
 
-namespace ReviewsApp.ViewModels.Review
+namespace ReviewsApp.ViewModels.MainReview
 {
     public class CreateReviewViewModel : BaseReviewViewModel
     {

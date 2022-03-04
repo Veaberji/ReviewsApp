@@ -3,7 +3,7 @@ using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReviewsApp.Models.Review
+namespace ReviewsApp.Models.MainReview
 {
     public class UserGrade
     {

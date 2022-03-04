@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ReviewsApp.Models.Review;
-using ReviewsApp.ViewModels.Review;
+using ReviewsApp.Models.MainReview;
+using ReviewsApp.ViewModels.MainReview;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +10,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
     {
         public ReviewProfile()
         {
-            CreateMap<CreateReviewViewModel, Review.Review>()
+            CreateMap<CreateReviewViewModel, MainReview.Review>()
                 .ForMember(d => d.DateAdded,
                     o => o.MapFrom(r => DateTime.UtcNow))
                 .ForMember(d => d.Product,

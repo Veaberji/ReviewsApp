@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace ReviewsApp.Models.Review
+namespace ReviewsApp.Models.MainReview
 {
     public class Tag
     {
@@ -15,11 +15,11 @@ namespace ReviewsApp.Models.Review
         [Required]
         public int Count { get; set; }
 
-        public IList<Models.Review.Review> Reviews { get; set; }
+        public IList<MainReview.Review> Reviews { get; set; }
 
         public Tag()
         {
-            Reviews = new List<Models.Review.Review>();
+            Reviews = new List<MainReview.Review>();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ReviewsApp.Models.Review;
-using ReviewsApp.ViewModels.Review.Components;
+using ReviewsApp.Models.MainReview;
+using ReviewsApp.ViewModels.MainReview.Components;
 using System;
 
 namespace ReviewsApp.Models.AutoMapperProfiles

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using ReviewsApp.Models.Review;
+using ReviewsApp.Models.MainReview;
 using ReviewsApp.ViewModels.Home;
-using ReviewsApp.ViewModels.Review.Components;
+using ReviewsApp.ViewModels.MainReview.Components;
 
 namespace ReviewsApp.Models.AutoMapperProfiles
 {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ReviewsApp.Models.Common;
-using ReviewsApp.Models.Review;
+using ReviewsApp.Models.MainReview;
 
 namespace ReviewsApp.Models
 {
@@ -9,7 +9,7 @@ namespace ReviewsApp.Models
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
-        public DbSet<Review.Review> Reviews { get; set; }
+        public DbSet<MainReview.Review> Reviews { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<UserGrade> UserGrades { get; set; }
         public DbSet<Tag> Tags { get; set; }

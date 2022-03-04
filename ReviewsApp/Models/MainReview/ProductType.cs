@@ -1,4 +1,4 @@
-﻿namespace ReviewsApp.Models.Review
+﻿namespace ReviewsApp.Models.MainReview
 {
     public enum ProductType
     {

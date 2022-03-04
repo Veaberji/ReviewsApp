@@ -1,4 +1,4 @@
-﻿namespace ReviewsApp.ViewModels.Review.Components;
+﻿namespace ReviewsApp.ViewModels.MainReview.Components;
 
 public class TagAutoCompeteViewModel
 {

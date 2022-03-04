@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReviewsApp.Models.Review
+namespace ReviewsApp.Models.MainReview
 {
     public class Comment
     {
@@ -24,6 +24,6 @@ namespace ReviewsApp.Models.Review
 
         [ForeignKey("Review")]
         public int? ReviewId { get; set; }
-        public Models.Review.Review Review { get; set; }
+        public Review Review { get; set; }
     }
 }
