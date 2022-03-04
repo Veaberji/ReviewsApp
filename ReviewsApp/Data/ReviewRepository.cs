@@ -22,6 +22,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Product.Grades)
             .Include(r => r.Tags)
             .Include(r => r.Images)
+            .Include(r => r.Comments)
             .OrderByDescending(r => r.DateAdded)
             .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
             .Take(ReviewConstrains.ReviewsPageSize)

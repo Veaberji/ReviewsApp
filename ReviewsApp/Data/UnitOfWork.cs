@@ -16,12 +16,14 @@ public class UnitOfWork : IUnitOfWork
         Products = new ProductRepository(_context);
         Tags = new TagRepository(_context);
         Images = new ImageRepository(_context);
+        Comments = new CommentRepository(_context);
     }
     public IUserRepository Users { get; }
     public IReviewRepository Reviews { get; }
     public IProductRepository Products { get; }
     public ITagRepository Tags { get; }
     public IImageRepository Images { get; }
+    public ICommentRepository Comments { get; }
 
     public async Task<int> CompleteAsync()
     {
