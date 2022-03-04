@@ -1,10 +1,11 @@
-﻿using ReviewsApp.Models.Settings.Constrains;
+﻿using ReviewsApp.Models.Common;
+using ReviewsApp.Models.Settings.Constrains;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReviewsApp.Models
+namespace ReviewsApp.Models.Review
 {
     public class Review
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace ReviewsApp.Models;
+namespace ReviewsApp.Models.Review;
 
 public class Product
 {

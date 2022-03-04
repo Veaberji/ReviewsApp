@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReviewsApp.Models.Review;
 
 namespace ReviewsApp.Models.AutoMapperProfiles
 {

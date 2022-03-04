@@ -1,5 +1,6 @@
 ﻿using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
+using ReviewsApp.Models.Review;
 
 namespace ReviewsApp.Data;
 

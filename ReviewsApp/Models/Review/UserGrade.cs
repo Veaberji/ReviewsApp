@@ -1,8 +1,9 @@
-﻿using ReviewsApp.Models.Settings.Constrains;
+﻿using ReviewsApp.Models.Common;
+using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReviewsApp.Models
+namespace ReviewsApp.Models.Review
 {
     public class UserGrade
     {

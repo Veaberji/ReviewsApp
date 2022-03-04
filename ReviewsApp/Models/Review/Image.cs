@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ReviewsApp.Models
+namespace ReviewsApp.Models.Review
 {
     public class Image
     {
@@ -12,6 +12,6 @@ namespace ReviewsApp.Models
 
         [ForeignKey("Review")]
         public int ReviewId { get; set; }
-        public Review Review { get; set; }
+        public Models.Review.Review Review { get; set; }
     }
 }

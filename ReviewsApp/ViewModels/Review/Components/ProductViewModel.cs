@@ -1,4 +1,4 @@
-﻿using ReviewsApp.Models;
+﻿using ReviewsApp.Models.Review;
 using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 

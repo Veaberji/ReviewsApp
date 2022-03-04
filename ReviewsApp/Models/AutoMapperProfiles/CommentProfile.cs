@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReviewsApp.Models.Review;
 using ReviewsApp.ViewModels.Review.Components;
 using System;
 

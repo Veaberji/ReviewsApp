@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReviewsApp.Models.Common;
 using ReviewsApp.ViewModels.Account;
 
 namespace ReviewsApp.Models.AutoMapperProfiles

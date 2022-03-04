@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using ReviewsApp.Models;
+using ReviewsApp.Models.Common;
 using System.Security.Claims;
 using System.Threading.Tasks;
 

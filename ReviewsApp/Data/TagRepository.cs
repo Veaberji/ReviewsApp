@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
+using ReviewsApp.Models.Review;
 using ReviewsApp.Models.Settings;
 using System.Collections.Generic;
 using System.Linq;

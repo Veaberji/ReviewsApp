@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ReviewsApp.Models.Review;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Models.Interfaces;
