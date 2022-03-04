@@ -28,8 +28,12 @@ a {
     text-decoration: none;
 }
 
-textarea {
+.review-textarea {
     height: 20rem;
+}
+
+.comment-textarea {
+    height: 10rem;
 }
 
 .tagSize1 {

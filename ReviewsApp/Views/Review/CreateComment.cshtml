@@ -1,0 +1,20 @@
+﻿@model CommentViewModel
+
+<div class="card-body col-8 align-self-start pt-0">
+    <div asp-validation-summary="All" class="alert-danger"></div>
+    <form asp-action="CreateComment" method="post">
+        <div class="mb-3">
+            <textarea class="form-control comment-textarea"
+                      asp-for="Body"
+                      placeholder="Add Comment"></textarea>
+        </div>
+
+        @*todo: hidden properties, loaded from ReviewViewModel*@
+        <input class="form-control" asp-for="AuthorId" />
+        <input class="form-control" asp-for="ReviewId" />
+        <button type="submit" class="btn btn-primary">
+            Add Comment
+        </button>
+        <button type="reset" class="btn btn-secondary">Cancel</button>
+    </form>
+</div>

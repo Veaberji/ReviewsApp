@@ -36,6 +36,7 @@ namespace ReviewsApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> LastReviews(int pageIndex = 1)
         {
+            //todo: change to view model
             var reviews =
                  await _unitOfWork.Reviews.GetReviewsWithAllInclusions(pageIndex);
             var tags = _unitOfWork.Tags.GetTopTags();
@@ -83,6 +84,36 @@ namespace ReviewsApp.Controllers
 
             return View(model);
         }
+
+        public IActionResult CreateComment()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateComment(CommentViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var review = await _unitOfWork.Reviews.GetByIdAsync(model.ReviewId);
+            var author = await _unitOfWork.Users.GetByIdAsync(model.AuthorId);
+            var comment = _mapper.Map<Comment>(model);
+            await _unitOfWork.Comments.AddAsync(comment);
+            review.Comments.Add(comment);
+            author.Comments.Add(comment);
+            var result = await _unitOfWork.CompleteAsync();
+            if (result > 0)
+            {
+                //todo: redirect to created review
+                return RedirectToCreateReviewPage();
+            }
+
+            return View(model);
+        }
+
 
         //todo: add Review(int id)
 
