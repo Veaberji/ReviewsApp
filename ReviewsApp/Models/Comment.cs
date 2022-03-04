@@ -1,6 +1,7 @@
 ﻿using ReviewsApp.Models.Settings.Constrains;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ReviewsApp.Models
 {
@@ -14,5 +15,10 @@ namespace ReviewsApp.Models
 
         [Required]
         public DateTime PublishingDate { get; set; }
+
+        [Required]
+        [ForeignKey("Author")]
+        public string AuthorId { get; set; }
+        public User Author { get; set; }
     }
 }
