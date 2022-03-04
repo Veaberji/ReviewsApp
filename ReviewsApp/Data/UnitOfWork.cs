@@ -17,6 +17,7 @@ public class UnitOfWork : IUnitOfWork
         Tags = new TagRepository(_context);
         Images = new ImageRepository(_context);
         Comments = new CommentRepository(_context);
+        Likes = new LikeRepository(_context);
     }
     public IUserRepository Users { get; }
     public IReviewRepository Reviews { get; }
@@ -24,6 +25,7 @@ public class UnitOfWork : IUnitOfWork
     public ITagRepository Tags { get; }
     public IImageRepository Images { get; }
     public ICommentRepository Comments { get; }
+    public ILikeRepository Likes { get; }
 
     public async Task<int> CompleteAsync()
     {

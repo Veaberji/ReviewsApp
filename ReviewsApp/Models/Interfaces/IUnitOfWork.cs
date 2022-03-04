@@ -11,5 +11,6 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     ITagRepository Tags { get; }
     IImageRepository Images { get; }
     ICommentRepository Comments { get; }
+    ILikeRepository Likes { get; }
     Task<int> CompleteAsync();
 }
