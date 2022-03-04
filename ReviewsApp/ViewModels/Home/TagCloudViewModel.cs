@@ -1,4 +1,4 @@
-﻿namespace ReviewsApp.ViewModels
+﻿namespace ReviewsApp.ViewModels.Home
 {
     public class TagCloudViewModel
     {

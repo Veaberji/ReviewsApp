@@ -1,6 +1,6 @@
 ﻿using ReviewsApp.Models.Settings;
 
-namespace ReviewsApp.ViewModels
+namespace ReviewsApp.ViewModels.Settings
 {
     public class SettingsViewModel
     {

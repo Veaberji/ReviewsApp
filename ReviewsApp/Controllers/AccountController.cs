@@ -8,6 +8,7 @@ using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Utils;
 using ReviewsApp.ViewModels;
+using ReviewsApp.ViewModels.Account;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;

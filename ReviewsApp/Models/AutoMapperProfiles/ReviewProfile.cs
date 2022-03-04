@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReviewsApp.ViewModels;
+using ReviewsApp.ViewModels.Review;
 using System;
 using System.Collections.Generic;
 
@@ -52,8 +52,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                                 Text = (r.TagViewModel.Tag5 ?? "").ToLower(),
                                 Count = 1
                             }
-                        }))
-                .ReverseMap();
+                        }));
         }
     }
 }

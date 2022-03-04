@@ -8,8 +8,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
         {
             CreateMap<string, Image>()
                 .ForMember(d => d.Url,
-                    o => o.MapFrom(r => r.ToString()))
-                .ReverseMap();
+                    o => o.MapFrom(r => r.ToString()));
         }
     }
 }

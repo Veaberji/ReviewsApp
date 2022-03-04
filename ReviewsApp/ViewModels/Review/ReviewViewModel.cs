@@ -1,7 +1,8 @@
 ﻿using ReviewsApp.Models.Settings.Constrains;
+using ReviewsApp.ViewModels.Review.Components;
 using System.ComponentModel.DataAnnotations;
 
-namespace ReviewsApp.ViewModels
+namespace ReviewsApp.ViewModels.Review
 {
     public class ReviewViewModel
     {

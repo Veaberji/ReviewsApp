@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Settings;
-using ReviewsApp.ViewModels;
+using ReviewsApp.ViewModels.Settings;
 using System;
 
 namespace ReviewsApp.Controllers
