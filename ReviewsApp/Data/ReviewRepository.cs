@@ -21,7 +21,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
         return await AppDbContext.Reviews
             .Include(r => r.Author)
             .Include(r => r.Product)
-            .Include(r => r.Product.Grades)
+            .ThenInclude(p => p.Grades)
             .Include(r => r.Tags)
             .Include(r => r.Images)
             .Include(r => r.Comments)
@@ -36,7 +36,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
         return await AppDbContext.Reviews
             .Include(r => r.Author)
             .Include(r => r.Product)
-            .Include(r => r.Product.Grades)
+            .ThenInclude(p => p.Grades)
             .Include(r => r.Tags)
             .Include(r => r.Images)
             .OrderByDescending(r => r.DateAdded)

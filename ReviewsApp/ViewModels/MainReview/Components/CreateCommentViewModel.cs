@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.ViewModels.MainReview.Components
 {
-    public class CommentViewModel
+    public class CreateCommentViewModel
     {
         [Required]
         [Display(Name = "Comment")]

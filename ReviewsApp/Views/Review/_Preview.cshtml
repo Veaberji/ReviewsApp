@@ -3,6 +3,7 @@
 <div class="card mb-3 ms-2">
     <div class="row g-0">
         <div class="col-md-4">
+            ID: @Model.Id
             @if (!string.IsNullOrWhiteSpace(Model.PreviewImageUrl))
             {
                 <img src="@Model.PreviewImageUrl" class="img-fluid rounded">

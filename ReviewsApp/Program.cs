@@ -122,6 +122,10 @@ app.UseEndpoints(endpoints =>
             pattern: "/Page{pageIndex}",
             defaults: new { controller = "Review", action = "LastReviews" });
         endpoints.MapControllerRoute(
+            name: "singleReview",
+            pattern: "/Review{id}",
+            defaults: new { controller = "Review", action = "SingleReview" });
+        endpoints.MapControllerRoute(
             name: "default",
             pattern: "{controller=Review}/{action=LastReviews}/{id?}");
     });

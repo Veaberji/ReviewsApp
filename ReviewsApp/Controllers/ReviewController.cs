@@ -9,6 +9,7 @@ using ReviewsApp.Services;
 using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
 using ReviewsApp.ViewModels.MainReview.Components;
+using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,6 +54,29 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
+        //todo: add ReviewsWithTag(int tagId)
+
+        [AllowAnonymous]
+        public async Task<IActionResult> SingleReview(int id)
+        {
+            var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
+            var review = await _unitOfWork.Reviews.GetByIdAsync(id);
+            IEnumerable<Comment> comments = new List<Comment>();
+            if (isUserAuthenticated)
+            {
+                comments = await _unitOfWork.Comments
+                    .GetReviewCommentsWithAuthorsAsync(review.Id);
+            }
+
+            var model = new SingleReviewViewModel
+            {
+                Review = _mapper.Map<PreviewViewModel>(review),
+                Comments = _mapper.Map<IEnumerable<CommentViewModel>>(comments)
+            };
+
+            return View(model);
+        }
+
         public IActionResult CreateReview()
         {
             return View();
@@ -94,7 +118,7 @@ namespace ReviewsApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateComment(CommentViewModel model)
+        public async Task<IActionResult> CreateComment(CreateCommentViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -115,9 +139,6 @@ namespace ReviewsApp.Controllers
 
             return View(model);
         }
-
-
-        //todo: add Review(int id)
 
         [HttpPost]
         [ValidateAntiForgeryToken]

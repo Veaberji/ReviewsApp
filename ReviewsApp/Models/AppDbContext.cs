@@ -9,7 +9,7 @@ namespace ReviewsApp.Models
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
-        public DbSet<MainReview.Review> Reviews { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<UserGrade> UserGrades { get; set; }
         public DbSet<Tag> Tags { get; set; }
