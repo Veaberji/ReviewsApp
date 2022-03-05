@@ -45,5 +45,10 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .ToListAsync();
     }
 
+    public Task<int> GetReviewsAmountAsync()
+    {
+        return AppDbContext.Reviews.CountAsync();
+    }
+
     private AppDbContext AppDbContext => Context as AppDbContext;
 }

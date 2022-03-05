@@ -12,5 +12,6 @@
         public static string DefaultImageUrl { get; set; }
         public static int MaxImageSizeInBytes { get; set; }
         public static int SizeToCutImageFileName { get; set; }
+        public static int PaginationLinksAmount { get; set; }
     }
 }

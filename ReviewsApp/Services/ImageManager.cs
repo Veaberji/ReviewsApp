@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace ReviewsApp.Common.Logic
+namespace ReviewsApp.Services
 {
     public class ImageManager
     {

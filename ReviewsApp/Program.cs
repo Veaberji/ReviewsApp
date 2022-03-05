@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using ReviewsApp.Common.Logic;
 using ReviewsApp.Data;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Common;
@@ -84,6 +83,7 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SettingsService>();
+builder.Services.AddScoped<PaginationService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -117,6 +117,10 @@ app.UseEndpoints(endpoints =>
             name: "settings",
             pattern: "Settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
+        endpoints.MapControllerRoute(
+            name: "home",
+            pattern: "/Page{pageIndex}",
+            defaults: new { controller = "Review", action = "LastReviews" });
         endpoints.MapControllerRoute(
             name: "default",
             pattern: "{controller=Review}/{action=LastReviews}/{id?}");

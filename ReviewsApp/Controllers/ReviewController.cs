@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ReviewsApp.Common.Logic;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.MainReview;
+using ReviewsApp.Services;
 using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
 using ReviewsApp.ViewModels.MainReview.Components;
@@ -23,21 +23,25 @@ namespace ReviewsApp.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ImageManager _imageManager;
+        private readonly PaginationService _paginationService;
 
         public ReviewController(IUnitOfWork unitOfWork,
             IMapper mapper,
             UserManager<User> userManager,
-            ImageManager imageManager)
+            ImageManager imageManager,
+            PaginationService paginationService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _imageManager = imageManager;
+            _paginationService = paginationService;
         }
 
         [AllowAnonymous]
         public async Task<IActionResult> LastReviews(int pageIndex = 1)
         {
+            if (pageIndex < 1) pageIndex = 1;
             var reviews =
                  await _unitOfWork.Reviews.GetReviewsForPreviews(pageIndex);
             var tags = _unitOfWork.Tags.GetTopTags();
@@ -45,12 +49,7 @@ namespace ReviewsApp.Controllers
                 _mapper.Map<TagCloudViewModel>(tag)).ToList();
             var reviewsViewModels =
                 _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
-            //todo: add pagination
-            var model = new HomePageViewModel
-            {
-                Reviews = reviewsViewModels,
-                Tags = tagViewModels
-            };
+            var model = await CreateHomePageViewModel(pageIndex, reviewsViewModels, tagViewModels);
             return View(model);
         }
 
@@ -167,6 +166,25 @@ namespace ReviewsApp.Controllers
             var files = urls.Split(",");
             await _imageManager
                 .DeleteImagesAsync(files);
+        }
+
+        private async Task<HomePageViewModel> CreateHomePageViewModel(int pageIndex,
+            IEnumerable<PreviewViewModel> reviewsViewModels,
+            List<TagCloudViewModel> tagViewModels)
+        {
+            var pagesAmount = await _paginationService.GetPagesAmount();
+            return new HomePageViewModel
+            {
+                Reviews = reviewsViewModels,
+                Tags = tagViewModels,
+                Pagination = new PaginationViewModel
+                {
+                    PageIndex = pageIndex,
+                    PagesAmount = pagesAmount,
+                    PreviousPage = _paginationService.GetPreviousPage(pageIndex),
+                    NextPage = _paginationService.GetNextPage(pageIndex, pagesAmount)
+                }
+            };
         }
 
         private IActionResult RedirectToCreateReviewPage()

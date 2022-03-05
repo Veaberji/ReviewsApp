@@ -19,7 +19,7 @@ namespace ReviewsApp.Models.MainReview
 
         public Tag()
         {
-            Reviews = new List<MainReview.Review>();
+            Reviews = new List<Review>();
         }
     }
 }
