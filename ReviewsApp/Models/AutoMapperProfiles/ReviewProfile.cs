@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ReviewsApp.Models.MainReview;
+using ReviewsApp.Models.Settings.Constrains;
 using ReviewsApp.ViewModels.MainReview;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,26 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Tags,
                     o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
                 .ForMember(d => d.ProductViewModel,
-                    o => o.MapFrom(r => r.Product));
+                    o => o.MapFrom(r => r.Product))
+                .ForMember(d => d.Body,
+                    o => o.MapFrom(r => FormatPreviewBody(r.Body)));
+        }
+        private string FormatPreviewBody(string text)
+        {
+            if (text.Length <= ReviewConstrains.PreviewBodySize)
+            {
+                return text;
+            }
+
+            return GetCutText(text);
+        }
+
+        private string GetCutText(string text)
+        {
+            var cutText = text[..ReviewConstrains.PreviewBodySize];
+            var lastSpaceIndex = cutText.LastIndexOf(' ');
+            return lastSpaceIndex == -1 ? cutText + "..." :
+                cutText[..lastSpaceIndex] + "...";
         }
     }
 }

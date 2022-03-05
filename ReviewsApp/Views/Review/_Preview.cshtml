@@ -3,7 +3,6 @@
 <div class="card mb-3 ms-2">
     <div class="row g-0">
         <div class="col-md-4">
-            ID: @Model.Id
             @if (!string.IsNullOrWhiteSpace(Model.PreviewImageUrl))
             {
                 <img src="@Model.PreviewImageUrl" class="img-fluid rounded">
@@ -15,11 +14,16 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <h5 class="card-title">@Model.Title</h5>
+                <h4 class="card-title">
+                    <a asp-action="SingleReview"
+                       asp-route-id="@Model.Id">
+                        @Model.Title
+                    </a>
+                </h4>
                 <h6 class="text-warning">
                     Review on @Model.ProductViewModel.Type :
-                    @Model.ProductViewModel.Name |
-                    Author`s rating: @Model.AuthorGrade |
+                    @Model.ProductViewModel.Name
+                    | Author`s rating: @Model.AuthorGrade |
                     User`s rating:
                     @{
                         await Html.RenderPartialAsync("_AverageUserRating", Model);
@@ -27,11 +31,8 @@
                 </h6>
                 <h5 class="card-header">Author: @Model.AuthorName</h5>
                 <p class="card-text text-start">
-                    @StringUtils.FormatTextWithLastWord(
-                    Model.Body.Take(ReviewConstrains.PreviewBodySize))
-                    ...
+                    @Model.Body
                 </p>
-
                 <p class="text-start">
                     @foreach (var tag in Model.Tags)
                     {
