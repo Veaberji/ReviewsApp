@@ -3,6 +3,8 @@
 <p class="text-start">
     @foreach (var tag in Model)
     {
-        <small class="text-info">@tag</small>
+        <a class="fs-5"
+       asp-action="ReviewsWithTag"
+       asp-route-tagText="@tag">@tag</a>
     }
 </p>

@@ -118,6 +118,10 @@ app.UseEndpoints(endpoints =>
             pattern: "Settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
         endpoints.MapControllerRoute(
+            name: "reviewWithTag",
+            pattern: "/ReviewsWithTag-{tagText}/Page{pageIndex=1}",
+            defaults: new { controller = "Review", action = "ReviewsWithTag" });
+        endpoints.MapControllerRoute(
             name: "home",
             pattern: "/Page{pageIndex}",
             defaults: new { controller = "Review", action = "LastReviews" });

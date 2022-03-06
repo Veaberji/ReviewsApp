@@ -4,7 +4,7 @@
     <ul class="pagination">
         <li class="page-item">
             <a class="page-link"
-               asp-action="LastReviews"
+               asp-action="@Model.ActionMethod"
                asp-route-pageIndex="@Model.PreviousPage"
                id="previous-page-link">
                 &laquo;
@@ -16,14 +16,14 @@
                 var isActive = i == Model.PageIndex ? "active" : "";
                 <li class="page-item @isActive">
                     <a class="page-link"
-               asp-action="LastReviews"
+               asp-action="@Model.ActionMethod"
                asp-route-pageIndex="@i">@i</a>
                 </li>
             }
         }
         <li class="page-item">
             <a class="page-link"
-               asp-action="LastReviews"
+               asp-action="@Model.ActionMethod"
                asp-route-pageIndex="@Model.NextPage"
                id="next-page-link">
                 &raquo;

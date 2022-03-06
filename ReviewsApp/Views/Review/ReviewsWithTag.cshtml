@@ -1,0 +1,24 @@
+﻿@model HomePageViewModel
+
+<head>
+    <title>@AppConfigs.Title - Results Page @Model.Pagination.PageIndex</title>
+</head>
+
+@if (!Model.Reviews.Any())
+{
+    <div class="alert alert-warning">
+        Reviews Not Found
+    </div>
+}
+
+<div class="position-relative row">
+    <div class="col-12">
+        @foreach (var review in Model.Reviews)
+        {
+            await Html.RenderPartialAsync("_Preview", review);
+        }
+    </div>
+</div>
+@{
+    await Html.RenderPartialAsync("_Pagination", Model.Pagination);
+}

@@ -44,23 +44,31 @@ namespace ReviewsApp.Controllers
         {
             if (pageIndex < 1) pageIndex = 1;
             var reviews =
-                 await _unitOfWork.Reviews.GetReviewsForPreviews(pageIndex);
-            var tags = _unitOfWork.Tags.GetTopTags();
-            var tagViewModels = tags.Select(tag =>
-                _mapper.Map<TagCloudViewModel>(tag)).ToList();
-            var reviewsViewModels =
-                _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
-            var model = await CreateHomePageViewModel(pageIndex, reviewsViewModels, tagViewModels);
+                 await _unitOfWork.Reviews.GetPreviewsAsync(pageIndex);
+            var amount = await _unitOfWork.Reviews.GetReviewsAmountAsync();
+            var actionMethod = nameof(LastReviews);
+            var model = CreateHomePageViewModel(pageIndex, amount, reviews, actionMethod);
             return View(model);
         }
 
-        //todo: add ReviewsWithTag(int tagId)
+        [AllowAnonymous]
+        public async Task<IActionResult> ReviewsWithTag(string tagText, int pageIndex = 1)
+        {
+            if (pageIndex < 1) pageIndex = 1;
+            var tag = await _unitOfWork.Tags.GetByTextAsync(tagText);
+            var reviews =
+                await _unitOfWork.Reviews.GetPreviewsWithTagAsync(tag, pageIndex);
+            var amount = await _unitOfWork.Reviews.GetReviewsWithTagAmountAsync(tag);
+            var actionMethod = nameof(ReviewsWithTag);
+            var model = CreateHomePageViewModel(pageIndex, amount, reviews, actionMethod);
+            return View(model);
+        }
 
         [AllowAnonymous]
         public async Task<IActionResult> SingleReview(int id)
         {
             var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
-            var review = await _unitOfWork.Reviews.GetSingleReviewByIdAsync(id);
+            var review = await _unitOfWork.Reviews.GetReviewByIdAsync(id);
             IEnumerable<Comment> comments = new List<Comment>();
             if (isUserAuthenticated)
             {
@@ -187,11 +195,28 @@ namespace ReviewsApp.Controllers
                 .DeleteImagesAsync(files);
         }
 
-        private async Task<HomePageViewModel> CreateHomePageViewModel(int pageIndex,
-            IEnumerable<PreviewViewModel> reviewsViewModels,
-            List<TagCloudViewModel> tagViewModels)
+        private HomePageViewModel CreateHomePageViewModel(int pageIndex,
+            int amountReviews,
+            IEnumerable<Review> reviews,
+                string actionMethod)
         {
-            var pagesAmount = await _paginationService.GetPagesAmount();
+            var tags = _unitOfWork.Tags.GetTopTags();
+            var tagViewModels = tags.Select(tag =>
+                _mapper.Map<TagCloudViewModel>(tag)).ToList();
+            var reviewsViewModels =
+                _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
+            var pagesAmount = _paginationService.GetPagesAmount(amountReviews);
+            var model = FillHomePageViewModel(pageIndex,
+                pagesAmount, reviewsViewModels, tagViewModels, actionMethod);
+            return model;
+        }
+
+        private HomePageViewModel FillHomePageViewModel(int pageIndex,
+            int pagesAmount,
+            IEnumerable<PreviewViewModel> reviewsViewModels,
+            List<TagCloudViewModel> tagViewModels,
+            string actionMethod)
+        {
             return new HomePageViewModel
             {
                 Reviews = reviewsViewModels,
@@ -201,7 +226,8 @@ namespace ReviewsApp.Controllers
                     PageIndex = pageIndex,
                     PagesAmount = pagesAmount,
                     PreviousPage = _paginationService.GetPreviousPage(pageIndex),
-                    NextPage = _paginationService.GetNextPage(pageIndex, pagesAmount)
+                    NextPage = _paginationService.GetNextPage(pageIndex, pagesAmount),
+                    ActionMethod = actionMethod
                 }
             };
         }

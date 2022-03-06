@@ -1,13 +1,22 @@
 ﻿@model HomePageViewModel
 
 <head>
-    <title>@AppConfigs.Title - Home</title>
+    @if (Model.Pagination.PageIndex == 1)
+    {
+        <title>@AppConfigs.Title - Home</title>
+    }
+    else
+    {
+        <title>@AppConfigs.Title - Last Reviews Page @Model.Pagination.PageIndex</title>
+    }
 </head>
 
-<div class="alert alert-warning">
-    !!!IT HAS TO BE DELETED!!!
-    There are 10 last reviews with authors bellow
-</div>
+@if (!Model.Reviews.Any())
+{
+    <div class="alert alert-warning">
+        Reviews Not Found
+    </div>
+}
 
 <div class="position-relative row">
     <div class="col-10">
@@ -19,7 +28,9 @@
     <div class="col-2">
         @foreach (var tag in Model.Tags)
         {
-            <span class="@tag.CssClass">@tag.Text</span>
+            <a class="@tag.CssClass"
+           asp-action="ReviewsWithTag"
+           asp-route-tagText="@tag.Text">@tag.Text</a>
         }
     </div>
 </div>

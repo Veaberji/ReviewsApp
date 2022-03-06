@@ -15,23 +15,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
     {
     }
 
-    //todo: split and delete
-    public async Task<IEnumerable<Review>> GetReviewsWithAllInclusions(int pageIndex)
-    {
-        return await AppDbContext.Reviews
-            .Include(r => r.Author)
-            .Include(r => r.Product)
-            .ThenInclude(p => p.Grades)
-            .Include(r => r.Tags)
-            .Include(r => r.Images)
-            .Include(r => r.Comments)
-            .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
-            .Take(ReviewConstrains.ReviewsPageSize)
-            .ToListAsync();
-    }
-
-    public async Task<IEnumerable<Review>> GetReviewsForPreviews(int pageIndex)
+    public async Task<IEnumerable<Review>> GetPreviewsAsync(int pageIndex)
     {
         return await AppDbContext.Reviews
             .Include(r => r.Author)
@@ -45,7 +29,21 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .ToListAsync();
     }
 
-    public async Task<Review> GetSingleReviewByIdAsync(int id)
+    public async Task<IEnumerable<Review>> GetPreviewsWithTagAsync(Tag tag, int pageIndex)
+    {
+        return await AppDbContext.Reviews.Where(r => r.Tags.Contains(tag))
+            .Include(r => r.Author)
+            .Include(r => r.Product)
+            .ThenInclude(p => p.Grades)
+            .Include(r => r.Tags)
+            .Include(r => r.Images)
+            .OrderByDescending(r => r.DateAdded)
+            .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
+            .Take(ReviewConstrains.ReviewsPageSize)
+            .ToListAsync();
+    }
+
+    public async Task<Review> GetReviewByIdAsync(int id)
     {
         return await AppDbContext.Reviews
             .Where(r => r.Id == id)
@@ -60,6 +58,13 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
     public Task<int> GetReviewsAmountAsync()
     {
         return AppDbContext.Reviews.CountAsync();
+    }
+
+    public Task<int> GetReviewsWithTagAmountAsync(Tag tag)
+    {
+        return AppDbContext.Reviews
+            .Where(r => r.Tags.Contains(tag))
+            .CountAsync();
     }
 
     private AppDbContext AppDbContext => Context as AppDbContext;
