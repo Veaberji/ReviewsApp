@@ -45,6 +45,18 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .ToListAsync();
     }
 
+    public async Task<Review> GetSingleReviewByIdAsync(int id)
+    {
+        return await AppDbContext.Reviews
+            .Where(r => r.Id == id)
+            .Include(r => r.Author)
+            .Include(r => r.Product)
+            .ThenInclude(p => p.Grades)
+            .Include(r => r.Tags)
+            .Include(r => r.Images)
+            .FirstOrDefaultAsync();
+    }
+
     public Task<int> GetReviewsAmountAsync()
     {
         return AppDbContext.Reviews.CountAsync();

@@ -4,7 +4,7 @@ namespace ReviewsApp.ViewModels.MainReview.SingleReview
 {
     public class SingleReviewViewModel
     {
-        public PreviewViewModel Review { get; set; }
+        public ReviewViewModel Review { get; set; }
         public IEnumerable<CommentViewModel> Comments { get; set; }
     }
 }

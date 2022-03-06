@@ -1,2 +1,32 @@
 ﻿@model SingleReviewViewModel
-<div>Single Review</div>
+
+<head>
+    <title>@AppConfigs.Title - @Model.Review.Title</title>
+</head>
+
+<div class="alert alert-warning">
+    !!!IT HAS TO BE DELETED!!!
+    Temp:make some images gallery
+</div>
+<div class="card">
+    <h5 class="card-title">@Model.Review.Title</h5>
+    <div class="main-image m-3">
+        @{
+            await Html.RenderPartialAsync("_PreviewImage", Model.Review.PreviewImageUrl);
+        }
+    </div>
+    <div>
+        @foreach (var img in Model.Review.SecondaryImagesUrls)
+        {
+            <img src="@img" class="rounded img-thumbnail secondary-image">
+        }
+    </div>
+    <div class="card-body text-start">
+        <p class="card-text">@Model.Review.Body</p>
+    </div>
+    <div class="m-3">
+        @{
+            await Html.RenderPartialAsync("_Tags", Model.Review.Tags);
+        }
+    </div>
+</div>

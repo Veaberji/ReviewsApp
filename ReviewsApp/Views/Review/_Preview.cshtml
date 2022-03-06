@@ -3,13 +3,8 @@
 <div class="card mb-3 ms-2">
     <div class="row g-0">
         <div class="col-md-4">
-            @if (!string.IsNullOrWhiteSpace(Model.PreviewImageUrl))
-            {
-                <img src="@Model.PreviewImageUrl" class="img-fluid rounded">
-            }
-            else
-            {
-                <img src="@AppConfigs.DefaultImageUrl" class="img-fluid rounded">
+            @{
+                await Html.RenderPartialAsync("_PreviewImage", Model.PreviewImageUrl);
             }
         </div>
         <div class="col-md-8">
@@ -33,12 +28,9 @@
                 <p class="card-text text-start">
                     @Model.Body
                 </p>
-                <p class="text-start">
-                    @foreach (var tag in Model.Tags)
-                    {
-                        <small class="text-info">@tag</small>
-                    }
-                </p>
+                @{
+                    await Html.RenderPartialAsync("_Tags", Model.Tags);
+                }
 
                 <p class="card-text">
                     <small class="text-muted">

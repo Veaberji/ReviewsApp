@@ -2,6 +2,7 @@
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings.Constrains;
 using ReviewsApp.ViewModels.MainReview;
+using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,20 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Product))
                 .ForMember(d => d.Body,
                     o => o.MapFrom(r => FormatPreviewBody(r.Body)));
+
+            CreateMap<Review, ReviewViewModel>()
+                .ForMember(d => d.AuthorName,
+                    o => o.MapFrom(r => r.Author.DisplayName))
+                .ForMember(d => d.AverageUserRating,
+                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                .ForMember(d => d.PreviewImageUrl,
+                    o => o.MapFrom(r => r.Images.FirstOrDefault().Url))
+                .ForMember(d => d.Tags,
+                    o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
+                .ForMember(d => d.ProductViewModel,
+                    o => o.MapFrom(r => r.Product))
+                .ForMember(d => d.SecondaryImagesUrls,
+                    o => o.MapFrom(r => r.Images.Skip(1).Select(i => i.Url)));
         }
         private string FormatPreviewBody(string text)
         {

@@ -60,7 +60,7 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> SingleReview(int id)
         {
             var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
-            var review = await _unitOfWork.Reviews.GetByIdAsync(id);
+            var review = await _unitOfWork.Reviews.GetSingleReviewByIdAsync(id);
             IEnumerable<Comment> comments = new List<Comment>();
             if (isUserAuthenticated)
             {
@@ -70,7 +70,7 @@ namespace ReviewsApp.Controllers
 
             var model = new SingleReviewViewModel
             {
-                Review = _mapper.Map<PreviewViewModel>(review),
+                Review = _mapper.Map<ReviewViewModel>(review),
                 Comments = _mapper.Map<IEnumerable<CommentViewModel>>(comments)
             };
 
@@ -104,8 +104,7 @@ namespace ReviewsApp.Controllers
             var result = await _unitOfWork.CompleteAsync();
             if (result > 0)
             {
-                //todo: redirect to created review
-                return RedirectToCreateReviewPage();
+                return RedirectToReviewPage(review.Id);
             }
 
             return View(model);
@@ -133,8 +132,7 @@ namespace ReviewsApp.Controllers
             var result = await _unitOfWork.CompleteAsync();
             if (result > 0)
             {
-                //todo: redirect to created review
-                return RedirectToCreateReviewPage();
+                return RedirectToReviewPage(review.Id);
             }
 
             return View(model);
@@ -208,9 +206,9 @@ namespace ReviewsApp.Controllers
             };
         }
 
-        private IActionResult RedirectToCreateReviewPage()
+        private IActionResult RedirectToReviewPage(int id)
         {
-            return RedirectToAction("CreateReview");
+            return RedirectToAction("SingleReview", new { id });
         }
 
         private async Task ChangeTags(Review review)

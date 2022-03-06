@@ -8,5 +8,6 @@ public interface IReviewRepository : IRepository<MainReview.Review, int>
 {
     Task<IEnumerable<Review>> GetReviewsWithAllInclusions(int pageIndex);
     Task<IEnumerable<Review>> GetReviewsForPreviews(int pageIndex);
+    Task<Review> GetSingleReviewByIdAsync(int id);
     Task<int> GetReviewsAmountAsync();
 }
