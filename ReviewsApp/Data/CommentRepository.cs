@@ -17,7 +17,7 @@ public class CommentRepository : Repository<Comment, int>, ICommentRepository
     {
         return await AppDbContext.Comments.Where(c => c.ReviewId == reviewId)
             .Include(c => c.Author)
-            .OrderByDescending(c => c.PublishingDate)
+            .OrderBy(c => c.PublishingDate)
             .ToListAsync();
     }
 

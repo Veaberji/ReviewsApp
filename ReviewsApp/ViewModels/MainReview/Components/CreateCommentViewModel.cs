@@ -11,7 +11,7 @@ namespace ReviewsApp.ViewModels.MainReview.Components
         public string Body { get; set; }
 
         [Required]
-        public string AuthorId { get; set; }
+        public string AuthorName { get; set; }
 
         [Required]
         public int ReviewId { get; set; }

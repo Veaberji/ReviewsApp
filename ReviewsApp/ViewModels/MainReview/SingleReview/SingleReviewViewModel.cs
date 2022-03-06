@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ReviewsApp.ViewModels.MainReview.Components;
+using System.Collections.Generic;
 
 namespace ReviewsApp.ViewModels.MainReview.SingleReview
 {
@@ -6,5 +7,7 @@ namespace ReviewsApp.ViewModels.MainReview.SingleReview
     {
         public ReviewViewModel Review { get; set; }
         public IEnumerable<CommentViewModel> Comments { get; set; }
+        public CreateCommentViewModel CreateComment { get; set; }
+
     }
 }

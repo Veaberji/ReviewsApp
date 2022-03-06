@@ -124,7 +124,7 @@ namespace ReviewsApp.Controllers
                 return View(model);
             }
             var review = await _unitOfWork.Reviews.GetByIdAsync(model.ReviewId);
-            var author = await _unitOfWork.Users.GetByIdAsync(model.AuthorId);
+            var author = await _userManager.FindByNameAsync(model.AuthorName);
             var comment = _mapper.Map<Comment>(model);
             await _unitOfWork.Comments.AddAsync(comment);
             review.Comments.Add(comment);

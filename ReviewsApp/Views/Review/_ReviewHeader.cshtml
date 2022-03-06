@@ -1,0 +1,10 @@
+﻿@model PreviewViewModel
+<h6 class="text-warning">
+    Review on @Model.ProductViewModel.Type :
+    @Model.ProductViewModel.Name
+    | Author`s rating: @Model.AuthorGrade |
+    User`s rating:
+    @{
+        await Html.RenderPartialAsync("_AverageUserRating", Model);
+    }
+</h6>
