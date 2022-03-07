@@ -83,8 +83,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
                 .ForMember(d => d.ProductViewModel,
                     o => o.MapFrom(r => r.Product))
-                .ForMember(d => d.SecondaryImagesUrls,
-                    o => o.MapFrom(r => r.Images.Skip(1).Select(i => i.Url)));
+                .ForMember(d => d.ImagesUrls,
+                    o => o.MapFrom(r => r.Images.Select(i => i.Url)));
         }
         private string FormatPreviewBody(string text)
         {

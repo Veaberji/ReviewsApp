@@ -13,6 +13,8 @@
 
 	<ItemGroup>
 		<None Include="bundleconfig.json" />
+		<None Include="wwwroot\lib\lightslider\js\lightslider.js" />
+		<None Include="wwwroot\lib\lightslider\js\lightslider.min.js" />
 	</ItemGroup>
 
 	<ItemGroup>

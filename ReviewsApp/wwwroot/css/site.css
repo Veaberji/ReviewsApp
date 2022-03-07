@@ -86,3 +86,7 @@ a {
     max-width: 10rem;
     max-height: 100%;
 }
+
+.image-slider {
+    width: 60%;
+}

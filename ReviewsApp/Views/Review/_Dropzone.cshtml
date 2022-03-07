@@ -27,8 +27,8 @@
         maxFilesize: 2
     };
 
-    $(window).on("beforeunload",
-        function() {
+    $('#confirm-cancel')
+        .on("click", function () {
             deleteUploadedFiles();
         });
 

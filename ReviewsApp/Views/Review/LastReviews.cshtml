@@ -13,12 +13,12 @@
 
 @if (!Model.Reviews.Any())
 {
-    <div class="alert alert-warning">
+    <div class="alert alert-warning m-3">
         Reviews Not Found
     </div>
 }
 
-<div class="position-relative row">
+<div class="position-relative row m-3">
     <div class="col-10">
         @foreach (var review in Model.Reviews)
         {

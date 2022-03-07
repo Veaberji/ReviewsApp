@@ -2,11 +2,12 @@
 <h6 class="text-warning">
     Review on @Model.ProductViewModel.Type :
     @Model.ProductViewModel.Name |
-    Author: @Model.AuthorName
-    | Author`s rating: @Model.AuthorGrade |
+    Author:
+    <span class="badge rounded-pill bg-info fs-6 mb-2 me-2">@Model.AuthorName</span>
+    | Author`s rating: @Model.AuthorGrade
 
 </h6>
-<div class="badge bg-secondary text-wrap">
+<div class="badge bg-secondary text-wrap fs-6 mb-2">
     User`s rating:
     @{
         await Html.RenderPartialAsync("_AverageUserRating", Model);

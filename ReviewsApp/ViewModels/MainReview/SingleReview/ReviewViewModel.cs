@@ -4,6 +4,6 @@ namespace ReviewsApp.ViewModels.MainReview.SingleReview
 {
     public class ReviewViewModel : PreviewViewModel
     {
-        public IEnumerable<string> SecondaryImagesUrls { get; set; }
+        public IEnumerable<string> ImagesUrls { get; set; }
     }
 }
