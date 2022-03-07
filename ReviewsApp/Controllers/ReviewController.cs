@@ -67,8 +67,9 @@ namespace ReviewsApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SingleReview(int id)
         {
+            var userId = _userManager.GetUserId(HttpContext.User);
             var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
-            var review = await _unitOfWork.Reviews.GetReviewByIdAsync(id);
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
             IEnumerable<Comment> comments = new List<Comment>();
             if (isUserAuthenticated)
             {
@@ -81,7 +82,8 @@ namespace ReviewsApp.Controllers
                 Review = _mapper.Map<ReviewViewModel>(review),
                 Comments = _mapper.Map<IEnumerable<CommentViewModel>>(comments)
             };
-
+            model.Review.IsLikedByCurrentUser = review.Likes
+                .FirstOrDefault(l => l.AuthorId == userId) != null;
             return View(model);
         }
 
@@ -144,6 +146,35 @@ namespace ReviewsApp.Controllers
             }
 
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> ChangeLike(string userName, int reviewId)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
+            var like = review.Likes.FirstOrDefault(l => l.AuthorId == user.Id);
+
+            int change = 0;
+            if (like != null)
+            {
+                change--;
+                _unitOfWork.RemoveLike(like, user, review);
+            }
+            else
+            {
+                change++;
+                like = new Like
+                {
+                    AuthorId = user.Id,
+                    ReviewId = review.Id
+                };
+                await _unitOfWork.AddLike(like, user, review);
+            }
+            await _unitOfWork.CompleteAsync();
+
+            return Json(change);
         }
 
         [HttpPost]

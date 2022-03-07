@@ -6,12 +6,19 @@
 </head>
 
 <div class="image-slider align-self-center">
+    @if (!Model.Any())
+    {
+        <img src="@AppConfigs.DefaultImageUrl"
+         class="rounded img-thumbnail ui-icon-image" />
+    }
     <ul id="adaptive">
-        @foreach (var imgUrl in Model)
-        {
-            <li>
-                <img src="@imgUrl" class="rounded img-thumbnail ui-icon-image" />
-            </li>
+        @{
+            foreach (var imgUrl in Model)
+            {
+                <li>
+                    <img src="@imgUrl" class="rounded img-thumbnail ui-icon-image" />
+                </li>
+            }
         }
     </ul>
 </div>

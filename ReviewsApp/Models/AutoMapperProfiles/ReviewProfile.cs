@@ -84,7 +84,9 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.ProductViewModel,
                     o => o.MapFrom(r => r.Product))
                 .ForMember(d => d.ImagesUrls,
-                    o => o.MapFrom(r => r.Images.Select(i => i.Url)));
+                    o => o.MapFrom(r => r.Images.Select(i => i.Url)))
+                .ForMember(d => d.TotalLikes,
+                    o => o.MapFrom(r => r.Likes.Count));
         }
         private string FormatPreviewBody(string text)
         {

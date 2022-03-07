@@ -43,7 +43,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .ToListAsync();
     }
 
-    public async Task<Review> GetReviewByIdAsync(int id)
+    public async Task<Review> GetFullReviewByIdAsync(int id)
     {
         return await AppDbContext.Reviews
             .Where(r => r.Id == id)
@@ -52,6 +52,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .ThenInclude(p => p.Grades)
             .Include(r => r.Tags)
             .Include(r => r.Images)
+            .Include(r => r.Likes)
             .FirstOrDefaultAsync();
     }
 

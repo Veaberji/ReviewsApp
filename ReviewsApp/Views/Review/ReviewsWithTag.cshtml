@@ -6,19 +6,19 @@
 
 @if (!Model.Reviews.Any())
 {
-    <div class="alert alert-warning">
+    <div class="alert alert-warning m-3">
         Reviews Not Found
     </div>
 }
-
-<div class="position-relative row">
-    <div class="col-12">
-        @foreach (var review in Model.Reviews)
-        {
-            await Html.RenderPartialAsync("_Preview", review);
-        }
+else
+{
+    <div class="position-relative row m-3">
+        <div class="col-12">
+            @foreach (var review in Model.Reviews)
+            {
+                await Html.RenderPartialAsync("_Preview", review);
+            }
+        </div>
     </div>
-</div>
-@{
     await Html.RenderPartialAsync("_Pagination", Model.Pagination);
 }

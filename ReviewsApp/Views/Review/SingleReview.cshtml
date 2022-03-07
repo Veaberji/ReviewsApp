@@ -31,6 +31,21 @@
             await Html.RenderPartialAsync("_Tags", Model.Review.Tags);
         }
     </div>
+    <div class="text-warning mb-3">
+        @{
+            if (User.Identity?.IsAuthenticated ?? false)
+            {
+                <input id="IsLikedByCurrentUser"
+                   value="@Model.Review.IsLikedByCurrentUser"
+                   hidden />
+                await Html.RenderPartialAsync("_Like", Model.Review.TotalLikes);
+            }
+            else
+            {
+                await Html.RenderPartialAsync("_LikeReadOnly", Model.Review.TotalLikes);
+            }
+        }
+    </div>
 </div>
 @if (User.Identity?.IsAuthenticated ?? false)
 {

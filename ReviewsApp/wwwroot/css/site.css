@@ -90,3 +90,7 @@ a {
 .image-slider {
     width: 60%;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

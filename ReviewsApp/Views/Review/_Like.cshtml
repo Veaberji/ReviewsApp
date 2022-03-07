@@ -1,0 +1,62 @@
+﻿@model int
+
+<form id="changeLike" class="cursor-pointer">
+    @{
+        await Html.RenderPartialAsync("_LikeReadOnly", Model);
+    }
+</form>
+
+<script type="text/javascript">
+    $(function() {
+        let isLiked = $("#IsLikedByCurrentUser").val();
+        if (isLiked) {
+            addLikeClass();
+        }
+    });
+
+    $(function () {
+        $("#changeLike").on("click", function () {
+            $.ajax({
+                url: '/Review/ChangeLike/',
+                headers: {
+                    "RequestVerificationToken":
+                        $('input[name="__RequestVerificationToken"]').val()
+                },
+                data: {
+                    "userName": $("#current-user-name").val(),
+                    "reviewId": $("#single-review-id").val()
+                },
+                type: "POST",
+                success: function(data) {
+                    let result = parseInt(data);
+                    let likes = parseInt($("#likesCount").text()) + result;
+                    $("#likesCount").text(likes);
+                    changeClass(result);
+                },
+                error: function(errorResponse) {
+                    console.log(errorResponse.responseText);
+                },
+                failure: function(failureResponse) {
+                    console.log(failureResponse.responseText);
+                }
+            });
+        })});
+
+    function changeClass(result) {
+        if (result === 1) {
+            addLikeClass();
+            $("#IsLikedByCurrentUser").val(true);
+        } else if (result === -1) {
+            $("#IsLikedByCurrentUser").val(false);
+            removeLikeClass();
+        }
+    }
+
+    function addLikeClass() {
+        $("#changeLike").addClass("text-success");
+    }
+
+    function removeLikeClass() {
+        $("#changeLike").removeClass("text-success");
+    }
+</script>

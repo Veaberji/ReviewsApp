@@ -1,5 +1,7 @@
 ﻿using ReviewsApp.Models;
+using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
+using ReviewsApp.Models.MainReview;
 using System;
 using System.Threading.Tasks;
 
@@ -30,6 +32,20 @@ public class UnitOfWork : IUnitOfWork
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();
+    }
+
+    public void RemoveLike(Like like, User user, Review review)
+    {
+        Likes.Remove(like);
+        user.Likes.Remove(like);
+        review.Likes.Remove(like);
+    }
+
+    public async Task AddLike(Like like, User user, Review review)
+    {
+        await Likes.AddAsync(like);
+        user.Likes.Add(like);
+        review.Likes.Add(like);
     }
 
     public void Dispose()
