@@ -218,12 +218,12 @@ namespace ReviewsApp.Controllers
 
         private User CreateUser(ExternalLoginInfo info)
         {
+            var name = InitSocialUserName(info);
             return new User
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-                UserName = InitSocialUserName(info),
-                DisplayName = GetNameFromExternalInfo(info)
-
+                UserName = name,
+                DisplayName = name
             };
         }
 
