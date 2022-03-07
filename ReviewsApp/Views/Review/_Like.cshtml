@@ -1,9 +1,11 @@
 ﻿@model int
 
-<form id="changeLike" class="cursor-pointer">
-    @{
-        await Html.RenderPartialAsync("_LikeReadOnly", Model);
-    }
+<form>
+    <span id="changeLike" class="cursor-pointer">
+        @{
+            await Html.RenderPartialAsync("_LikeReadOnly", Model);
+        }
+    </span>
 </form>
 
 <script type="text/javascript">
