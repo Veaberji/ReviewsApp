@@ -131,10 +131,13 @@ namespace ReviewsApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToReviewPage(model.ReviewId);
             }
             var review = await _unitOfWork.Reviews.GetByIdAsync(model.ReviewId);
-            var author = await _userManager.FindByNameAsync(model.AuthorName);
+
+            var authorId = _userManager.GetUserId(HttpContext.User);
+            var author = await _userManager.FindByIdAsync(authorId);
+
             var comment = _mapper.Map<Comment>(model);
             await _unitOfWork.Comments.AddAsync(comment);
             review.Comments.Add(comment);
