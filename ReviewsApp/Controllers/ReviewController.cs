@@ -153,9 +153,11 @@ namespace ReviewsApp.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<JsonResult> ChangeLike(string userName, int reviewId)
+        public async Task<JsonResult> ChangeLike(int reviewId)
         {
-            var user = await _userManager.FindByNameAsync(userName);
+            var authorId = _userManager.GetUserId(HttpContext.User);
+            var user = await _userManager.FindByIdAsync(authorId);
+
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
             var like = review.Likes.FirstOrDefault(l => l.AuthorId == user.Id);
 

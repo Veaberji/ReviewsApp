@@ -24,10 +24,7 @@
                     "RequestVerificationToken":
                         $('input[name="__RequestVerificationToken"]').val()
                 },
-                data: {
-                    "userName": $("#current-user-name").val(),
-                    "reviewId": $("#single-review-id").val()
-                },
+                data: {"reviewId": $("#single-review-id").val()},
                 type: "POST",
                 success: function(data) {
                     let result = parseInt(data);
