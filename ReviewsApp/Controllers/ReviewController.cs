@@ -164,15 +164,12 @@ namespace ReviewsApp.Controllers
             var authorId = _userManager.GetUserId(HttpContext.User);
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
             var like = review.Likes.FirstOrDefault(l => l.AuthorId == authorId);
-            int change = 0;
             if (like != null)
             {
-                change--;
                 _unitOfWork.Likes.Remove(like);
             }
             else
             {
-                change++;
                 like = new Like
                 {
                     AuthorId = authorId,
@@ -182,7 +179,7 @@ namespace ReviewsApp.Controllers
             }
             await _unitOfWork.CompleteAsync();
 
-            return Json(change);
+            return Json(review.Likes.Count);
         }
 
         [HttpPost]
