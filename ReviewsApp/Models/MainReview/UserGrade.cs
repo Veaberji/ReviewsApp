@@ -20,7 +20,6 @@ namespace ReviewsApp.Models.MainReview
         public Product Product { get; set; }
 
         [Range(UserGradeConstrains.UserMinGrade, UserGradeConstrains.UserMaxGrade)]
-        public int? Grade { get; set; }
-
+        public int Grade { get; set; }
     }
 }

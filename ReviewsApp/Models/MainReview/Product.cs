@@ -25,6 +25,10 @@ public class Product
 
     public double? GetAverageUserRating()
     {
-        return Grades.Average(g => g.Grade);
+        if (Grades.Count > 0)
+        {
+            return Grades.Average(g => g.Grade);
+        }
+        return null;
     }
 }
