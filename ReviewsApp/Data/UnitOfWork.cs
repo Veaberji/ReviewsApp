@@ -1,7 +1,5 @@
 ﻿using ReviewsApp.Models;
-using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
-using ReviewsApp.Models.MainReview;
 using System;
 using System.Threading.Tasks;
 
@@ -20,6 +18,7 @@ public class UnitOfWork : IUnitOfWork
         Images = new ImageRepository(_context);
         Comments = new CommentRepository(_context);
         Likes = new LikeRepository(_context);
+        UserGrades = new UserGradeRepository(_context);
     }
     public IUserRepository Users { get; }
     public IReviewRepository Reviews { get; }
@@ -28,24 +27,11 @@ public class UnitOfWork : IUnitOfWork
     public IImageRepository Images { get; }
     public ICommentRepository Comments { get; }
     public ILikeRepository Likes { get; }
+    public IUserGradeRepository UserGrades { get; }
 
     public async Task<int> CompleteAsync()
     {
         return await _context.SaveChangesAsync();
-    }
-
-    public void RemoveLike(Like like, User user, Review review)
-    {
-        Likes.Remove(like);
-        user.Likes.Remove(like);
-        review.Likes.Remove(like);
-    }
-
-    public async Task AddLike(Like like, User user, Review review)
-    {
-        await Likes.AddAsync(like);
-        user.Likes.Add(like);
-        review.Likes.Add(like);
     }
 
     public void Dispose()

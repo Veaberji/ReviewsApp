@@ -143,12 +143,11 @@ namespace ReviewsApp.Controllers
             var review = await _unitOfWork.Reviews.GetByIdAsync(model.ReviewId);
 
             var authorId = _userManager.GetUserId(HttpContext.User);
-            var author = await _userManager.FindByIdAsync(authorId);
-
             var comment = _mapper.Map<Comment>(model);
+            comment.AuthorId = authorId;
+            comment.ReviewId = review.Id;
             await _unitOfWork.Comments.AddAsync(comment);
-            review.Comments.Add(comment);
-            author.Comments.Add(comment);
+
             var result = await _unitOfWork.CompleteAsync();
             if (result > 0)
             {
@@ -163,30 +162,57 @@ namespace ReviewsApp.Controllers
         public async Task<JsonResult> ChangeLike(int reviewId)
         {
             var authorId = _userManager.GetUserId(HttpContext.User);
-            var user = await _userManager.FindByIdAsync(authorId);
-
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
-            var like = review.Likes.FirstOrDefault(l => l.AuthorId == user.Id);
-
+            var like = review.Likes.FirstOrDefault(l => l.AuthorId == authorId);
             int change = 0;
             if (like != null)
             {
                 change--;
-                _unitOfWork.RemoveLike(like, user, review);
+                _unitOfWork.Likes.Remove(like);
             }
             else
             {
                 change++;
                 like = new Like
                 {
-                    AuthorId = user.Id,
+                    AuthorId = authorId,
                     ReviewId = review.Id
                 };
-                await _unitOfWork.AddLike(like, user, review);
+                await _unitOfWork.Likes.AddAsync(like);
             }
             await _unitOfWork.CompleteAsync();
 
             return Json(change);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> GradeReview(GradeViewModel model)
+        {
+            var reviewId = model.ReviewId;
+            var authorId = _userManager.GetUserId(HttpContext.User);
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
+            var userGrade = review.Product.Grades
+                .FirstOrDefault(g => g.UserId == authorId);
+
+            if (userGrade != null)
+            {
+                userGrade.Grade = model.Grade;
+            }
+            else
+            {
+                userGrade = new UserGrade
+                {
+                    UserId = authorId,
+                    ProductId = review.ProductId,
+                    Grade = model.Grade
+                };
+                await _unitOfWork.UserGrades.AddAsync(userGrade);
+            }
+            await _unitOfWork.CompleteAsync();
+            var rating = review.Product.GetAverageUserRating();
+            var totalRates = review.Product.Grades.Count;
+            return Json(new { rating, totalRates });
         }
 
         [HttpPost]

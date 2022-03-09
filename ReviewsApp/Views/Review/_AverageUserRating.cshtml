@@ -4,10 +4,17 @@
     var rating = Model.AverageUserRating;
     if (rating.HasValue)
     {
-        <span>@rating (@Model.TotalRates Rates)</span>
+        var word = @Model.TotalRates == 1 ? "Rate" : "Rates";
+        <span id="AverageUserRating">@rating</span>
+        <span>(</span>
+        <span id="TotalRates">@Model.TotalRates</span>
+        <span id="RatingDescription">@word )</span>
     }
     else
     {
-        <span>Not Rated</span>
+        <span id="AverageUserRating"></span>
+        <span>(</span>
+        <span id="TotalRates">Not Rated</span>
+        <span id="RatingDescription">)</span>
     }
 }

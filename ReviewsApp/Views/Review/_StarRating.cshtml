@@ -1,16 +1,115 @@
 ﻿@model StarRatingViewModel
 
-<div class="fs-5 mt-2">
-    Rate @Model.ProductName
+<div class="fs-5 mt-2" id="stars-container">
+    Grade @Model.ProductName
     @for (int i = UserGradeConstrains.UserMinGrade; i <= UserGradeConstrains.UserMaxGrade; i++)
     {
         if (i <= Model.CurrentUserRating)
         {
-            <i class="fas fa-star text-warning"></i>
+            <i class="fas fa-star text-warning" id=@($"rating-star{@i}")></i>
         }
         else
         {
-            <i class="fas fa-star"></i>
+            <i class="fas fa-star" id=@($"rating-star{@i}")></i>
         }
     }
 </div>
+<script>
+    let starBaseIdName = "rating-star";
+
+    $(function() {
+        let stars = getAllStarElements();
+        stars.each(function() {
+            $(this).on("click", () => changeGrade(this));
+        });
+
+    });
+
+    function getAllStarElements() {
+        return $("#stars-container").children();
+    }
+
+    function changeGrade(star) {
+        let grade = getGrade(star);
+        let reviewId = getReviewId();
+        changeStarsStyle(grade);
+        let gradeViewModel = createGradeViewModel(grade, reviewId);
+        sentChangeGradeRequest(gradeViewModel);
+    }
+
+    function getGrade(star) {
+        return star.id.replace(starBaseIdName, "");
+    }
+
+    function getReviewId() {
+        return $("#single-review-id").val();
+    }
+
+    function changeStarsStyle(grade) {
+        let stars = getAllStarElements();
+        stars.each(function() {
+            removeMark($(this));
+        });
+        for (let i = 1; i <= grade; i++) {
+            addMark($(`#${starBaseIdName}${i}`));
+        }
+    }
+
+    function removeMark(star) {
+        star.removeClass("text-warning");
+    }
+
+    function addMark(star) {
+        star.addClass("text-warning");
+    }
+
+    function sentChangeGradeRequest(gradeViewModel) {
+        $.ajax({
+            url: '/Review/GradeReview/',
+            headers: {
+                "RequestVerificationToken":
+                    $('input[name="__RequestVerificationToken"]').val()
+            },
+            data: { "model": gradeViewModel },
+            type: "POST",
+            success: function(data) {
+                changeRating(data);
+            },
+            error: function(errorResponse) {
+                console.log(errorResponse.responseText);
+            },
+            failure: function(failureResponse) {
+                console.log(failureResponse.responseText);
+            }
+        });
+    }
+
+    function createGradeViewModel(grade, reviewId) {
+        let data = {
+            ReviewId: reviewId,
+            Grade : grade
+        };
+        return data;
+    }
+
+    function changeRating(data) {
+        $("#AverageUserRating").text(data.rating.toLocaleString());
+        $("#TotalRates").text(data.totalRates);
+        let description = $("#RatingDescription").text();
+
+        if (description.includes("Rates")) {
+            return;
+        }
+        setText(data.totalRates, description);
+    }
+
+    function setText(totalRates, description) {
+        let text;
+        if (totalRates === 1) {
+            text = "Rate )";
+        } else {
+            text = description.replace("Rate", "Rates");
+        }
+        $("#RatingDescription").text(text);
+    }
+</script>

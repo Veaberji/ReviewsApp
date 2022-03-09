@@ -30,6 +30,7 @@
                     let result = parseInt(data);
                     let likes = parseInt($("#likesCount").text()) + result;
                     $("#likesCount").text(likes);
+                    //todo: changeClass first
                     changeClass(result);
                 },
                 error: function(errorResponse) {
