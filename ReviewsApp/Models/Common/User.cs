@@ -10,13 +10,13 @@ namespace ReviewsApp.Models.Common
         [Required]
         [MaxLength(255)]
         public string DisplayName { get; set; }
-        public IList<MainReview.Review> Reviews { get; set; }
+        public IList<Review> Reviews { get; set; }
         public IList<UserGrade> Grades { get; set; }
         public IList<Comment> Comments { get; set; }
         public IList<Like> Likes { get; set; }
         public User()
         {
-            Reviews = new List<MainReview.Review>();
+            Reviews = new List<Review>();
             Grades = new List<UserGrade>();
             Comments = new List<Comment>();
             Likes = new List<Like>();

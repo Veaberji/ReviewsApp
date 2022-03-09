@@ -218,28 +218,29 @@ namespace ReviewsApp.Controllers
 
         private User CreateUser(ExternalLoginInfo info)
         {
-            var name = InitSocialUserName(info);
             return new User
             {
                 Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-                UserName = name,
-                DisplayName = name
+                UserName = InitSocialUserName(info),
+                DisplayName = GetNameFromExternalInfo(info)
             };
         }
 
         private string InitSocialUserName(ExternalLoginInfo info)
         {
             string name = GetNameFromExternalInfo(info);
-            var users = _userManager.Users
-                .Where(u => u.UserName.Contains(name))
+            var users = _unitOfWork.Users
+                .Find(u => u.UserName.Contains(name))
+                .Select(u => u.UserName)
                 .ToList();
             int count = users.Count;
-            if (count != 0)
+            var possibleName = name;
+            while (users.Contains(possibleName))
             {
-                name += (count + 1).ToString();
+                possibleName = name + ++count;
             }
 
-            return name;
+            return possibleName;
         }
 
         private static string GetNameFromExternalInfo(ExternalLoginInfo info)
