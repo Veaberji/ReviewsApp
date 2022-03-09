@@ -71,16 +71,23 @@ namespace ReviewsApp.Controllers
             var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
             IEnumerable<Comment> comments = new List<Comment>();
+            StarRatingViewModel starRating = null;
+
             if (isUserAuthenticated)
             {
                 comments = await _unitOfWork.Comments
                     .GetReviewCommentsWithAuthorsAsync(review.Id);
+                starRating = _mapper.Map<StarRatingViewModel>(review);
+                starRating.CurrentUserRating =
+                    review.Product.Grades.FirstOrDefault(
+                        g => g.UserId == userId)?.Grade;
             }
 
             var model = new SingleReviewViewModel
             {
                 Review = _mapper.Map<ReviewViewModel>(review),
-                Comments = _mapper.Map<IEnumerable<CommentViewModel>>(comments)
+                Comments = _mapper.Map<IEnumerable<CommentViewModel>>(comments),
+                StarRating = starRating
             };
             model.Review.IsLikedByCurrentUser = review.Likes
                 .FirstOrDefault(l => l.AuthorId == userId) != null;

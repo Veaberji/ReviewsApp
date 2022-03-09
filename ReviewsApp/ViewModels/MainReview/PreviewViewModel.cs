@@ -11,5 +11,6 @@ namespace ReviewsApp.ViewModels.MainReview
         public double? AverageUserRating { get; set; }
         public string PreviewImageUrl { get; set; }
         public IEnumerable<string> Tags { get; set; }
+        public int TotalRates { get; set; }
     }
 }

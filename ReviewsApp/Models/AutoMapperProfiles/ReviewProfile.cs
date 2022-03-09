@@ -69,6 +69,9 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
                 .ForMember(d => d.ProductViewModel,
                     o => o.MapFrom(r => r.Product))
+                .ForMember(d => d.TotalRates,
+                    o => o.MapFrom(r => r.Product.Grades.Count))
+
                 .ForMember(d => d.Body,
                     o => o.MapFrom(r => FormatPreviewBody(r.Body)));
 
@@ -83,10 +86,16 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
                 .ForMember(d => d.ProductViewModel,
                     o => o.MapFrom(r => r.Product))
+                .ForMember(d => d.TotalRates,
+                    o => o.MapFrom(r => r.Product.Grades.Count))
                 .ForMember(d => d.ImagesUrls,
                     o => o.MapFrom(r => r.Images.Select(i => i.Url)))
                 .ForMember(d => d.TotalLikes,
                     o => o.MapFrom(r => r.Likes.Count));
+
+            CreateMap<Review, StarRatingViewModel>()
+                .ForMember(d => d.ProductName,
+                    o => o.MapFrom(r => r.Product.Name));
         }
         private string FormatPreviewBody(string text)
         {

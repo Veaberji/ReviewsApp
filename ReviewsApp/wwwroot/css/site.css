@@ -94,3 +94,9 @@ a {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.fa-star:hover {
+    font-size: 120%;
+    cursor: pointer;
+    transition: font-size 0.3s;
+}

@@ -1,0 +1,16 @@
+﻿@model StarRatingViewModel
+
+<div class="fs-5 mt-2">
+    Rate @Model.ProductName
+    @for (int i = UserGradeConstrains.UserMinGrade; i <= UserGradeConstrains.UserMaxGrade; i++)
+    {
+        if (i <= Model.CurrentUserRating)
+        {
+            <i class="fas fa-star text-warning"></i>
+        }
+        else
+        {
+            <i class="fas fa-star"></i>
+        }
+    }
+</div>
