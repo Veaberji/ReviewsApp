@@ -72,7 +72,6 @@ namespace ReviewsApp.Controllers
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
             IEnumerable<Comment> comments = new List<Comment>();
             StarRatingViewModel starRating = null;
-
             if (isUserAuthenticated)
             {
                 comments = await _unitOfWork.Comments
@@ -82,7 +81,6 @@ namespace ReviewsApp.Controllers
                     review.Product.Grades.FirstOrDefault(
                         g => g.UserId == userId)?.Grade;
             }
-
             var model = new SingleReviewViewModel
             {
                 Review = _mapper.Map<ReviewViewModel>(review),
@@ -287,14 +285,13 @@ namespace ReviewsApp.Controllers
                 _mapper.Map<TagCloudViewModel>(tag)).ToList();
             var reviewsViewModels =
                 _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
-            var pagesAmount = _paginationService.GetPagesAmount(amountReviews);
-            var model = FillHomePageViewModel(pageIndex,
-                pagesAmount, reviewsViewModels, tagViewModels, actionMethod);
+            var model = FillHomePageViewModel(pageIndex, amountReviews,
+                reviewsViewModels, tagViewModels, actionMethod);
             return model;
         }
 
         private HomePageViewModel FillHomePageViewModel(int pageIndex,
-            int pagesAmount,
+            int amountReviews,
             IEnumerable<PreviewViewModel> reviewsViewModels,
             List<TagCloudViewModel> tagViewModels,
             string actionMethod)
@@ -303,14 +300,8 @@ namespace ReviewsApp.Controllers
             {
                 Reviews = reviewsViewModels,
                 Tags = tagViewModels,
-                Pagination = new PaginationViewModel
-                {
-                    PageIndex = pageIndex,
-                    PagesAmount = pagesAmount,
-                    PreviousPage = _paginationService.GetPreviousPage(pageIndex),
-                    NextPage = _paginationService.GetNextPage(pageIndex, pagesAmount),
-                    ActionMethod = actionMethod
-                }
+                Pagination = _paginationService.CreatePagination(pageIndex,
+                    amountReviews, actionMethod)
             };
         }
 

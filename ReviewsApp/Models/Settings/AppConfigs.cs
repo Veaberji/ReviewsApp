@@ -13,5 +13,8 @@
         public static int MaxImageSizeInBytes { get; set; }
         public static int SizeToCutImageFileName { get; set; }
         public static int PaginationLinksAmount { get; set; }
+        public static int ReviewsPageSize { get; set; }
+        public static int PreviewBodySize { get; set; }
+        public static int TopRatedReviewsAmount { get; set; }
     }
 }

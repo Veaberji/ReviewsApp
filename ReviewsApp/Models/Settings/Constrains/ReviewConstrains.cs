@@ -6,8 +6,5 @@
         public const int BodyMaxLength = 3000;
         public const int AuthorMinGrade = 1;
         public const int AuthorMaxGrade = 5;
-
-        public const int ReviewsPageSize = 10;
-        public const int PreviewBodySize = 300;
     }
 }

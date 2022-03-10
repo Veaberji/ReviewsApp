@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ReviewsApp.Models.MainReview;
-using ReviewsApp.Models.Settings.Constrains;
+using ReviewsApp.Models.Settings;
 using ReviewsApp.ViewModels.MainReview;
 using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
@@ -105,7 +105,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
         }
         private string FormatPreviewBody(string text)
         {
-            if (text.Length <= ReviewConstrains.PreviewBodySize)
+            if (text.Length <= AppConfigs.PreviewBodySize)
             {
                 return text;
             }
@@ -115,7 +115,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
 
         private string GetCutText(string text)
         {
-            var cutText = text[..ReviewConstrains.PreviewBodySize];
+            var cutText = text[..AppConfigs.PreviewBodySize];
             var lastSpaceIndex = cutText.LastIndexOf(' ');
             return lastSpaceIndex == -1 ? cutText + "..." :
                 cutText[..lastSpaceIndex] + "...";

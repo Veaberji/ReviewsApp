@@ -11,7 +11,7 @@
             </a>
         </li>
         @{
-            for (int i = 1; i <= Model.PagesAmount; i++)
+            for (int i = Model.FirstPageIndex; i <= Model.LastPageIndex; i++)
             {
                 var isActive = i == Model.PageIndex ? "active" : "";
                 <li class="page-item @isActive">

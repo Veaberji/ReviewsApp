@@ -2,7 +2,7 @@
 using ReviewsApp.Models;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.MainReview;
-using ReviewsApp.Models.Settings.Constrains;
+using ReviewsApp.Models.Settings;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,8 +24,8 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Tags)
             .Include(r => r.Images)
             .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
-            .Take(ReviewConstrains.ReviewsPageSize)
+            .Skip((pageIndex - 1) * AppConfigs.ReviewsPageSize)
+            .Take(AppConfigs.ReviewsPageSize)
             .ToListAsync();
     }
 
@@ -38,8 +38,8 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Tags)
             .Include(r => r.Images)
             .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * ReviewConstrains.ReviewsPageSize)
-            .Take(ReviewConstrains.ReviewsPageSize)
+            .Skip((pageIndex - 1) * AppConfigs.ReviewsPageSize)
+            .Take(AppConfigs.ReviewsPageSize)
             .ToListAsync();
     }
 
