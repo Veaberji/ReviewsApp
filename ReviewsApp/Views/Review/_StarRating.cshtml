@@ -1,19 +1,31 @@
 ﻿@model StarRatingViewModel
 
-<div class="fs-5 mt-2" id="stars-container">
-    Grade @Model.ProductName
-    @for (int i = UserGradeConstrains.UserMinGrade; i <= UserGradeConstrains.UserMaxGrade; i++)
-    {
-        if (i <= Model.CurrentUserRating)
+<form asp-antiforgery="true">
+    <div class="fs-5 mt-2 col-auto" id="stars-container">
+        Grade @Model.ProductName
+        @for (int i = UserGradeConstrains.UserMinGrade; i <= UserGradeConstrains.UserMaxGrade; i++)
         {
-            <i class="fas fa-star text-warning" id=@($"rating-star{@i}")></i>
+            if (i <= Model.CurrentUserRating)
+            {
+                <i class="fas fa-star text-warning" id=@($"rating-star{@i}")></i>
+            }
+            else
+            {
+                <i class="fas fa-star" id=@($"rating-star{@i}")></i>
+            }
+        }
+        @if (Model.CurrentUserRating.HasValue)
+        {
+            <span class="fas fa-trash-alt danger ms-2 fs-6 align-middle"
+              id="remove-grade"></span>
         }
         else
         {
-            <i class="fas fa-star" id=@($"rating-star{@i}")></i>
+            <span class="fas fa-trash-alt danger ms-2 fs-6 align-middle"
+              id="remove-grade" hidden></span>
         }
-    }
-</div>
+    </div>
+</form>
 <script>
     let starBaseIdName = "rating-star";
 
@@ -25,16 +37,21 @@
 
     });
 
+    $(function() {
+        $("#remove-grade").on("click", () => removeGrade());
+
+    });
+
     function getAllStarElements() {
-        return $("#stars-container").children();
+        return $("#stars-container").children("i");
     }
 
     function changeGrade(star) {
         let grade = getGrade(star);
-        let reviewId = getReviewId();
         changeStarsStyle(grade);
-        let gradeViewModel = createGradeViewModel(grade, reviewId);
-        sentChangeGradeRequest(gradeViewModel);
+        showRemoveGrade();
+        let gradeViewModel = createGradeViewModel(grade);
+        sendChangeGradeRequest(gradeViewModel);
     }
 
     function getGrade(star) {
@@ -63,7 +80,7 @@
         star.addClass("text-warning");
     }
 
-    function sentChangeGradeRequest(gradeViewModel) {
+    function sendChangeGradeRequest(gradeViewModel) {
         $.ajax({
             url: '/Review/GradeReview/',
             headers: {
@@ -84,7 +101,8 @@
         });
     }
 
-    function createGradeViewModel(grade, reviewId) {
+    function createGradeViewModel(grade) {
+        let reviewId = getReviewId();
         let data = {
             ReviewId: reviewId,
             Grade : grade
@@ -93,23 +111,76 @@
     }
 
     function changeRating(data) {
-        $("#AverageUserRating").text(data.rating.toLocaleString());
-        $("#TotalRates").text(data.totalRates);
-        let description = $("#RatingDescription").text();
-
-        if (description.includes("Rates")) {
-            return;
-        }
-        setText(data.totalRates, description);
+        setAverageUserRating(data.rating);
+        setTotalRates(data.totalRates);
+        setDescription(data.totalRates);
     }
 
-    function setText(totalRates, description) {
-        let text;
+    function setAverageUserRating(rating) {
+        if (rating > 0) {
+            $("#AverageUserRating").text(rating.toLocaleString());
+        } else {
+            $("#AverageUserRating").empty();
+        }
+    }
+
+    function setTotalRates(totalRates) {
+        if (totalRates > 0) {
+            $("#TotalRates").text(totalRates);
+        } else {
+            $("#TotalRates").text("Not Rated");
+        }
+    }
+
+    function setDescription(totalRates) {
+        let text = " )";
         if (totalRates === 1) {
             text = "Rate )";
-        } else {
-            text = description.replace("Rate", "Rates");
+        } else if (totalRates > 1) {
+            text = "Rates )";
         }
         $("#RatingDescription").text(text);
+    }
+
+    function removeGrade() {
+        hideRemoveGrade();
+        removeStarsMarks();
+        sendRemoveGradeRequest();
+    }
+
+    function removeStarsMarks() {
+        let stars = getAllStarElements();
+        stars.each(function() {
+            removeMark($(this));
+        });
+    }
+
+    function hideRemoveGrade() {
+        $("#remove-grade").prop("hidden", true);
+    }
+
+    function showRemoveGrade() {
+        $("#remove-grade").attr("hidden", false);
+    }
+
+    function sendRemoveGradeRequest() {
+        $.ajax({
+            url: '/Review/RemoveGrade/',
+            headers: {
+                "RequestVerificationToken":
+                    $('input[name="__RequestVerificationToken"]').val()
+            },
+            data: { "reviewId": getReviewId() },
+            type: "POST",
+            success: function(data) {
+                changeRating(data);
+            },
+            error: function(errorResponse) {
+                console.log(errorResponse.responseText);
+            },
+            failure: function(failureResponse) {
+                console.log(failureResponse.responseText);
+            }
+        });
     }
 </script>

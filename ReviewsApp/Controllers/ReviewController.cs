@@ -207,9 +207,25 @@ namespace ReviewsApp.Controllers
                 await _unitOfWork.UserGrades.AddAsync(userGrade);
             }
             await _unitOfWork.CompleteAsync();
-            var rating = review.Product.GetAverageUserRating();
-            var totalRates = review.Product.Grades.Count;
-            return Json(new { rating, totalRates });
+            var response = _mapper.Map<GradeResponseViewModel>(review);
+            return Json(response);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<JsonResult> RemoveGrade(int reviewId)
+        {
+            var authorId = _userManager.GetUserId(HttpContext.User);
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
+            var userGrade = review.Product.Grades
+                .FirstOrDefault(g => g.UserId == authorId);
+            if (userGrade != null)
+            {
+                _unitOfWork.UserGrades.Remove(userGrade);
+                await _unitOfWork.CompleteAsync();
+            }
+            var response = _mapper.Map<GradeResponseViewModel>(review);
+            return Json(response);
         }
 
         [HttpPost]

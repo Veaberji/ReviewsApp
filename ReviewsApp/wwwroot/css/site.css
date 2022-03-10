@@ -100,3 +100,13 @@ a {
     cursor: pointer;
     transition: font-size 0.3s;
 }
+
+.danger {
+    color: orangered;
+}
+
+#remove-grade:hover {
+    color: #9900ff;
+    cursor: pointer;
+    transition: color 0.3s;
+}

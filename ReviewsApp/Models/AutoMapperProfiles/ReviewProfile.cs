@@ -96,6 +96,12 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             CreateMap<Review, StarRatingViewModel>()
                 .ForMember(d => d.ProductName,
                     o => o.MapFrom(r => r.Product.Name));
+
+            CreateMap<Review, GradeResponseViewModel>()
+                .ForMember(d => d.Rating,
+                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                .ForMember(d => d.TotalRates,
+                    o => o.MapFrom(r => r.Product.Grades.Count));
         }
         private string FormatPreviewBody(string text)
         {
