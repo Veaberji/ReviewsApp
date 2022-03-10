@@ -3,12 +3,12 @@
     Review on @Model.ProductViewModel.Type :
     @Model.ProductViewModel.Name |
     Author:
-    <span class="badge rounded-pill bg-info fs-6 mb-2 me-1">@Model.AuthorName</span>
+    @{
+        await Html.RenderPartialAsync("_Author", Model.AuthorName);
+    }
     | Author`s rating: @Model.AuthorGrade
 </h6>
-<div class="badge bg-secondary text-wrap fs-6 mb-2">
-    User`s rating:
-    @{
-        await Html.RenderPartialAsync("_AverageUserRating", Model);
-    }
-</div>
+
+@{
+    await Html.RenderPartialAsync("_AverageUserRating", Model);
+}

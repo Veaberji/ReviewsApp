@@ -47,7 +47,8 @@ namespace ReviewsApp.Controllers
                  await _unitOfWork.Reviews.GetPreviewsAsync(pageIndex);
             var amount = await _unitOfWork.Reviews.GetReviewsAmountAsync();
             var actionMethod = nameof(LastReviews);
-            var model = CreateHomePageViewModel(pageIndex, amount, reviews, actionMethod);
+            var model = await CreateHomePageViewModel(
+                pageIndex, amount, reviews, actionMethod);
             return View(model);
         }
 
@@ -60,7 +61,8 @@ namespace ReviewsApp.Controllers
                 await _unitOfWork.Reviews.GetPreviewsWithTagAsync(tag, pageIndex);
             var amount = await _unitOfWork.Reviews.GetReviewsWithTagAmountAsync(tag);
             var actionMethod = nameof(ReviewsWithTag);
-            var model = CreateHomePageViewModel(pageIndex, amount, reviews, actionMethod);
+            var model = await CreateHomePageViewModel(
+                pageIndex, amount, reviews, actionMethod);
             return View(model);
         }
 
@@ -275,7 +277,7 @@ namespace ReviewsApp.Controllers
                 .DeleteImagesAsync(files);
         }
 
-        private HomePageViewModel CreateHomePageViewModel(int pageIndex,
+        private async Task<HomePageViewModel> CreateHomePageViewModel(int pageIndex,
             int amountReviews,
             IEnumerable<Review> reviews,
                 string actionMethod)
@@ -285,24 +287,19 @@ namespace ReviewsApp.Controllers
                 _mapper.Map<TagCloudViewModel>(tag)).ToList();
             var reviewsViewModels =
                 _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
-            var model = FillHomePageViewModel(pageIndex, amountReviews,
-                reviewsViewModels, tagViewModels, actionMethod);
-            return model;
-        }
-
-        private HomePageViewModel FillHomePageViewModel(int pageIndex,
-            int amountReviews,
-            IEnumerable<PreviewViewModel> reviewsViewModels,
-            List<TagCloudViewModel> tagViewModels,
-            string actionMethod)
-        {
-            return new HomePageViewModel
+            var topReviews = await _unitOfWork.Reviews
+                .GetTopRatedReviewsHeadersAsync();
+            var topReviewsViewModels =
+                _mapper.Map<IEnumerable<TopRatedReviewViewModel>>(topReviews);
+            var model = new HomePageViewModel
             {
                 Reviews = reviewsViewModels,
-                Tags = tagViewModels,
+                TagCloud = tagViewModels,
                 Pagination = _paginationService.CreatePagination(pageIndex,
-                    amountReviews, actionMethod)
+                    amountReviews, actionMethod),
+                TopRatedReviews = topReviewsViewModels
             };
+            return model;
         }
 
         private IActionResult RedirectToReviewPage(int id)

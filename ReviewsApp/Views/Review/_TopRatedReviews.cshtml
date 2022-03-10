@@ -1,0 +1,28 @@
+﻿@model IEnumerable<TopRatedReviewViewModel>
+<div>
+    @foreach (var review in Model)
+    {
+        <div class="card border-dark mb-3 pb-1">
+            <div class="badge bg-secondary text-wrap fs-5 mb-2">
+                @review.AverageUserRating
+            </div>
+            <div class="card-body text-dark py-0">
+                <h5 class="card-title m-0">
+                    <a asp-action="SingleReview"
+                   asp-route-id="@review.Id">
+                        @review.Title
+                    </a>
+                </h5>
+                <div class="text-warning py-0">
+                    @review.ProductType : @review.ProductName
+                </div>
+            </div>
+            <div class="mt-2">
+                <span class="fw-bolder">By:</span>
+                @{
+                    await Html.RenderPartialAsync("_Author", review.AuthorName);
+                }
+            </div>
+        </div>
+    }
+</div>

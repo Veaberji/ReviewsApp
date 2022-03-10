@@ -1,0 +1,9 @@
+﻿@model IEnumerable<TagCloudViewModel>
+<div>
+    @foreach (var tag in Model)
+    {
+        <a class="@tag.CssClass"
+       asp-action="ReviewsWithTag"
+       asp-route-tagText="@tag.Text">@tag.Text</a>
+    }
+</div>

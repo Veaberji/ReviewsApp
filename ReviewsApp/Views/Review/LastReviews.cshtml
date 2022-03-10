@@ -19,18 +19,18 @@
 }
 
 <div class="position-relative row m-3">
-    <div class="col-10">
+    <div class="col-9">
         @foreach (var review in Model.Reviews)
         {
             await Html.RenderPartialAsync("_Preview", review);
         }
     </div>
-    <div class="col-2">
-        @foreach (var tag in Model.Tags)
-        {
-            <a class="@tag.CssClass"
-           asp-action="ReviewsWithTag"
-           asp-route-tagText="@tag.Text">@tag.Text</a>
+    <div class="col-3">
+        @{
+            await Html.RenderPartialAsync("_TopRatedReviews", Model.TopRatedReviews);
+        }
+        @{
+            await Html.RenderPartialAsync("_TagCloud", Model.TagCloud);
         }
     </div>
 </div>

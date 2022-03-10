@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings;
+using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
 using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
@@ -71,7 +72,6 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Product))
                 .ForMember(d => d.TotalRates,
                     o => o.MapFrom(r => r.Product.Grades.Count))
-
                 .ForMember(d => d.Body,
                     o => o.MapFrom(r => FormatPreviewBody(r.Body)));
 
@@ -102,6 +102,16 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Product.GetAverageUserRating()))
                 .ForMember(d => d.TotalRates,
                     o => o.MapFrom(r => r.Product.Grades.Count));
+
+            CreateMap<Review, TopRatedReviewViewModel>()
+                .ForMember(d => d.AuthorName,
+                    o => o.MapFrom(r => r.Author.DisplayName))
+                .ForMember(d => d.AverageUserRating,
+                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                .ForMember(d => d.ProductName,
+                    o => o.MapFrom(r => r.Product.Name))
+                .ForMember(d => d.ProductType,
+                    o => o.MapFrom(r => r.Product.Type));
         }
         private string FormatPreviewBody(string text)
         {

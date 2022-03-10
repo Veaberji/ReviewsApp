@@ -1,20 +1,23 @@
 ﻿@model PreviewViewModel
 
-@{
-    var rating = Model.AverageUserRating;
-    if (rating.HasValue)
-    {
-        var word = @Model.TotalRates == 1 ? "Rate" : "Rates";
-        <span id="AverageUserRating">@rating</span>
-        <span>(</span>
-        <span id="TotalRates">@Model.TotalRates</span>
-        <span id="RatingDescription">@word )</span>
+<div class="badge bg-secondary text-wrap fs-6 mb-2">
+    User`s rating:
+    @{
+        var rating = Model.AverageUserRating;
+        if (rating.HasValue)
+        {
+            var word = @Model.TotalRates == 1 ? "Rate" : "Rates";
+            <span id="AverageUserRating">@rating</span>
+            <span>(</span>
+            <span id="TotalRates">@Model.TotalRates</span>
+            <span id="RatingDescription">@word )</span>
+        }
+        else
+        {
+            <span id="AverageUserRating"></span>
+            <span>(</span>
+            <span id="TotalRates">Not Rated</span>
+            <span id="RatingDescription">)</span>
+        }
     }
-    else
-    {
-        <span id="AverageUserRating"></span>
-        <span>(</span>
-        <span id="TotalRates">Not Rated</span>
-        <span id="RatingDescription">)</span>
-    }
-}
+</div>

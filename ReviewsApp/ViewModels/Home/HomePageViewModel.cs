@@ -7,7 +7,9 @@ namespace ReviewsApp.ViewModels.Home
     public class HomePageViewModel
     {
         public IEnumerable<PreviewViewModel> Reviews { get; set; }
-        public IEnumerable<TagCloudViewModel> Tags { get; set; }
+        public IEnumerable<TagCloudViewModel> TagCloud { get; set; }
         public PaginationViewModel Pagination { get; set; }
+        public IEnumerable<TopRatedReviewViewModel> TopRatedReviews { get; set; }
+
     }
 }

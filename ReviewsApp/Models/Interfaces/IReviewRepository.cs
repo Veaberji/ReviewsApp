@@ -11,4 +11,5 @@ public interface IReviewRepository : IRepository<Review, int>
     Task<Review> GetFullReviewByIdAsync(int id);
     Task<int> GetReviewsAmountAsync();
     Task<int> GetReviewsWithTagAmountAsync(Tag tag);
+    Task<IEnumerable<Review>> GetTopRatedReviewsHeadersAsync();
 }
