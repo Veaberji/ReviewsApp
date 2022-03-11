@@ -19,8 +19,8 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
     {
         return await AppDbContext.Reviews
             .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * AppConfigs.ReviewsPageSize)
-            .Take(AppConfigs.ReviewsPageSize)
+            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
+            .Take(AppConfigs.PreviewsPerPage)
             .Include(r => r.Author)
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
@@ -33,12 +33,13 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
     {
         return await AppDbContext.Reviews.Where(r => r.Tags.Contains(tag))
             .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * AppConfigs.ReviewsPageSize)
-            .Take(AppConfigs.ReviewsPageSize)
+            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
+            .Take(AppConfigs.PreviewsPerPage)
             .Include(r => r.Author)
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
             .Include(r => r.Tags)
+            .Include(r => r.Images)
             .ToListAsync();
     }
 

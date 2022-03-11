@@ -46,9 +46,8 @@ namespace ReviewsApp.Controllers
             var reviews =
                  await _unitOfWork.Reviews.GetPreviewsAsync(pageIndex);
             var amount = await _unitOfWork.Reviews.GetReviewsAmountAsync();
-            var actionMethod = nameof(LastReviews);
             var model = await CreateHomePageViewModel(
-                pageIndex, amount, reviews, actionMethod);
+                pageIndex, amount, reviews, nameof(LastReviews));
             return View(model);
         }
 
@@ -60,10 +59,9 @@ namespace ReviewsApp.Controllers
             var reviews =
                 await _unitOfWork.Reviews.GetPreviewsWithTagAsync(tag, pageIndex);
             var amount = await _unitOfWork.Reviews.GetReviewsWithTagAmountAsync(tag);
-            var actionMethod = nameof(ReviewsWithTag);
             var model = await CreateHomePageViewModel(
-                pageIndex, amount, reviews, actionMethod);
-            return View(model);
+                pageIndex, amount, reviews, nameof(ReviewsWithTag));
+            return View(nameof(LastReviews), model);
         }
 
         [AllowAnonymous]

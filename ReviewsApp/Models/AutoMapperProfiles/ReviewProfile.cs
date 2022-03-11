@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Markdig;
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings;
 using ReviewsApp.ViewModels.Home;
@@ -91,7 +92,9 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.ImagesUrls,
                     o => o.MapFrom(r => r.Images.Select(i => i.Url)))
                 .ForMember(d => d.TotalLikes,
-                    o => o.MapFrom(r => r.Likes.Count));
+                    o => o.MapFrom(r => r.Likes.Count))
+                .ForMember(d => d.Body,
+                    o => o.MapFrom(r => ConvertMarkdownToHtml(r.Body)));
 
             CreateMap<Review, StarRatingViewModel>()
                 .ForMember(d => d.ProductName,
@@ -117,18 +120,32 @@ namespace ReviewsApp.Models.AutoMapperProfiles
         {
             if (text.Length <= AppConfigs.PreviewBodySize)
             {
-                return text;
+                return ConvertMarkdownToHtml(text);
             }
 
-            return GetCutText(text);
+            var cutText = GetCutText(text);
+            return ConvertMarkdownToHtml(cutText);
         }
 
         private string GetCutText(string text)
         {
             var cutText = text[..AppConfigs.PreviewBodySize];
-            var lastSpaceIndex = cutText.LastIndexOf(' ');
-            return lastSpaceIndex == -1 ? cutText + "..." :
-                cutText[..lastSpaceIndex] + "...";
+            var lastValidChar = cutText.LastOrDefault(char.IsLetterOrDigit);
+            var textLastSpaceIndex = cutText.LastIndexOf(lastValidChar);
+            if (textLastSpaceIndex == -1)
+            {
+                return cutText;
+            }
+            var textCutByLastValidChar = cutText[..textLastSpaceIndex];
+            var lastSpaceIndex = textCutByLastValidChar.LastIndexOf(' ');
+            return lastSpaceIndex == -1 ? textCutByLastValidChar + "..." :
+                textCutByLastValidChar[..lastSpaceIndex] + "...";
+        }
+
+        private string ConvertMarkdownToHtml(string text)
+        {
+            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            return Markdown.ToHtml(text, pipeline);
         }
     }
 }

@@ -64,7 +64,7 @@ namespace ReviewsApp.Services
         private int GetPagesAmount(int amountReviews)
         {
             return (int)Math.Ceiling(amountReviews /
-                (double)AppConfigs.ReviewsPageSize - 1) + 1;
+                (double)AppConfigs.PreviewsPerPage - 1) + 1;
         }
     }
 }

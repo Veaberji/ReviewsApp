@@ -18,9 +18,11 @@
                 @{
                     await Html.RenderPartialAsync("_ReviewHeader", Model);
                 }
-                <p class="card-text text-start">
-                    @Model.Body
-                </p>
+                <div class="card-text text-start">
+                    @{
+                        await Html.RenderPartialAsync("_MarkdownBody", Model.Body);
+                    }
+                </div>
                 @{
                     await Html.RenderPartialAsync("_Tags", Model.Tags);
                 }
