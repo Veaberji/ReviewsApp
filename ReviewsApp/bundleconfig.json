@@ -10,5 +10,11 @@
     "inputFiles": [
       "wwwroot/css/site.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/lightslider/css/lightslider.min.css",
+    "inputFiles": [
+      "wwwroot/lib/lightslider/css/lightslider.css"
+    ]
   }
 ]

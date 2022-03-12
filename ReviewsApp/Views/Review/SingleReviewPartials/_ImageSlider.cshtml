@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<string>
 
 <head>
-    <link rel="stylesheet" href="~/lib/lightslider/css/lightslider.min.css" />
+    <link rel="stylesheet" href="~/lib/lightslider/css/lightslider.min.css" asp-append-version="true" />
     <script src="~/lib/lightslider/js/lightslider.min.js"></script>
 </head>
 
@@ -16,7 +16,7 @@
             foreach (var imgUrl in Model)
             {
                 <li>
-                    <img src="@imgUrl" class="rounded img-thumbnail ui-icon-image" />
+                    <img src="@imgUrl" class="rounded img-thumbnail ui-icon-image review-image" />
                 </li>
             }
         }

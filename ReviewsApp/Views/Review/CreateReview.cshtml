@@ -138,7 +138,7 @@
             Create
         </button>
         @{
-            await Html.RenderPartialAsync("_CancelDialog");
+            await Html.RenderPartialAsync("CreateReviewPartials/_CancelDialog");
         }
     </form>
 
@@ -155,7 +155,7 @@
 </div>
 
 @{
-    await Html.RenderPartialAsync("_CreateReviewScripts");
-    await Html.RenderPartialAsync("_AutocompleteTag");
-    await Html.RenderPartialAsync("_Dropzone");
+    await Html.RenderPartialAsync("CreateReviewPartials/_CreateReviewScripts");
+    await Html.RenderPartialAsync("CreateReviewPartials/_AutocompleteTag");
+    await Html.RenderPartialAsync("CreateReviewPartials/_Dropzone");
 }

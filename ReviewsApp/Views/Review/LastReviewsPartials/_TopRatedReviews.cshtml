@@ -20,7 +20,7 @@
             <div class="mt-2">
                 <span class="fw-bolder">By:</span>
                 @{
-                    await Html.RenderPartialAsync("_Author", review.AuthorName);
+                    await Html.RenderPartialAsync("SharedPartials/_Author", review.AuthorName);
                 }
             </div>
         </div>

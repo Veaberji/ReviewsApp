@@ -12,31 +12,31 @@
     <h5 class="card-title mb-0">@Model.Review.Title</h5>
     <div class="card-body">
         @{
-            await Html.RenderPartialAsync("_ReviewHeader", Model.Review);
+            await Html.RenderPartialAsync("SharedPartials/_ReviewHeader", Model.Review);
         }
     </div>
 
     @{
-        await Html.RenderPartialAsync("_ImageSlider", Model.Review.ImagesUrls);
+        await Html.RenderPartialAsync("SingleReviewPartials/_ImageSlider", Model.Review.ImagesUrls);
     }
 
     @{
         if (User.Identity?.IsAuthenticated ?? false)
         {
-            await Html.RenderPartialAsync("_StarRating", Model.StarRating);
+            await Html.RenderPartialAsync("SingleReviewPartials/_StarRating", Model.StarRating);
         }
     }
 
     <div class="card-body text-start">
         <p class="card-text">
             @{
-                await Html.RenderPartialAsync("_MarkdownBody", Model.Review.Body);
+                await Html.RenderPartialAsync("SharedPartials/_MarkdownBody", Model.Review.Body);
             }
         </p>
     </div>
     <div class="m-3">
         @{
-            await Html.RenderPartialAsync("_Tags", Model.Review.Tags);
+            await Html.RenderPartialAsync("SharedPartials/_Tags", Model.Review.Tags);
         }
     </div>
     <div class="text-warning mb-3">
@@ -46,11 +46,11 @@
                 <input id="IsLikedByCurrentUser"
                    value="@Model.Review.IsLikedByCurrentUser.ToString()"
                    hidden />
-                await Html.RenderPartialAsync("_Like", Model.Review);
+                await Html.RenderPartialAsync("SingleReviewPartials/_Like", Model.Review);
             }
             else
             {
-                await Html.RenderPartialAsync("_LikeReadOnly", Model.Review.TotalLikes);
+                await Html.RenderPartialAsync("SingleReviewPartials/_LikeReadOnly", Model.Review.TotalLikes);
             }
         }
     </div>
@@ -60,12 +60,12 @@
     <div class="text-start col-6">
         @foreach (var comment in Model.Comments)
         {
-            await Html.RenderPartialAsync("_Comments", comment);
+            await Html.RenderPartialAsync("SingleReviewPartials/_Comments", comment);
         }
     </div>
     <div class="card-body text-start">
         @{
-            await Html.RenderPartialAsync("CreateComment", Model.CreateComment);
+            await Html.RenderPartialAsync("SingleReviewPartials/_CreateComment", Model.CreateComment);
         }
     </div>
 }

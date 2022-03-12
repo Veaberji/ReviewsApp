@@ -125,10 +125,10 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
-        public IActionResult CreateComment()
-        {
-            return View();
-        }
+        //public IActionResult CreateComment()
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -152,7 +152,7 @@ namespace ReviewsApp.Controllers
                 return RedirectToReviewPage(review.Id);
             }
 
-            return View(model);
+            return RedirectToReviewPage(model.ReviewId);
         }
 
         [HttpPost]

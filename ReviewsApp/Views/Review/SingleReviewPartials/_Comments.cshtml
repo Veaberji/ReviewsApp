@@ -3,9 +3,9 @@
 <div class="card">
     <div class="card-body">
         @{
-            await Html.RenderPartialAsync("_Author", Model.AuthorName);
+            await Html.RenderPartialAsync("SharedPartials/_Author", Model.AuthorName);
         }
         <span class="card-subtitle mb-2 text-muted">@Model.PublishingDate</span>
-        <p class="card-text">@Model.Body</p>
+        <pre class="card-text">@Model.Body</pre>
     </div>
 </div>

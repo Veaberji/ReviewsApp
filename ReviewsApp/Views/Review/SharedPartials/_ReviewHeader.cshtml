@@ -4,11 +4,11 @@
     @Model.ProductViewModel.Name |
     Author:
     @{
-        await Html.RenderPartialAsync("_Author", Model.AuthorName);
+        await Html.RenderPartialAsync("SharedPartials/_Author", Model.AuthorName);
     }
     | Author`s rating: @Model.AuthorGrade
 </h6>
 
 @{
-    await Html.RenderPartialAsync("_AverageUserRating", Model);
+    await Html.RenderPartialAsync("SharedPartials/_AverageUserRating", Model);
 }

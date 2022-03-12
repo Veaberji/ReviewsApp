@@ -91,6 +91,10 @@ a {
     width: 60%;
 }
 
+.review-image {
+    max-height: 50vh;
+}
+
 .cursor-pointer {
     cursor: pointer;
 }

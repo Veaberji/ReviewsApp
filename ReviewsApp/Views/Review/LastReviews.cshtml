@@ -22,18 +22,19 @@
     <div class="col-9">
         @foreach (var review in Model.Reviews)
         {
-            await Html.RenderPartialAsync("_Preview", review);
+            await Html.RenderPartialAsync("LastReviewsPartials/_Preview", review);
         }
     </div>
     <div class="col-3">
         @{
-            await Html.RenderPartialAsync("_TopRatedReviews", Model.TopRatedReviews);
+            await Html.RenderPartialAsync("LastReviewsPartials/_TopRatedReviews",
+                Model.TopRatedReviews);
         }
         @{
-            await Html.RenderPartialAsync("_TagCloud", Model.TagCloud);
+            await Html.RenderPartialAsync("LastReviewsPartials/_TagCloud", Model.TagCloud);
         }
     </div>
 </div>
 @{
-    await Html.RenderPartialAsync("_Pagination", Model.Pagination);
+    await Html.RenderPartialAsync("SharedPartials/_Pagination", Model.Pagination);
 }
