@@ -28,7 +28,6 @@
                 data: {"reviewId": $("#single-review-id").val()},
                 type: "POST",
                 success: function(data) {
-                    console.log(data);
                     setLikesCount(data);
                 },
                 error: function(errorResponse) {
@@ -41,28 +40,28 @@
         })});
 
     function isProductLiked() {
-        return $("#IsLikedByCurrentUser").val();
+        return $("#IsLikedByCurrentUser").val() === "True";
     }
 
     function changeLike() {
         let likes = parseInt($("#likesCount").text());
         if (isProductLiked()) {
-            like(likes);
-        } else {
             unlike(likes);
+        } else {
+            like(likes);
         }
     }
 
-    function like(likes) {
+    function unlike(likes) {
         likes--;
-        $("#IsLikedByCurrentUser").val(false);
+        $("#IsLikedByCurrentUser").val("False");
         removeLikeClass();
         setLikesCount(likes);
     }
 
-    function unlike(likes) {
+    function like(likes) {
         likes++;
-        $("#IsLikedByCurrentUser").val(true);
+        $("#IsLikedByCurrentUser").val("True");
         addLikeClass();
         setLikesCount(likes);
     }
