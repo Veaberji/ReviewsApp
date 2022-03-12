@@ -3,27 +3,17 @@
 <form asp-antiforgery="true">
     <div class="fs-5 mt-2 col-auto" id="stars-container">
         Grade @Model.ProductName
-        @for (int i = UserGradeConstrains.UserMinGrade; i <= UserGradeConstrains.UserMaxGrade; i++)
+        @for (int i = UserGradeConstrains.UserMinGrade;
+        i <= UserGradeConstrains.UserMaxGrade; i++)
         {
-            if (i <= Model.CurrentUserRating)
-            {
-                <i class="fas fa-star text-warning" id=@($"rating-star{@i}")></i>
-            }
-            else
-            {
-                <i class="fas fa-star" id=@($"rating-star{@i}")></i>
-            }
+            <i class="fas fa-star"
+               condition-class-text-warning="@(i <= Model.CurrentUserRating)"
+                id=@($"rating-star{i}")></i>
         }
-        @if (Model.CurrentUserRating.HasValue)
-        {
-            <span class="fas fa-trash-alt danger ms-2 fs-6 align-middle"
-              id="remove-grade"></span>
-        }
-        else
-        {
-            <span class="fas fa-trash-alt danger ms-2 fs-6 align-middle"
-              id="remove-grade" hidden></span>
-        }
+        <span class="fas fa-trash-alt danger ms-2 fs-6 align-middle"
+              id="remove-grade"
+              condition-hidden="@(!Model.CurrentUserRating.HasValue)">
+        </span>
     </div>
 </form>
 <script>

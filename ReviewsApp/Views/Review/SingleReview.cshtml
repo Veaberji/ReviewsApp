@@ -46,7 +46,7 @@
                 <input id="IsLikedByCurrentUser"
                    value="@Model.Review.IsLikedByCurrentUser.ToString()"
                    hidden />
-                await Html.RenderPartialAsync("_Like", Model.Review.TotalLikes);
+                await Html.RenderPartialAsync("_Like", Model.Review);
             }
             else
             {

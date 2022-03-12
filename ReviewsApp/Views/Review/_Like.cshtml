@@ -1,21 +1,15 @@
-﻿@model int
+﻿@model ReviewViewModel
 
 <form>
-    <span id="changeLike" class="cursor-pointer">
+    <span id="changeLike" class="cursor-pointer"
+          condition-class-text-success="@Model.IsLikedByCurrentUser">
         @{
-            await Html.RenderPartialAsync("_LikeReadOnly", Model);
+            await Html.RenderPartialAsync("_LikeReadOnly", Model.TotalLikes);
         }
     </span>
 </form>
 
 <script type="text/javascript">
-    $(function() {
-        let isLiked = isProductLiked();
-        if (isLiked) {
-            addLikeClass();
-        }
-    });
-
     $(function () {
         $("#changeLike").on("click", function () {
             changeLike();
