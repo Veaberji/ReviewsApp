@@ -9,6 +9,11 @@ namespace ReviewsApp.Controllers
             return View();
         }
 
+        public IActionResult Forbidden()
+        {
+            return View();
+        }
+
         public IActionResult PrivacyPolicy()
         {
             return View();

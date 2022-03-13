@@ -16,5 +16,11 @@
     "inputFiles": [
       "wwwroot/lib/lightslider/css/lightslider.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/forbidden.min.css",
+    "inputFiles": [
+      "wwwroot/css/forbidden.css"
+    ]
   }
 ]

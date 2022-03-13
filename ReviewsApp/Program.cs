@@ -34,7 +34,6 @@ builder.Host.ConfigureAppConfiguration(config =>
     config.AddAzureKeyVault(client, new AzureKeyVaultConfigurationOptions());
 });
 //todo: Configuration to files/methods
-builder.Configuration.Bind("Data:Roles", new AppRoles());
 builder.Configuration.Bind("Data:ProjectConfigs", new AppConfigs());
 builder.Configuration.Bind("Data:Secrets", new Secrets());
 
@@ -117,6 +116,10 @@ app.UseEndpoints(endpoints =>
             name: "settings",
             pattern: "Settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
+        endpoints.MapControllerRoute(
+            name: "profile",
+            pattern: "/Profile",
+            defaults: new { controller = "Account", action = "Profile" });
         endpoints.MapControllerRoute(
             name: "reviewWithTag",
             pattern: "/ReviewsWithTag-{tagText}/Page{pageIndex=1}",
