@@ -12,7 +12,7 @@
     <h5 class="card-title mb-0">@Model.Review.Title</h5>
     <div class="card-body">
         @{
-            await Html.RenderPartialAsync("SharedPartials/_ReviewHeader", Model.Review);
+            await Html.RenderPartialAsync("ReviewPartials/_ReviewHeader", Model.Review);
         }
     </div>
 
@@ -30,13 +30,13 @@
     <div class="card-body text-start">
         <p class="card-text">
             @{
-                await Html.RenderPartialAsync("SharedPartials/_MarkdownBody", Model.Review.Body);
+                await Html.RenderPartialAsync("ReviewPartials/_MarkdownBody", Model.Review.Body);
             }
         </p>
     </div>
     <div class="m-3">
         @{
-            await Html.RenderPartialAsync("SharedPartials/_Tags", Model.Review.Tags);
+            await Html.RenderPartialAsync("ReviewPartials/_Tags", Model.Review.Tags);
         }
     </div>
     <div class="text-warning mb-3">

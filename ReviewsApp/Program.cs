@@ -117,9 +117,13 @@ app.UseEndpoints(endpoints =>
             pattern: "Settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
         endpoints.MapControllerRoute(
-            name: "profile",
-            pattern: "/Profile",
-            defaults: new { controller = "Account", action = "Profile" });
+            name: "userProfile",
+            pattern: "/Profile-{userName}/{pageIndex?}",
+            defaults: new { controller = "Account", action = "UserProfile" });
+        endpoints.MapControllerRoute(
+            name: "userProfileForAdmin",
+            pattern: "/Admin/Profile-{userName}/Page{pageIndex}",
+            defaults: new { controller = "Admin", action = "Profile" });
         endpoints.MapControllerRoute(
             name: "reviewWithTag",
             pattern: "/ReviewsWithTag-{tagText}/Page{pageIndex=1}",

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ReviewsApp.Models;
+using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings;
@@ -25,7 +26,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
             .Include(r => r.Tags)
-            .Include(r => r.Images)
+            .Include(r => r.Images.Take(1))
             .ToListAsync();
     }
 
@@ -39,7 +40,22 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
             .Include(r => r.Tags)
-            .Include(r => r.Images)
+            .Include(r => r.Images.Take(1))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Review>> GetPreviewsByAuthorIdAsync(string authorId, int pageIndex)
+    {
+        return await AppDbContext.Reviews
+            .Where(r => r.AuthorId == authorId)
+            .OrderByDescending(r => r.DateAdded)
+            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
+            .Take(AppConfigs.PreviewsPerPage)
+            .Include(r => r.Author)
+            .Include(r => r.Product)
+            .ThenInclude(p => p.Grades)
+            .Include(r => r.Tags)
+            .Include(r => r.Images.Take(1))
             .ToListAsync();
     }
 
@@ -56,15 +72,22 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .FirstOrDefaultAsync();
     }
 
-    public async Task<int> GetReviewsAmountAsync()
+    public async Task<int> GetAmountOfReviewsAsync()
     {
         return await AppDbContext.Reviews.CountAsync();
     }
 
-    public async Task<int> GetReviewsWithTagAmountAsync(Tag tag)
+    public async Task<int> GetAmountOfReviewsWithTagAsync(Tag tag)
     {
         return await AppDbContext.Reviews
             .Where(r => r.Tags.Contains(tag))
+            .CountAsync();
+    }
+
+    public async Task<int> GetAmountOfReviewsByAuthorAsync(User author)
+    {
+        return await AppDbContext.Reviews
+            .Where(r => r.Author == author)
             .CountAsync();
     }
 

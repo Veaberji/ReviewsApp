@@ -3,22 +3,22 @@
 <html>
 <head>
     @{
-        await Html.RenderPartialAsync("_Head");
+        await Html.RenderPartialAsync("LayoutPartials/_Head");
     }
 </head>
 <body>
 
     @{
-        await Html.RenderPartialAsync("_Navbar");
+        await Html.RenderPartialAsync("LayoutPartials/_Navbar");
     }
     <div class="app-content shadow text-center mt-3">
         <div class="card text-break">@RenderBody()</div>
     </div>
     @{
-        await Html.RenderPartialAsync("_Footer");
+        await Html.RenderPartialAsync("LayoutPartials/_Footer");
     }
     @{
-        await Html.RenderPartialAsync("_Scripts");
+        await Html.RenderPartialAsync("LayoutPartials/_Scripts");
     }
 </body>
 </html>

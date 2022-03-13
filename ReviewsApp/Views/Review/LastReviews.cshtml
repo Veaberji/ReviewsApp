@@ -3,7 +3,7 @@
 <head>
     @if (Model.Pagination.PageIndex == 1)
     {
-        <title>@AppConfigs.Title - Home</title>
+        <title>@AppConfigs.Title - Last Reviews</title>
     }
     else
     {
@@ -18,11 +18,11 @@
     </div>
 }
 
-<div class="position-relative row m-3">
+<div class="row m-3">
     <div class="col-9">
         @foreach (var review in Model.Reviews)
         {
-            await Html.RenderPartialAsync("LastReviewsPartials/_Preview", review);
+            await Html.RenderPartialAsync("ReviewPartials/_Preview", review);
         }
     </div>
     <div class="col-3">
@@ -36,5 +36,5 @@
     </div>
 </div>
 @{
-    await Html.RenderPartialAsync("SharedPartials/_Pagination", Model.Pagination);
+    await Html.RenderPartialAsync("ReviewPartials/_Pagination", Model.Pagination);
 }

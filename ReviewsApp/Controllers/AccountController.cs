@@ -6,8 +6,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
+using ReviewsApp.Models.Settings;
+using ReviewsApp.Services;
 using ReviewsApp.Utils;
 using ReviewsApp.ViewModels.Account;
+using ReviewsApp.ViewModels.MainReview;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -21,16 +25,19 @@ namespace ReviewsApp.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly PaginationService _paginationService;
 
         public AccountController(UserManager<User> userManager,
             SignInManager<User> signInManager,
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            PaginationService paginationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _paginationService = paginationService;
         }
 
         [AllowAnonymous]
@@ -191,6 +198,38 @@ namespace ReviewsApp.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        public async Task<IActionResult> UserProfile(string userName, int pageIndex = 1)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (!await IsAllowedUser(userName, user))
+            {
+                return RedirectToAction("Forbidden", "Home");
+            }
+            var reviews =
+                await _unitOfWork.Reviews.GetPreviewsByAuthorIdAsync(user.Id, pageIndex);
+
+            var reviewsViewModels =
+                _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
+            var amount = await _unitOfWork.Reviews
+                .GetAmountOfReviewsByAuthorAsync(user);
+            var pagination = _paginationService.CreatePagination(pageIndex,
+                amount, nameof(UserProfile));
+            var model = new UserProfileViewModel
+            {
+                DisplayName = user.DisplayName,
+                Reviews = reviewsViewModels,
+                Pagination = pagination
+            };
+
+            return View(model);
+        }
+
+        private async Task<bool> IsAllowedUser(string passedName, User user)
+        {
+            var isAdmin = await _userManager.IsInRoleAsync(user, AppRoles.AdminRole);
+            return isAdmin || passedName == user.UserName;
         }
 
         private ChallengeResult GetSocialLoginResult(string scheme)

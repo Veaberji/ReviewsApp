@@ -45,7 +45,7 @@ namespace ReviewsApp.Controllers
             if (pageIndex < 1) pageIndex = 1;
             var reviews =
                  await _unitOfWork.Reviews.GetPreviewsAsync(pageIndex);
-            var amount = await _unitOfWork.Reviews.GetReviewsAmountAsync();
+            var amount = await _unitOfWork.Reviews.GetAmountOfReviewsAsync();
             var model = await CreateHomePageViewModel(
                 pageIndex, amount, reviews, nameof(LastReviews));
             return View(model);
@@ -58,7 +58,7 @@ namespace ReviewsApp.Controllers
             var tag = await _unitOfWork.Tags.GetByTextAsync(tagText);
             var reviews =
                 await _unitOfWork.Reviews.GetPreviewsWithTagAsync(tag, pageIndex);
-            var amount = await _unitOfWork.Reviews.GetReviewsWithTagAmountAsync(tag);
+            var amount = await _unitOfWork.Reviews.GetAmountOfReviewsWithTagAsync(tag);
             var model = await CreateHomePageViewModel(
                 pageIndex, amount, reviews, nameof(ReviewsWithTag));
             return View(nameof(LastReviews), model);
@@ -124,11 +124,6 @@ namespace ReviewsApp.Controllers
 
             return View(model);
         }
-
-        //public IActionResult CreateComment()
-        //{
-        //    return View();
-        //}
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -274,6 +269,86 @@ namespace ReviewsApp.Controllers
             await _imageManager
                 .DeleteImagesAsync(files);
         }
+
+
+
+
+
+
+
+
+
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+            //map view model and return view
+            return Ok();
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+            //map view model and return view
+            return Ok();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CreateReviewViewModel model)
+        {
+            //m/b use EditViewModel
+            //changeData for review and redirect to view
+            return Ok();
+        }
+
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id.Value);
+            if (review == null)
+            {
+                return NotFound();
+            }
+            //map view model and return view
+            return Ok();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+            //delete review
+
+            return RedirectToAction("UserProfile", "Account",
+                new { userName = review.Author.UserName });
+        }
+
+
+
+
+
+
+
+
+
 
         private async Task<HomePageViewModel> CreateHomePageViewModel(int pageIndex,
             int amountReviews,
