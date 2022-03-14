@@ -270,15 +270,6 @@ namespace ReviewsApp.Controllers
                 .DeleteImagesAsync(files);
         }
 
-
-
-
-
-
-
-
-
-
         public async Task<IActionResult> Details(int id)
         {
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
@@ -286,9 +277,17 @@ namespace ReviewsApp.Controllers
             {
                 return NotFound();
             }
-            //map view model and return view
-            return Ok();
+            var model = _mapper.Map<ReviewDetailsViewModel>(review);
+            return View(model);
         }
+
+
+
+
+
+
+
+
 
         public async Task<IActionResult> Edit(int id)
         {

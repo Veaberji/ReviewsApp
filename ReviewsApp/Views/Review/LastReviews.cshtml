@@ -17,24 +17,24 @@
         Reviews Not Found
     </div>
 }
-
-<div class="row m-3">
-    <div class="col-9">
-        @foreach (var review in Model.Reviews)
-        {
-            await Html.RenderPartialAsync("ReviewPartials/_Preview", review);
-        }
+else
+{
+    <div class="row m-3">
+        <div class="col-9">
+            @foreach (var review in Model.Reviews)
+            {
+                await Html.RenderPartialAsync("ReviewPartials/_Preview", review);
+            }
+        </div>
+        <div class="col-3">
+            @{
+                await Html.RenderPartialAsync("LastReviewsPartials/_TopRatedReviews",
+                        Model.TopRatedReviews);
+            }
+            @{
+                await Html.RenderPartialAsync("LastReviewsPartials/_TagCloud", Model.TagCloud);
+            }
+        </div>
     </div>
-    <div class="col-3">
-        @{
-            await Html.RenderPartialAsync("LastReviewsPartials/_TopRatedReviews",
-                Model.TopRatedReviews);
-        }
-        @{
-            await Html.RenderPartialAsync("LastReviewsPartials/_TagCloud", Model.TagCloud);
-        }
-    </div>
-</div>
-@{
     await Html.RenderPartialAsync("ReviewPartials/_Pagination", Model.Pagination);
 }

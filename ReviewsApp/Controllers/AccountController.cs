@@ -58,7 +58,8 @@ namespace ReviewsApp.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToLoginPage();
+                await _signInManager.SignInAsync(user, false);
+                return RedirectToHomePage();
             }
             AddErrorsFromResult(result);
             return View(model);
@@ -267,7 +268,7 @@ namespace ReviewsApp.Controllers
 
         private string InitSocialUserName(ExternalLoginInfo info)
         {
-            string name = GetNameFromExternalInfo(info);
+            string name = GetNameFromExternalInfo(info).Replace(" ", "");
             var users = _unitOfWork.Users
                 .Find(u => u.UserName.Contains(name))
                 .Select(u => u.UserName)

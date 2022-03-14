@@ -15,7 +15,9 @@
             await Html.RenderPartialAsync("ReviewPartials/_ReviewHeader", Model.Review);
         }
     </div>
-
+    @{
+        await Html.RenderPartialAsync("ReviewPartials/_DateAdded", Model.Review.DateAdded);
+    }
     @{
         await Html.RenderPartialAsync("SingleReviewPartials/_ImageSlider", Model.Review.ImagesUrls);
     }
@@ -34,7 +36,7 @@
             }
         </p>
     </div>
-    <div class="m-3">
+    <div class="mx-3">
         @{
             await Html.RenderPartialAsync("ReviewPartials/_Tags", Model.Review.Tags);
         }

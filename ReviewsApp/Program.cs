@@ -14,7 +14,6 @@ using ReviewsApp.Models;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
-using ReviewsApp.Models.Settings.Constrains;
 using ReviewsApp.Services;
 using System;
 
@@ -48,7 +47,6 @@ builder.Services.AddScoped<ImageManager>();
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {
         opts.User.RequireUniqueEmail = true;
-        opts.User.AllowedUserNameCharacters = UserRegistrationConstrains.AllowedUserNameCharacters;
 
         opts.Password.RequireDigit = false;
         opts.Password.RequireLowercase = false;

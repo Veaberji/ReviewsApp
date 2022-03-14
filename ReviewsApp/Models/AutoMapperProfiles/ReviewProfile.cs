@@ -115,6 +115,18 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Product.Name))
                 .ForMember(d => d.ProductType,
                     o => o.MapFrom(r => r.Product.Type));
+
+            CreateMap<Review, ReviewDetailsViewModel>()
+                .ForMember(d => d.Tags,
+                    o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
+                .ForMember(d => d.ProductViewModel,
+                    o => o.MapFrom(r => r.Product))
+                .ForMember(d => d.ImagesUrls,
+                    o => o.MapFrom(r => r.Images.Select(i => i.Url)))
+                .ForMember(d => d.Body,
+                    o => o.MapFrom(r => ConvertMarkdownToHtml(r.Body)))
+                .ForMember(d => d.Tags,
+                    o => o.MapFrom(r => r.Tags.Select(t => t.Text)));
         }
         private string FormatPreviewBody(string text)
         {
