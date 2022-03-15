@@ -43,5 +43,10 @@ namespace ReviewsApp.Data
         {
             return Context.Set<TEntity>().Remove(entity);
         }
+
+        public void RemoveRange(IEnumerable<TEntity> entities)
+        {
+            Context.Set<TEntity>().RemoveRange(entities);
+        }
     }
 }

@@ -19,7 +19,8 @@ namespace ReviewsApp.ViewModels.MainReview
 
         [Required]
         [Display(Name = "Your Grade")]
-        [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade)]
+        [Range(ReviewConstrains.AuthorMinGrade, ReviewConstrains.AuthorMaxGrade,
+            ErrorMessage = "Add your grade")]
         public int AuthorGrade { get; set; }
     }
 }

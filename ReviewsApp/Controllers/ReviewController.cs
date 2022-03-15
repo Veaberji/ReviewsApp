@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Common;
@@ -25,18 +26,22 @@ namespace ReviewsApp.Controllers
         private readonly IMapper _mapper;
         private readonly ImageManager _imageManager;
         private readonly PaginationService _paginationService;
+        private readonly UserService _userService;
+
 
         public ReviewController(IUnitOfWork unitOfWork,
             IMapper mapper,
             UserManager<User> userManager,
             ImageManager imageManager,
-            PaginationService paginationService)
+            PaginationService paginationService,
+            UserService userService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _userManager = userManager;
             _imageManager = imageManager;
             _paginationService = paginationService;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -68,8 +73,13 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> SingleReview(int id)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
+            if (review == null)
+            {
+                return NotFound();
+            }
+
+            var isUserAuthenticated = HttpContext.User.Identity?.IsAuthenticated ?? false;
             IEnumerable<Comment> comments = new List<Comment>();
             StarRatingViewModel starRating = null;
             if (isUserAuthenticated)
@@ -107,12 +117,7 @@ namespace ReviewsApp.Controllers
             }
 
             var review = _mapper.Map<Review>(model);
-            if (!string.IsNullOrEmpty(model.ImagesUrls))
-            {
-                var imageUrls = model.ImagesUrls.Split(",");
-                review.Images = MapImages(imageUrls);
-            }
-
+            review.Images = MapImages(model.ImagesUrls);
             review.AuthorId = _userManager.GetUserId(HttpContext.User);
             await ChangeTags(review);
             await _unitOfWork.Reviews.AddAsync(review);
@@ -277,6 +282,10 @@ namespace ReviewsApp.Controllers
             {
                 return NotFound();
             }
+            if (!await IsAllowedUser(review))
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
             var model = _mapper.Map<ReviewDetailsViewModel>(review);
             return View(model);
         }
@@ -296,18 +305,50 @@ namespace ReviewsApp.Controllers
             {
                 return NotFound();
             }
-            //map view model and return view
-            return Ok();
+            if (!await IsAllowedUser(review))
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+            var model = _mapper.Map<ReviewEditViewModel>(review);
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(CreateReviewViewModel model)
+        public async Task<IActionResult> Edit(int id, ReviewEditViewModel model)
         {
-            //m/b use EditViewModel
-            //changeData for review and redirect to view
-            return Ok();
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            //todo: test it
+            var updatedReview = await _unitOfWork.Reviews.GetFullReviewByIdAsync(model?.Id ?? 0);
+            if (model == null && updatedReview == null)
+            {
+                return NotFound();
+            }
+            if (!await IsAllowedUser(updatedReview))
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+            var values = _mapper.Map<Review>(model);
+            updatedReview.Title = values.Title;
+            updatedReview.Body = values.Body;
+            updatedReview.AuthorGrade = values.AuthorGrade;
+            var oldImages = MapImages(model.OldImagesUrls);
+            var newImages = MapImages(model.ImagesUrls);
+            await UpdateTags(updatedReview, values.Tags);
+
+            await DeleteImagesAsync(updatedReview, oldImages);
+            foreach (var image in newImages)
+            {
+                updatedReview.Images.Add(image);
+            }
+
+            await _unitOfWork.CompleteAsync();
+            return RedirectToReviewPage(updatedReview.Id);
         }
+
 
 
         public async Task<IActionResult> Delete(int? id)
@@ -347,7 +388,16 @@ namespace ReviewsApp.Controllers
 
 
 
+        private async Task<bool> IsAllowedUser(Review review)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (await _userService.IsAllowedUser(review.Author.UserName, user))
+            {
+                return true;
+            }
 
+            return false;
+        }
 
         private async Task<HomePageViewModel> CreateHomePageViewModel(int pageIndex,
             int amountReviews,
@@ -379,15 +429,71 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("SingleReview", new { id });
         }
 
+        private async Task UpdateTags(Review updatedReview, IList<Tag> tags)
+        {
+            DeleteTags(updatedReview, tags);
+            await AddNewTagsAsync(updatedReview, tags);
+        }
+
+        private void DeleteTags(Review updatedReview, IList<Tag> tags)
+        {
+            var tagsToDelete =
+                updatedReview.Tags.Where(t => !tags.Contains(t)).ToList();
+            foreach (var tag in tagsToDelete)
+            {
+                updatedReview.Tags.Remove(tag);
+                if (tag.Count > 1)
+                {
+                    tag.Count--;
+                }
+                else
+                {
+                    _unitOfWork.Tags.Remove(tag);
+                }
+            }
+        }
+
+        private async Task AddNewTagsAsync(Review updatedReview, IList<Tag> tags)
+        {
+            var newTags = tags.Where(t => IsNewTag(updatedReview, t)).ToList();
+            var updatedNewTags = await GetTagsWithCounts(newTags);
+            foreach (var tag in updatedNewTags)
+            {
+                updatedReview.Tags.Add(tag);
+            }
+        }
+
+
+        //private async Task UpdateImages(Review updatedReview, IList<Image> images)
+        //{
+        //    await DeleteImages(updatedReview, images);
+        //    await AddNewImages(updatedReview, tags);
+        //}
+
+        private async Task DeleteImagesAsync(Review updatedReview, IList<Image> images)
+        {
+            var imagesToDelete =
+                updatedReview.Images.Where(i => !images.Contains(i)).ToList();
+            await _imageManager
+                .DeleteImagesAsync(imagesToDelete.Select(i => i.Url).ToArray());
+            _unitOfWork.Images.RemoveRange(imagesToDelete);
+        }
+
         private async Task ChangeTags(Review review)
         {
+            review.Tags = await GetTagsWithCounts(review.Tags);
+        }
+
+        private async Task<List<Tag>> GetTagsWithCounts(IList<Tag> tags)
+        {
             var tempTags = new List<Tag>();
-            foreach (var tag in review.Tags)
+            foreach (var tag in tags)
             {
                 if (tag.Text.Length == 0)
                 {
                     continue;
                 }
+
                 var tagInDb = await _unitOfWork.Tags.GetByIdAsync(tag.Id);
                 var isExistingTag = tagInDb is { Id: > 0 };
                 if (isExistingTag)
@@ -400,12 +506,22 @@ namespace ReviewsApp.Controllers
                     tempTags.Add(tag);
                 }
             }
-            review.Tags = tempTags;
+            return tempTags;
         }
 
-        private IList<Image> MapImages(IEnumerable<string> imageUrls)
+        private static bool IsNewTag(Review updatedReview, Tag tag)
         {
-            return _mapper.Map<IEnumerable<string>, List<Image>>(imageUrls);
+            return !updatedReview.Tags.Select(t => t.Text).Contains(tag.Text);
+        }
+
+        private IList<Image> MapImages(string imageUrls)
+        {
+            if (string.IsNullOrEmpty(imageUrls))
+            {
+                return new List<Image>();
+            }
+            var images = imageUrls.Split(",");
+            return _mapper.Map<IEnumerable<string>, List<Image>>(images) ?? new List<Image>();
         }
     }
 }

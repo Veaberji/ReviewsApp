@@ -11,15 +11,15 @@ namespace ReviewsApp.Models.AutoMapperProfiles
         {
             CreateMap<Tag, TagCloudViewModel>()
                 .ForMember(d => d.Text,
-                    o => o.MapFrom(r => r.Text))
+                    o => o.MapFrom(t => t.Text))
                 .ForMember(d => d.CssClass,
-                    o => o.MapFrom(r => GetTagCssClass(r.Count)));
+                    o => o.MapFrom(t => GetTagCssClass(t.Count)));
 
             CreateMap<Tag, TagAutoCompeteViewModel>()
                 .ForMember(d => d.Val,
-                    o => o.MapFrom(r => r.Id))
+                    o => o.MapFrom(t => t.Id))
                 .ForMember(d => d.Label,
-                    o => o.MapFrom(r => r.Text));
+                    o => o.MapFrom(t => t.Text));
         }
 
         private string GetTagCssClass(int count)

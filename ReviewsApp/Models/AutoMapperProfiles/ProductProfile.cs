@@ -12,7 +12,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Name,
                     o => o.MapFrom(r => r.Name))
                 .ForMember(d => d.Type,
-                    o => o.MapFrom(r => r.Type));
+                    o => o.MapFrom(r => r.Type))
+                .ReverseMap();
         }
     }
 }

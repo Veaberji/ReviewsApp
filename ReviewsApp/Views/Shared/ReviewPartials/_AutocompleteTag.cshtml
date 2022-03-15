@@ -1,4 +1,6 @@
-﻿<link href="~/lib/jqueryui/themes/blitzer/jquery-ui.min.css" rel="Stylesheet" type="text/css" />
+﻿<head>
+    <link href="~/lib/jqueryui/themes/blitzer/jquery-ui.min.css" rel="Stylesheet" type="text/css" />
+</head>
 
 <script type="text/javascript">
     $(function () {
@@ -31,7 +33,7 @@
     });
 </script>
 <script type="text/javascript">
-    const maxTagsInReview = 5;
+    const maxTagsInReview = @TagConstrains.MaxTagsInReview;
     let tagsEntered = 0;
     document.getElementById("TagText")
         .addEventListener("keypress", function (event) {

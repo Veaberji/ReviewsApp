@@ -1,0 +1,22 @@
+﻿@model ReviewEditViewModel
+<div>@Model.Id</div>
+
+<div class="card-body col-12 align-self-center pt-0 justify-content-center position-relative">
+    <div asp-validation-summary="All" class="text-danger m-1"></div>
+    <form asp-action="Edit" method="post" asp-route-id="@Model.Id" enctype="multipart/form-data">
+        @{
+            await Html.RenderPartialAsync("ReviewPartials/_ReviewForm", Model);
+        }
+    </form>
+    @{
+        await Html.RenderPartialAsync("ReviewPartials/_ReviewFormScripts");
+    }
+    <div class="m-3 row">
+        @foreach (var img in Model.OldImagesUrls)
+        {
+            <div class="col-1">
+                <img src="@AppConfigs.DefaultImageUrl" class="img-thumbnail card-img">
+            </div>
+        }
+    </div>
+</div>

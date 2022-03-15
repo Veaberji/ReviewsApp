@@ -61,7 +61,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         opts.ExpireTimeSpan = TimeSpan.FromMinutes(20);
         opts.SlidingExpiration = true;
-        opts.AccessDeniedPath = "/Account/Login";
+        opts.AccessDeniedPath = "/error";
     });
 builder.Services.AddAuthentication().AddFacebook(options =>
 {
@@ -97,8 +97,8 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
-    app.UseStatusCodePagesWithReExecute("/Home/Error");
+    app.UseExceptionHandler("/error");
+    app.UseStatusCodePagesWithReExecute("/error", "?statusCode={0}");
 }
 
 app.UseStaticFiles();
@@ -111,28 +111,32 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
     {
         endpoints.MapControllerRoute(
+            name: "error",
+            pattern: "/error",
+            defaults: new { controller = "Error", action = "Error" });
+        endpoints.MapControllerRoute(
             name: "settings",
-            pattern: "Settings",
+            pattern: "/settings",
             defaults: new { controller = "Settings", action = "SetSettings" });
         endpoints.MapControllerRoute(
             name: "userProfile",
-            pattern: "/Profile-{userName}/{pageIndex?}",
+            pattern: "/profile-{userName}/{pageIndex?}",
             defaults: new { controller = "Account", action = "UserProfile" });
         endpoints.MapControllerRoute(
             name: "userProfileForAdmin",
-            pattern: "/Admin/Profile-{userName}/Page{pageIndex}",
+            pattern: "/admin/profile-{userName}/page{pageIndex}",
             defaults: new { controller = "Admin", action = "Profile" });
         endpoints.MapControllerRoute(
             name: "reviewWithTag",
-            pattern: "/ReviewsWithTag-{tagText}/Page{pageIndex=1}",
+            pattern: "/reviewsWithTag-{tagText}/page{pageIndex=1}",
             defaults: new { controller = "Review", action = "ReviewsWithTag" });
         endpoints.MapControllerRoute(
             name: "home",
-            pattern: "/Page{pageIndex}",
+            pattern: "/page{pageIndex}",
             defaults: new { controller = "Review", action = "LastReviews" });
         endpoints.MapControllerRoute(
             name: "singleReview",
-            pattern: "/Review{id}",
+            pattern: "/review{id}",
             defaults: new { controller = "Review", action = "SingleReview" });
         endpoints.MapControllerRoute(
             name: "default",

@@ -4,6 +4,7 @@ using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings;
 using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
+using ReviewsApp.ViewModels.MainReview.Components;
 using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
 using System.Collections.Generic;
@@ -19,46 +20,9 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.DateAdded,
                     o => o.MapFrom(r => DateTime.UtcNow))
                 .ForMember(d => d.Product,
-                    o => o.MapFrom(r => new Product
-                    {
-                        Name = r.ProductViewModel.Name,
-                        Type = r.ProductViewModel.Type
-                    }))
+                    o => o.MapFrom(r => r.ProductViewModel))
                 .ForMember(d => d.Tags,
-                    o => o.MapFrom(r =>
-                        new List<Tag>
-                    {
-                            new()
-                            {
-                                Id = r.TagViewModel.Tag1Id,
-                                Text = (r.TagViewModel.Tag1 ?? "").ToLower(),
-                                Count = 1
-                            },
-                            new()
-                            {
-                                Id = r.TagViewModel.Tag2Id,
-                                Text = (r.TagViewModel.Tag2 ?? "").ToLower(),
-                                Count = 1
-                            },
-                            new()
-                            {
-                                Id = r.TagViewModel.Tag3Id,
-                                Text = (r.TagViewModel.Tag3 ?? "").ToLower(),
-                                Count = 1
-                            },
-                            new()
-                            {
-                                Id = r.TagViewModel.Tag4Id,
-                                Text = (r.TagViewModel.Tag4 ?? "").ToLower(),
-                                Count = 1
-                            },
-                            new()
-                            {
-                                Id = r.TagViewModel.Tag5Id,
-                                Text = (r.TagViewModel.Tag5 ?? "").ToLower(),
-                                Count = 1
-                            }
-                        }));
+                    o => o.MapFrom(r => MapTags(r.TagViewModel)));
 
             CreateMap<Review, PreviewViewModel>()
                 .ForMember(d => d.AuthorName,
@@ -127,7 +91,55 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => ConvertMarkdownToHtml(r.Body)))
                 .ForMember(d => d.Tags,
                     o => o.MapFrom(r => r.Tags.Select(t => t.Text)));
+
+            CreateMap<Review, ReviewEditViewModel>()
+                .ForMember(d => d.OldImagesUrls,
+                    o => o.MapFrom(r => r.Images.Select(i => i.Url)));
+
+            CreateMap<ReviewEditViewModel, Review>()
+                .ForMember(d => d.Tags,
+            o => o.MapFrom(r => MapTags(r.TagViewModel)));
+
         }
+
+
+        private List<Tag> MapTags(TagViewModel t)
+        {
+            return new List<Tag>
+            {
+                new()
+                {
+                    Id = t.Tag1Id,
+                    Text = (t.Tag1 ?? "").ToLower(),
+                    Count = 1
+                },
+                new()
+                {
+                    Id = t.Tag2Id,
+                    Text = (t.Tag2 ?? "").ToLower(),
+                    Count = 1
+                },
+                new()
+                {
+                    Id = t.Tag3Id,
+                    Text = (t.Tag3 ?? "").ToLower(),
+                    Count = 1
+                },
+                new()
+                {
+                    Id = t.Tag4Id,
+                    Text = (t.Tag4 ?? "").ToLower(),
+                    Count = 1
+                },
+                new()
+                {
+                    Id = t.Tag5Id,
+                    Text = (t.Tag5 ?? "").ToLower(),
+                    Count = 1
+                }
+            };
+        }
+
         private string FormatPreviewBody(string text)
         {
             if (text.Length <= AppConfigs.PreviewBodySize)

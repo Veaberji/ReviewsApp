@@ -69,7 +69,7 @@
                 @if (User.Identity?.IsAuthenticated ?? false)
                 {
                     <div class="card-header user">
-                        Hello, <span>@await _service.GetCurrentDisplayName() !</span>
+                        Hello, <span>@await _service.GetUserDisplayName() !</span>
                     </div>
                     <a class="btn btn-outline-warning me-2"
                    asp-controller="Account"

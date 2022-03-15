@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
-using ReviewsApp.Models.Settings;
 using ReviewsApp.Services;
 using ReviewsApp.Utils;
 using ReviewsApp.ViewModels.Account;
@@ -26,18 +26,21 @@ namespace ReviewsApp.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaginationService _paginationService;
+        private readonly UserService _userService;
 
         public AccountController(UserManager<User> userManager,
             SignInManager<User> signInManager,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-            PaginationService paginationService)
+            PaginationService paginationService,
+            UserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _paginationService = paginationService;
+            _userService = userService;
         }
 
         [AllowAnonymous]
@@ -204,9 +207,9 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> UserProfile(string userName, int pageIndex = 1)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (!await IsAllowedUser(userName, user))
+            if (!await _userService.IsAllowedUser(userName, user))
             {
-                return RedirectToAction("Forbidden", "Home");
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
             var reviews =
                 await _unitOfWork.Reviews.GetPreviewsByAuthorIdAsync(user.Id, pageIndex);
@@ -227,11 +230,7 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
-        private async Task<bool> IsAllowedUser(string passedName, User user)
-        {
-            var isAdmin = await _userManager.IsInRoleAsync(user, AppRoles.AdminRole);
-            return isAdmin || passedName == user.UserName;
-        }
+
 
         private ChallengeResult GetSocialLoginResult(string scheme)
         {

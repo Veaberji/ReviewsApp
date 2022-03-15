@@ -13,5 +13,6 @@ namespace ReviewsApp.Models.Interfaces
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         Task<EntityEntry<TEntity>> AddAsync(TEntity entity);
         EntityEntry<TEntity> Remove(TEntity entity);
+        void RemoveRange(IEnumerable<TEntity> entities);
     }
 }

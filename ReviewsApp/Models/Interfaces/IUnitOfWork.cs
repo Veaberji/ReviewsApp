@@ -13,6 +13,5 @@ public interface IUnitOfWork : IDisposable, IAsyncDisposable
     ICommentRepository Comments { get; }
     ILikeRepository Likes { get; }
     IUserGradeRepository UserGrades { get; }
-
     Task<int> CompleteAsync();
 }
