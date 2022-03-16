@@ -59,6 +59,19 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .ToListAsync();
     }
 
+    public async Task<Review> GetNoCommentsFullReviewByIdAsync(int id)
+    {
+        return await AppDbContext.Reviews
+            .Where(r => r.Id == id)
+            .Include(r => r.Author)
+            .Include(r => r.Product)
+            .ThenInclude(p => p.Grades)
+            .Include(r => r.Tags)
+            .Include(r => r.Images)
+            .Include(r => r.Likes)
+            .FirstOrDefaultAsync();
+    }
+
     public async Task<Review> GetFullReviewByIdAsync(int id)
     {
         return await AppDbContext.Reviews
@@ -69,6 +82,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Tags)
             .Include(r => r.Images)
             .Include(r => r.Likes)
+            .Include(r => r.Comments)
             .FirstOrDefaultAsync();
     }
 

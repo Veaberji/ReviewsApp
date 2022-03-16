@@ -17,7 +17,7 @@ namespace ReviewsApp.Services
 
         public void UpdateTags(Review updatedReview, IList<Tag> tags)
         {
-            DeleteTags(updatedReview, tags);
+            DeleteTagsFromReview(updatedReview, tags);
             AddNewTagsAsync(updatedReview, tags);
         }
 
@@ -26,15 +26,20 @@ namespace ReviewsApp.Services
             review.Tags = GetTagsWithCounts(review.Tags);
         }
 
-        private void DeleteTags(Review updatedReview, IList<Tag> editedTags)
+        private void DeleteTagsFromReview(Review updatedReview, IList<Tag> editedTags)
         {
             var editedTagsTexts = editedTags.Select(tag => tag.Text).ToList();
             var tagsToDelete = updatedReview.Tags
                 .Where(tag => !editedTagsTexts.Contains(tag.Text)).ToList();
 
+            UpdateReviewTags(updatedReview, tagsToDelete);
+            DeleteTags(tagsToDelete);
+        }
+
+        public void DeleteTags(List<Tag> tagsToDelete)
+        {
             foreach (var tag in tagsToDelete)
             {
-                updatedReview.Tags.Remove(tag);
                 if (tag.Count > 1)
                 {
                     tag.Count--;
@@ -43,6 +48,14 @@ namespace ReviewsApp.Services
                 {
                     _unitOfWork.Tags.Remove(tag);
                 }
+            }
+        }
+
+        private static void UpdateReviewTags(Review updatedReview, List<Tag> tagsToDelete)
+        {
+            foreach (var tag in tagsToDelete)
+            {
+                updatedReview.Tags.Remove(tag);
             }
         }
 

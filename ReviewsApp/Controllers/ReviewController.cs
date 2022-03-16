@@ -77,7 +77,7 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> SingleReview(int id)
         {
             var userId = _userManager.GetUserId(HttpContext.User);
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(id);
             if (review == null)
             {
                 return NotFound();
@@ -162,7 +162,7 @@ namespace ReviewsApp.Controllers
         public async Task<JsonResult> ChangeLike(int reviewId)
         {
             var authorId = _userManager.GetUserId(HttpContext.User);
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(reviewId);
             var like = review.Likes.FirstOrDefault(l => l.AuthorId == authorId);
             if (like != null)
             {
@@ -188,7 +188,7 @@ namespace ReviewsApp.Controllers
         {
             var reviewId = model.ReviewId;
             var authorId = _userManager.GetUserId(HttpContext.User);
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(reviewId);
             var userGrade = review.Product.Grades
                 .FirstOrDefault(g => g.UserId == authorId);
 
@@ -216,7 +216,7 @@ namespace ReviewsApp.Controllers
         public async Task<JsonResult> RemoveGrade(int reviewId)
         {
             var authorId = _userManager.GetUserId(HttpContext.User);
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(reviewId);
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(reviewId);
             var userGrade = review.Product.Grades
                 .FirstOrDefault(g => g.UserId == authorId);
             if (userGrade != null)
@@ -268,10 +268,7 @@ namespace ReviewsApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task DeleteImages(string urls)
         {
-            if (string.IsNullOrWhiteSpace(urls))
-            {
-                return;
-            }
+            if (string.IsNullOrWhiteSpace(urls)) return;
             var files = urls.Split(",");
             await _imageStoreService
                 .DeleteImagesAsync(files);
@@ -279,11 +276,8 @@ namespace ReviewsApp.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
-            if (review == null)
-            {
-                return NotFound();
-            }
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(id);
+            if (review == null) return NotFound();
             if (!await _userService.IsAllowedUser(review.AuthorId))
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
@@ -294,11 +288,8 @@ namespace ReviewsApp.Controllers
 
         public async Task<IActionResult> Edit(int id)
         {
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
-            if (review is null)
-            {
-                return NotFound();
-            }
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(id);
+            if (review is null) return NotFound();
             if (!await _userService.IsAllowedUser(review.AuthorId))
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
@@ -311,19 +302,9 @@ namespace ReviewsApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, ReviewEditViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var updatedReview = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
-            if (updatedReview is null)
-            {
-                return NotFound();
-            }
-            if (!await _userService.IsAllowedUser(updatedReview.AuthorId))
-            {
-                return StatusCode(StatusCodes.Status403Forbidden);
-            }
+            if (!ModelState.IsValid) return View(model);
+            var updatedReview = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(id);
+            if (updatedReview is null) return NotFound();
             var values = _mapper.Map<Review>(model);
             updatedReview.Title = values.Title;
             updatedReview.Body = values.Body;
@@ -336,37 +317,33 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("Details", new { id = updatedReview.Id });
         }
 
-
-
-
-
-
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id is null)
+            var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(id);
+            if (review is null) return NotFound();
+            if (!await _userService.IsAllowedUser(review.AuthorId))
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status403Forbidden);
             }
-            var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id.Value);
-            if (review is null)
-            {
-                return NotFound();
-            }
-            //map view model and return view
-            return Ok();
+            var model = _mapper.Map<PreviewViewModel>(review);
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
-            if (review is null)
-            {
-                return NotFound();
-            }
-            //delete review
-
+            if (review is null) return NotFound();
+            var imagesUrls = review.Images.Select(image => image.Url).ToList();
+            _unitOfWork.Products.Remove(review.Product);
+            _tagsService.DeleteTags(review.Tags);
+            await _imageStoreService.DeleteImagesAsync(imagesUrls);
+            _unitOfWork.Comments.RemoveRange(review.Comments);
+            _unitOfWork.Likes.RemoveRange(review.Likes);
+            _unitOfWork.Reviews.Remove(review);
+            await _unitOfWork.CompleteAsync();
             return RedirectToAction("UserProfile", "Account",
                 new { userName = review.Author.UserName });
         }
