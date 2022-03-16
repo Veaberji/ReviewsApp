@@ -7,6 +7,7 @@ namespace ReviewsApp.ViewModels.MainReview
     public class BaseReviewViewModel
     {
         [Required]
+        [Display(Name = "Review Title")]
         [MaxLength(ReviewConstrains.TitleMaxLength)]
         public string Title { get; set; }
 

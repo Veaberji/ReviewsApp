@@ -10,7 +10,8 @@
         <div class="col-md-8">
             <div class="card-body">
                 <h4 class="card-title">
-                    <a asp-action="SingleReview"
+                    <a asp-controller="Review"
+                       asp-action="SingleReview"
                        asp-route-id="@Model.Id">
                         @Model.Title
                     </a>

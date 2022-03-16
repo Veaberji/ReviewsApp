@@ -4,7 +4,7 @@ using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings;
 using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
-using ReviewsApp.ViewModels.MainReview.Components;
+using ReviewsApp.ViewModels.MainReview.Components.Constrains;
 using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,9 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Product,
                     o => o.MapFrom(r => r.ProductViewModel))
                 .ForMember(d => d.Tags,
-                    o => o.MapFrom(r => MapTags(r.TagViewModel)));
+                    o => o.MapFrom(r => MapTags(r.Tags)))
+                .ForMember(d => d.Images,
+                    o => o.MapFrom(r => MapImages(r.ImagesUrls)));
 
             CreateMap<Review, PreviewViewModel>()
                 .ForMember(d => d.AuthorName,
@@ -81,8 +83,6 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Product.Type));
 
             CreateMap<Review, ReviewDetailsViewModel>()
-                .ForMember(d => d.Tags,
-                    o => o.MapFrom(r => r.Tags.Select(t => t.Text)))
                 .ForMember(d => d.ProductViewModel,
                     o => o.MapFrom(r => r.Product))
                 .ForMember(d => d.ImagesUrls,
@@ -93,51 +93,49 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Tags.Select(t => t.Text)));
 
             CreateMap<Review, ReviewEditViewModel>()
+                .ForMember(d => d.Tags,
+                    o => o.MapFrom(r => string.Join(",", r.Tags.Select(t => t.Text))))
+                .ForMember(d => d.ProductViewModel,
+                    o => o.MapFrom(r => r.Product))
                 .ForMember(d => d.OldImagesUrls,
-                    o => o.MapFrom(r => r.Images.Select(i => i.Url)));
+                    o => o.MapFrom(r => MapOldImages(r.Images)));
 
             CreateMap<ReviewEditViewModel, Review>()
                 .ForMember(d => d.Tags,
-            o => o.MapFrom(r => MapTags(r.TagViewModel)));
+                    o => o.MapFrom(r => MapTags(r.Tags)))
+                .ForMember(d => d.Images,
+                    o => o.MapFrom(r => MapImages(r.ImagesUrls)));
 
         }
 
-
-        private List<Tag> MapTags(TagViewModel t)
+        private IList<Tag> MapTags(string input)
         {
-            return new List<Tag>
+            var result = new List<Tag>();
+            if (string.IsNullOrEmpty(input))
             {
-                new()
-                {
-                    Id = t.Tag1Id,
-                    Text = (t.Tag1 ?? "").ToLower(),
-                    Count = 1
-                },
-                new()
-                {
-                    Id = t.Tag2Id,
-                    Text = (t.Tag2 ?? "").ToLower(),
-                    Count = 1
-                },
-                new()
-                {
-                    Id = t.Tag3Id,
-                    Text = (t.Tag3 ?? "").ToLower(),
-                    Count = 1
-                },
-                new()
-                {
-                    Id = t.Tag4Id,
-                    Text = (t.Tag4 ?? "").ToLower(),
-                    Count = 1
-                },
-                new()
-                {
-                    Id = t.Tag5Id,
-                    Text = (t.Tag5 ?? "").ToLower(),
-                    Count = 1
-                }
-            };
+                return result;
+            }
+            var tags = input.Split(TagViewModelConstrains.TagsSeparator);
+            result.AddRange(tags.Select(tag => new Tag { Text = tag.ToLower() }));
+
+            return result;
+        }
+
+        private IList<Image> MapImages(string imageUrls)
+        {
+            var result = new List<Image>();
+            if (string.IsNullOrEmpty(imageUrls))
+            {
+                return result;
+            }
+            var images = imageUrls.Split(ImageViewModelConstrains.ImagesSeparator);
+            result.AddRange(images.Select(url => new Image { Url = url }));
+            return result;
+        }
+
+        private List<string> MapOldImages(IList<Image> images)
+        {
+            return images.Select(image => image.Url).ToList();
         }
 
         private string FormatPreviewBody(string text)

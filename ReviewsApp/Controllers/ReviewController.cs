@@ -10,6 +10,7 @@ using ReviewsApp.Services;
 using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
 using ReviewsApp.ViewModels.MainReview.Components;
+using ReviewsApp.ViewModels.MainReview.Components.Constrains;
 using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System;
 using System.Collections.Generic;
@@ -115,11 +116,9 @@ namespace ReviewsApp.Controllers
             {
                 return View(model);
             }
-
             var review = _mapper.Map<Review>(model);
-            review.Images = MapImages(model.ImagesUrls);
             review.AuthorId = _userManager.GetUserId(HttpContext.User);
-            await ChangeTags(review);
+            ChangeTags(review);
             await _unitOfWork.Reviews.AddAsync(review);
             var result = await _unitOfWork.CompleteAsync();
             if (result > 0)
@@ -290,18 +289,10 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
-
-
-
-
-
-
-
-
         public async Task<IActionResult> Edit(int id)
         {
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
-            if (review == null)
+            if (review is null)
             {
                 return NotFound();
             }
@@ -321,9 +312,8 @@ namespace ReviewsApp.Controllers
             {
                 return View(model);
             }
-            //todo: test it
-            var updatedReview = await _unitOfWork.Reviews.GetFullReviewByIdAsync(model?.Id ?? 0);
-            if (model == null && updatedReview == null)
+            var updatedReview = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
+            if (updatedReview is null)
             {
                 return NotFound();
             }
@@ -335,30 +325,23 @@ namespace ReviewsApp.Controllers
             updatedReview.Title = values.Title;
             updatedReview.Body = values.Body;
             updatedReview.AuthorGrade = values.AuthorGrade;
-            var oldImages = MapImages(model.OldImagesUrls);
-            var newImages = MapImages(model.ImagesUrls);
-            await UpdateTags(updatedReview, values.Tags);
-
-            await DeleteImagesAsync(updatedReview, oldImages);
-            foreach (var image in newImages)
-            {
-                updatedReview.Images.Add(image);
-            }
+            UpdateTags(updatedReview, values.Tags);
+            await UpdateImages(updatedReview, values.Images, model.ImagesToDelete);
 
             await _unitOfWork.CompleteAsync();
-            return RedirectToReviewPage(updatedReview.Id);
+            return RedirectToAction("Details", new { id = updatedReview.Id });
         }
 
 
 
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id is null)
             {
                 return NotFound();
             }
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id.Value);
-            if (review == null)
+            if (review is null)
             {
                 return NotFound();
             }
@@ -371,7 +354,7 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var review = await _unitOfWork.Reviews.GetFullReviewByIdAsync(id);
-            if (review == null)
+            if (review is null)
             {
                 return NotFound();
             }
@@ -429,16 +412,19 @@ namespace ReviewsApp.Controllers
             return RedirectToAction("SingleReview", new { id });
         }
 
-        private async Task UpdateTags(Review updatedReview, IList<Tag> tags)
+        private void UpdateTags(Review updatedReview, IList<Tag> tags)
         {
             DeleteTags(updatedReview, tags);
-            await AddNewTagsAsync(updatedReview, tags);
+            AddNewTagsAsync(updatedReview, tags);
         }
 
-        private void DeleteTags(Review updatedReview, IList<Tag> tags)
+        //logic to service
+        private void DeleteTags(Review updatedReview, IList<Tag> editedTags)
         {
-            var tagsToDelete =
-                updatedReview.Tags.Where(t => !tags.Contains(t)).ToList();
+            var editedTagsTexts = editedTags.Select(tag => tag.Text).ToList();
+            var tagsToDelete = updatedReview.Tags
+                .Where(tag => !editedTagsTexts.Contains(tag.Text)).ToList();
+
             foreach (var tag in tagsToDelete)
             {
                 updatedReview.Tags.Remove(tag);
@@ -453,49 +439,30 @@ namespace ReviewsApp.Controllers
             }
         }
 
-        private async Task AddNewTagsAsync(Review updatedReview, IList<Tag> tags)
+        private void AddNewTagsAsync(Review updatedReview, IList<Tag> tags)
         {
-            var newTags = tags.Where(t => IsNewTag(updatedReview, t)).ToList();
-            var updatedNewTags = await GetTagsWithCounts(newTags);
+            var existingTags = updatedReview.Tags.Select(t => t.Text);
+            var newTags = tags.Where(t => !existingTags.Contains(t.Text)).ToList();
+            var updatedNewTags = GetTagsWithCounts(newTags);
             foreach (var tag in updatedNewTags)
             {
                 updatedReview.Tags.Add(tag);
             }
         }
 
-
-        //private async Task UpdateImages(Review updatedReview, IList<Image> images)
-        //{
-        //    await DeleteImages(updatedReview, images);
-        //    await AddNewImages(updatedReview, tags);
-        //}
-
-        private async Task DeleteImagesAsync(Review updatedReview, IList<Image> images)
+        private void ChangeTags(Review review)
         {
-            var imagesToDelete =
-                updatedReview.Images.Where(i => !images.Contains(i)).ToList();
-            await _imageManager
-                .DeleteImagesAsync(imagesToDelete.Select(i => i.Url).ToArray());
-            _unitOfWork.Images.RemoveRange(imagesToDelete);
+            review.Tags = GetTagsWithCounts(review.Tags);
         }
 
-        private async Task ChangeTags(Review review)
-        {
-            review.Tags = await GetTagsWithCounts(review.Tags);
-        }
-
-        private async Task<List<Tag>> GetTagsWithCounts(IList<Tag> tags)
+        private List<Tag> GetTagsWithCounts(IList<Tag> tags)
         {
             var tempTags = new List<Tag>();
             foreach (var tag in tags)
             {
-                if (tag.Text.Length == 0)
-                {
-                    continue;
-                }
-
-                var tagInDb = await _unitOfWork.Tags.GetByIdAsync(tag.Id);
-                var isExistingTag = tagInDb is { Id: > 0 };
+                var tagInDb = _unitOfWork.Tags
+                    .Find(t => t.Text == tag.Text).FirstOrDefault();
+                var isExistingTag = tagInDb is not null;
                 if (isExistingTag)
                 {
                     tagInDb.Count++;
@@ -503,25 +470,31 @@ namespace ReviewsApp.Controllers
                 }
                 else
                 {
+                    tag.Count++;
                     tempTags.Add(tag);
                 }
             }
             return tempTags;
         }
 
-        private static bool IsNewTag(Review updatedReview, Tag tag)
+        private async Task UpdateImages(Review updatedReview,
+            List<Image> newImages,
+            string imagesUrlsToDelete)
         {
-            return !updatedReview.Tags.Select(t => t.Text).Contains(tag.Text);
+            await DeleteImagesAsync(updatedReview, imagesUrlsToDelete);
+            updatedReview.Images.AddRange(newImages);
         }
 
-        private IList<Image> MapImages(string imageUrls)
+        private async Task DeleteImagesAsync(Review updatedReview, string imagesUrlsToDelete)
         {
-            if (string.IsNullOrEmpty(imageUrls))
-            {
-                return new List<Image>();
-            }
-            var images = imageUrls.Split(",");
-            return _mapper.Map<IEnumerable<string>, List<Image>>(images) ?? new List<Image>();
+            if (string.IsNullOrWhiteSpace(imagesUrlsToDelete)) return;
+            var urlsToDelete = imagesUrlsToDelete
+                .Split(ImageViewModelConstrains.ImagesSeparator);
+            var imagesToDelete = updatedReview.Images
+                .Where(i => urlsToDelete.Contains(i.Url)).ToList();
+            await _imageManager
+                .DeleteImagesAsync(urlsToDelete);
+            _unitOfWork.Images.RemoveRange(imagesToDelete);
         }
     }
 }

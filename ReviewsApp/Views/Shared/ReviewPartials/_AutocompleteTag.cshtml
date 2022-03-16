@@ -4,6 +4,10 @@
 
 <script type="text/javascript">
     $(function () {
+        restrictTagInput();
+        fillTags();
+    });
+    $(function () {
         $("#TagText").autocomplete({
             source: function (request, response) {
                 $.ajax({
@@ -25,21 +29,21 @@
                     }
                 });
             },
-            select: function (e, i) {
-                $("#TagId").val(i.item.val);
-            },
             minLength: 2
         });
     });
 </script>
 <script type="text/javascript">
     const maxTagsInReview = @TagConstrains.MaxTagsInReview;
+    const tagsResultSeparator = '@TagViewModelConstrains.TagsSeparator';
     let tagsEntered = 0;
     document.getElementById("TagText")
         .addEventListener("keypress", function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
-                setTag();
+                let inputTagText = getValueById("TagText");
+                setTag(inputTagText);
+                addTagToResult(inputTagText);
                 clearAutoCompleteTagInput();
             }
         });
@@ -47,6 +51,7 @@
         document.getElementById(`Tag${i}btn`)
             .addEventListener("click", function (event) {
                 event.preventDefault();
+                removeTagFromResult(i);
                 hideTagDiv(i);
                 clearTagInput(i);
                 enableInput(getAutoCompleteTagTextElement());
@@ -54,13 +59,13 @@
             });
     }
 
-    function setTag() {
-        let inputTagText = getValueById("TagText");
+    function setTag(inputTagText) {
         for (let i = 1; i <= maxTagsInReview; i++) {
             let tagTextElement = getTagTextElement(i);
             if (tagTextElement.value.trim().length === 0) {
                 tagTextElement.value = inputTagText;
-                setTagId(i);
+                showTagDiv(i);
+
                 tagsEntered++;
                 if (tagsEntered === maxTagsInReview) {
                     disableInput(getAutoCompleteTagTextElement());
@@ -70,13 +75,53 @@
         }
     }
 
-    function setTagId(i) {
-        let inputTagId = getAutoCompleteTagIdElement();
-        let tagIdElement = getTagIdElement(i);
-        if (inputTagId.value) {
-          tagIdElement.value = inputTagId.value ;
+    function restrictTagInput() {
+        getAutoCompleteTagTextElement().addEventListener("keypress", function (event) {
+            if (!String.fromCharCode(event.keyCode).match(/[a-zA-Z0-9-]/g)) {
+                event.preventDefault();
+            }
+        });
+    }
+
+    function fillTags() {
+        let tagsResult = getTagsResultElement().value;
+        if (tagsResult.length > 0) {
+            let tags = tagsResult.split("@TagViewModelConstrains.TagsSeparator");
+            tags.forEach(tag => setTag(tag));
         }
-        showTagDiv(i);
+    }
+
+    function addTagToResult(tagText) {
+        let result = getTagsResultElement();
+        if (result.value.length > 0) {
+            result.value += tagsResultSeparator;
+        }
+        result.value += tagText;
+    }
+
+    function removeTagFromResult(i) {
+        let result = getTagsResultElement();
+        let text = getTagTextElement(i).value;
+        let partToDelete;
+        if (isOnlyOneTag(text, result)) {
+            partToDelete = text;
+        } else if (isFirstsTag(text, result)) {
+            partToDelete = `${text}${tagsResultSeparator}`;
+        }
+        else {
+            partToDelete = `${tagsResultSeparator}${text}`;
+        }
+
+        let newText = result.value.replace(partToDelete, "");
+        result.value = newText;
+    }
+
+    function isOnlyOneTag(text, result) {
+        return isFirstsTag(text, result) && !result.value.includes(tagsResultSeparator);
+    }
+
+    function isFirstsTag(text, result) {
+        return result.value.startsWith(text);
     }
 
     function showTagDiv(i) {
@@ -100,12 +145,7 @@
     }
 
     function clearAutoCompleteTagInput() {
-        getAutoCompleteTagIdElement().value = "";
         getAutoCompleteTagTextElement().value = "";
-    }
-
-    function getAutoCompleteTagIdElement() {
-        return getElementById("TagId");
     }
 
     function getAutoCompleteTagTextElement() {
@@ -113,16 +153,15 @@
     }
 
     function clearTagInput(i) {
-        getTagIdElement(i).value = "";
         getTagTextElement(i).value = "";
     }
 
-    function getTagIdElement(i) {
-        return getElementById(`TagViewModel_Tag${i}Id`);
+    function getTagsResultElement() {
+        return getElementById("Tags");
     }
 
     function getTagTextElement(i) {
-        return getElementById(`TagViewModel_Tag${i}`);
+        return getElementById(`Tag${i}-Text`);
     }
 
     function getElementById(id) {

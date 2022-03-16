@@ -48,7 +48,7 @@
 <div class="row g-3 align-items-center">
     <div class="col-auto">
         <label class="col-form-label" for="TagText">
-            Input tag, press enter (max 5 tags):
+            Input tag, press enter (max 5 tags, only letters, numbers, '-'):
         </label>
     </div>
     <div class="col-auto" id="TagInputs" name="TagInputs">
@@ -57,86 +57,27 @@
                id="TagText"
                name="TagText"
                maxlength="@TagConstrains.TextMaxLength" />
-        <input class="form-control"
-               type="text" id="TagId"
-               name="TagId"
-               hidden />
     </div>
 </div>
 
-
+<input asp-for="Tags" hidden />
 <div class="mb-3 row m-2">
-    <div class="col-2 position-relative pe-0" id="Tag1" hidden>
-        <input class="form-control text-center"
-               asp-for="TagViewModel.Tag1"
+    @for (int i = 1; i <= TagConstrains.MaxTagsInReview; i++)
+    {
+        <div class="col-2 position-relative pe-0" id="Tag@(i)" hidden>
+            <input class="form-control text-center"
+               type="text"
+               id="Tag@(i)-Text"
                readonly>
-        <input class="form-control"
-               asp-for="TagViewModel.Tag1Id"
-               value="0"
-               hidden>
-        <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
+            <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
                 title="Delete tag"
-                id="@nameof(TagViewModel.Tag1)btn">
-        </button>
-    </div>
-    <div class="col-2 position-relative pe-0" id="Tag2" hidden>
-        <input class="form-control text-center"
-               asp-for="TagViewModel.Tag2"
-               readonly>
-        <input class="form-control"
-               asp-for="TagViewModel.Tag2Id"
-               value="0"
-               hidden>
-        <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                title="Delete tag"
-                id="@nameof(TagViewModel.Tag2)btn">
-        </button>
-    </div>
-    <div class="col-2 position-relative pe-0" id="Tag3" hidden>
-        <input class="form-control text-center"
-               asp-for="TagViewModel.Tag3"
-               readonly>
-        <input class="form-control"
-               asp-for="TagViewModel.Tag3Id"
-               value="0"
-               hidden>
-        <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                title="Delete tag"
-                id="@nameof(TagViewModel.Tag3)btn">
-        </button>
-    </div>
-    <div class="col-2 position-relative pe-0" id="Tag4" hidden>
-        <input class="form-control text-center"
-               asp-for="TagViewModel.Tag4"
-               readonly>
-        <input class="form-control"
-               asp-for="TagViewModel.Tag4Id"
-               value="0"
-               hidden>
-        <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                title="Delete tag"
-                id="@nameof(TagViewModel.Tag4)btn">
-        </button>
-    </div>
-    <div class="col-2 position-relative pe-0" id="Tag5" hidden>
-        <input class="form-control text-center"
-               asp-for="TagViewModel.Tag5"
-               readonly>
-        <input class="form-control"
-               asp-for="TagViewModel.Tag5Id"
-               value="0"
-               hidden>
-        <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                title="Delete tag"
-                id="@nameof(TagViewModel.Tag5)btn">
-        </button>
-    </div>
-
-
+                id="Tag@(i)btn">
+            </button>
+        </div>
+    }
 </div>
 
-<input class="form-control" asp-for="ImagesUrls" hidden />
-
+<input asp-for="ImagesUrls" hidden />
 <button type="submit" class="btn btn-primary position-absolute buttom-center">
     Save
 </button>

@@ -34,10 +34,10 @@ namespace ReviewsApp.Models.MainReview
         public int AuthorGrade { get; set; }
         public DateTime DateAdded { get; set; }
 
-        public IList<Tag> Tags { get; set; }
-        public IList<Image> Images { get; set; }
-        public IList<Comment> Comments { get; set; }
-        public IList<Like> Likes { get; set; }
+        public List<Tag> Tags { get; set; }
+        public List<Image> Images { get; set; }
+        public List<Comment> Comments { get; set; }
+        public List<Like> Likes { get; set; }
 
         public Review()
         {

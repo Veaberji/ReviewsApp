@@ -41,7 +41,7 @@ namespace ReviewsApp.Services
             await blobClient.DeleteIfExistsAsync();
         }
 
-        public async Task DeleteImagesAsync(string[] urls)
+        public async Task DeleteImagesAsync(IEnumerable<string> urls)
         {
             foreach (var url in urls)
             {
@@ -91,7 +91,8 @@ namespace ReviewsApp.Services
         {
             string randomName = Path.GetRandomFileName();
             var name = Path.GetFileNameWithoutExtension(fileName);
-            var cutFileName = name[..Math.Min(name.Length, AppConfigs.SizeToCutImageFileName)];
+            var cutFileName = name[..Math.Min(name.Length, AppConfigs.SizeToCutImageFileName)]
+                .Replace(" ", "_");
             string extension = Path.GetExtension(fileName);
 
             return randomName + "_" + cutFileName + extension;

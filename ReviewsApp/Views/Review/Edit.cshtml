@@ -1,5 +1,7 @@
 ﻿@model ReviewEditViewModel
-<div>@Model.Id</div>
+<head>
+    <title>@AppConfigs.Title - @Model.Title Edit</title>
+</head>
 
 <div class="card-body col-12 align-self-center pt-0 justify-content-center position-relative">
     <div asp-validation-summary="All" class="text-danger m-1"></div>
@@ -7,16 +9,69 @@
         @{
             await Html.RenderPartialAsync("ReviewPartials/_ReviewForm", Model);
         }
+        <input asp-for="ImagesToDelete" hidden />
     </form>
     @{
         await Html.RenderPartialAsync("ReviewPartials/_ReviewFormScripts");
     }
-    <div class="m-3 row">
-        @foreach (var img in Model.OldImagesUrls)
+    <div class="m-3 row mb-5">
+        @for (int i = 1; i <= Model.OldImagesUrls.Count; i++)
         {
-            <div class="col-1">
-                <img src="@AppConfigs.DefaultImageUrl" class="img-thumbnail card-img">
+            <div class="col-2 position-relative pe-0" id="old-image@(i)">
+                <img src="@Model.OldImagesUrls[i - 1]" class="img-thumbnail card-img">
+                <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
+                    title="Delete image"
+                    id="image@(i)-btn">
+                </button>
             </div>
         }
     </div>
 </div>
+
+<script type="text/javascript">
+    const imagesResultSeparator = "@ImageViewModelConstrains.ImagesSeparator";
+
+    $(function () {
+        restrictProductInput();
+    });
+
+    for (let i = 1; i <= @Model.OldImagesUrls.Count; i++) {
+        $(`#image${i}-btn`).on("click", function (event) {
+            event.preventDefault();
+            addImageUrlToResult(i);
+            hideImage(i);
+        });
+    }
+
+    function restrictProductInput() {
+        let productTypeElement = $("#ProductViewModel_Type");
+        let productTitleElement = $("#ProductViewModel_Name");
+        productTypeElement.attr("readonly", true);
+        productTitleElement.attr("readonly", true);
+    }
+
+    function addImageUrlToResult(i) {
+        let url = getImageElement(i).prop("src");
+        let result = getImagesResultElement();
+        if (result.val()) {
+            result.val(result.val() + imagesResultSeparator);
+        }
+        result.val(result.val() + url);
+    }
+
+    function hideImage(i) {
+        $(`#old-image${i}`).prop("hidden", true);
+    }
+
+    function getImageDivElement(i) {
+        return $(`#old-image${i}`);
+    }
+
+    function getImageElement(i) {
+        return getImageDivElement(i).children("img").eq(0);
+    }
+
+    function getImagesResultElement() {
+        return $("#ImagesToDelete");
+    }
+</script>
