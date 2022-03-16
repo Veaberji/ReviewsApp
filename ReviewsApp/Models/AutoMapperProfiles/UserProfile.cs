@@ -11,6 +11,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             CreateMap<RegisterViewModel, User>()
                 .ForMember(d => d.UserName,
                     o => o.MapFrom(r => r.Login));
+
+            CreateMap<User, UserProfileViewModel>();
         }
     }
 }

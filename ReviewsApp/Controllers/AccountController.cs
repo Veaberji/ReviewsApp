@@ -169,7 +169,7 @@ namespace ReviewsApp.Controllers
                 return BadRequest();
             }
             var json = helper.GetJsonObject();
-            var userId = json.GetValue("user_id").ToString();
+            var userId = json?.GetValue("user_id")?.ToString();
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
@@ -213,24 +213,18 @@ namespace ReviewsApp.Controllers
             }
             var reviews =
                 await _unitOfWork.Reviews.GetPreviewsByAuthorIdAsync(user.Id, pageIndex);
-
             var reviewsViewModels =
                 _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
             var amount = await _unitOfWork.Reviews
                 .GetAmountOfReviewsByAuthorAsync(user);
             var pagination = _paginationService.CreatePagination(pageIndex,
                 amount, nameof(UserProfile));
-            var model = new UserProfileViewModel
-            {
-                DisplayName = user.DisplayName,
-                Reviews = reviewsViewModels,
-                Pagination = pagination
-            };
+            var model = _mapper.Map<UserProfileViewModel>(user);
+            model.Reviews = reviewsViewModels;
+            model.Pagination = pagination;
 
             return View(model);
         }
-
-
 
         private ChallengeResult GetSocialLoginResult(string scheme)
         {

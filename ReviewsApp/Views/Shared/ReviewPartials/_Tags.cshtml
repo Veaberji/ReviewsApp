@@ -4,6 +4,7 @@
     @foreach (var tag in Model)
     {
         <a class="fs-5"
+       asp-controller="Review"
        asp-action="ReviewsWithTag"
        asp-route-tagText="@tag">@tag</a>
     }

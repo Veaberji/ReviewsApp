@@ -106,30 +106,33 @@ namespace ReviewsApp.Controllers
             return View(model);
         }
 
-        public IActionResult CreateReview()
+        public async Task<IActionResult> CreateReview(string userName = null)
         {
-            return View();
+            var user = _unitOfWork.Users
+                .Find(u => u.UserName == userName)
+                .FirstOrDefault();
+            if (user is null || !await _userService.IsAllowedUser(user.Id))
+            {
+                return StatusCode(StatusCodes.Status403Forbidden);
+            }
+            return View(new CreateReviewViewModel { UserName = userName });
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateReview(CreateReviewViewModel model)
+        public async Task<IActionResult> CreateReview(string userName, CreateReviewViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+            if (!ModelState.IsValid) return View(model);
+            var user = _unitOfWork.Users
+                .Find(u => u.UserName == userName)
+                .FirstOrDefault();
+            if (user is null) return NotFound();
             var review = _mapper.Map<Review>(model);
-            review.AuthorId = _userManager.GetUserId(HttpContext.User);
+            review.AuthorId = user.Id;
             _tagsService.ChangeTags(review);
             await _unitOfWork.Reviews.AddAsync(review);
             var result = await _unitOfWork.CompleteAsync();
-            if (result > 0)
-            {
-                return RedirectToReviewPage(review.Id);
-            }
-
-            return View(model);
+            return result > 0 ? RedirectToReviewPage(review.Id) : View(model);
         }
 
         [HttpPost]
@@ -192,7 +195,7 @@ namespace ReviewsApp.Controllers
             var userGrade = review.Product.Grades
                 .FirstOrDefault(g => g.UserId == authorId);
 
-            if (userGrade != null)
+            if (userGrade is not null)
             {
                 userGrade.Grade = model.Grade;
             }
