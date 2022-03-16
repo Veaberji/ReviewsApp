@@ -34,6 +34,14 @@
                        aria-haspopup="true"
                        aria-expanded="false">Menu</a>
                     <div class="dropdown-menu">
+                        @if (User.IsInRole(AppRoles.AdminRole))
+                        {
+                            <a class="dropdown-item"
+                           asp-controller="Admin"
+                           asp-action="Index">
+                                <i class="fas fa-user-shield"></i> Admin Panel
+                            </a>
+                        }
                         <a class="dropdown-item"
                            asp-controller="Account"
                            asp-action="UserProfile"

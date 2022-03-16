@@ -130,10 +130,6 @@ app.UseEndpoints(endpoints =>
             pattern: "/admin",
             defaults: new { controller = "Admin", action = "Index" });
         endpoints.MapControllerRoute(
-            name: "userProfileForAdmin",
-            pattern: "/admin/profile-{userName}/{pageIndex?}",
-            defaults: new { controller = "Admin", action = "Profile" });
-        endpoints.MapControllerRoute(
             name: "createReview",
             pattern: "/{userName}-create",
             defaults: new { controller = "Review", action = "CreateReview" });

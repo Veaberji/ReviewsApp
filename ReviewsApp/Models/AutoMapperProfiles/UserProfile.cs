@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ReviewsApp.Models.Common;
 using ReviewsApp.ViewModels.Account;
+using ReviewsApp.ViewModels.Admin;
 
 namespace ReviewsApp.Models.AutoMapperProfiles
 {
@@ -13,6 +14,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Login));
 
             CreateMap<User, UserProfileViewModel>();
+            CreateMap<User, UserViewModel>();
         }
     }
 }

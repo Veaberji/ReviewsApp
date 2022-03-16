@@ -1,22 +1,32 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
+using ReviewsApp.ViewModels.Admin;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
 {
     [Authorize(Roles = AppRoles.AdminRole)]
     public class AdminController : Controller
     {
-        public IActionResult Index()
-        {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-            return View();
+        public AdminController(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        public IActionResult Profile(string userName, int pageIndex = 1)
-        {
 
-            return RedirectToAction("UserProfile", "Account",
-                new { userName, pageIndex });
+        public async Task<IActionResult> Index()
+        {
+            var users = await _unitOfWork.Users.GetAllAsync();
+            var usersModel = _mapper.Map<IEnumerable<UserViewModel>>(users);
+            var model = new AdminViewModel { Users = usersModel };
+            return View(model);
         }
     }
 }

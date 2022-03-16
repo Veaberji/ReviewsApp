@@ -1,1 +1,19 @@
-﻿<div>Admin</div>
+﻿@model AdminViewModel
+
+<head>
+    <title>@AppConfigs.Title - Admin Panel</title>
+</head>
+<div class="m-3 col-4 align-self-center">
+    <h5 class="card-title">User's Profiles</h5>
+    @foreach (var user in Model.Users)
+    {
+        <div class="card-title">
+            <a class="dropdown-item fs-6"
+           asp-controller="Account"
+           asp-action="UserProfile"
+           asp-route-userName="@user.UserName">
+                <i class="fas fa-id-card"></i> @user.DisplayName
+            </a>
+        </div>
+    }
+</div>
