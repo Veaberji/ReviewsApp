@@ -42,7 +42,7 @@ builder.Services.AddDbContext<AppDbContext>(
 
 builder.Services.AddScoped(_ => new BlobServiceClient(
     builder.Configuration[Secrets.AzureBlobConnectionString]));
-builder.Services.AddScoped<ImageManager>();
+builder.Services.AddScoped<ImageStoreService>();
 
 builder.Services.AddIdentity<User, IdentityRole>(opts =>
     {
@@ -81,6 +81,9 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SettingsService>();
 builder.Services.AddScoped<PaginationService>();
+builder.Services.AddScoped<TagsService>();
+builder.Services.AddScoped<HomePageViewModelFactory>();
+builder.Services.AddScoped<ReviewService>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

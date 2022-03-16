@@ -206,8 +206,8 @@ namespace ReviewsApp.Controllers
 
         public async Task<IActionResult> UserProfile(string userName, int pageIndex = 1)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            if (!await _userService.IsAllowedUser(userName, user))
+            var user = await _userManager.FindByNameAsync(userName);
+            if (user is null || !await _userService.IsAllowedUser(user.Id))
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }

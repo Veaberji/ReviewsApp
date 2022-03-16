@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Settings;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Services
@@ -20,17 +19,17 @@ namespace ReviewsApp.Services
 
         public async Task<string> GetUserDisplayName()
         {
-            var userId = _httpContextAccessor.HttpContext?.User
-                .FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(userId);
-
+            var user = await _userManager
+                .GetUserAsync(_httpContextAccessor.HttpContext?.User);
             return user.DisplayName;
         }
 
-        public async Task<bool> IsAllowedUser(string userName, User user)
+        public async Task<bool> IsAllowedUser(string userId)
         {
+            var user = await _userManager
+                .GetUserAsync(_httpContextAccessor.HttpContext?.User);
             var isAdmin = await _userManager.IsInRoleAsync(user, AppRoles.AdminRole);
-            return isAdmin || userName == user.UserName;
+            return isAdmin || userId == user.Id;
         }
     }
 }

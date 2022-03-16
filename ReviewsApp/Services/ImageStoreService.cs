@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ReviewsApp.Services
 {
-    public class ImageManager
+    public class ImageStoreService
     {
         private readonly BlobServiceClient _blobServiceClient;
 
-        public ImageManager(BlobServiceClient blobServiceClient)
+        public ImageStoreService(BlobServiceClient blobServiceClient)
         {
             _blobServiceClient = blobServiceClient;
         }
@@ -59,11 +59,11 @@ namespace ReviewsApp.Services
             return urls;
         }
 
-        private void CheckFile(IFormFile file)
+        private static void CheckFile(IFormFile file)
         {
             if (file == null)
             {
-                throw new ArgumentNullException($"{nameof(file)} can not be nul");
+                throw new ArgumentNullException(nameof(file));
             }
             if (!IsValidType(file))
             {
@@ -87,7 +87,7 @@ namespace ReviewsApp.Services
             return file.Length <= AppConfigs.MaxImageSizeInBytes;
         }
 
-        public string GetUniqueFileName(string fileName)
+        private string GetUniqueFileName(string fileName)
         {
             string randomName = Path.GetRandomFileName();
             var name = Path.GetFileNameWithoutExtension(fileName);
