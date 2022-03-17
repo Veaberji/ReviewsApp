@@ -3,7 +3,7 @@
 <div class="card">
     <div class="card-body">
         @{
-            await Html.RenderPartialAsync("ReviewPartials/_Author", Model.AuthorName);
+            await Html.RenderPartialAsync("ReviewPartials/_Author", Model.Author);
         }
         <span class="card-subtitle mb-2 text-muted">@Model.PublishingDate</span>
         <pre class="card-text">@Model.Body</pre>

@@ -12,11 +12,11 @@ namespace ReviewsApp.Models.AutoMapperProfiles
         {
             CreateMap<CreateCommentViewModel, Comment>()
                 .ForMember(d => d.PublishingDate,
-                    o => o.MapFrom(r => DateTime.UtcNow));
+                    o => o.MapFrom(c => DateTime.UtcNow));
 
             CreateMap<Comment, CommentViewModel>()
-                .ForMember(d => d.AuthorName,
-                    o => o.MapFrom(r => r.Author.DisplayName));
+                .ForMember(d => d.Author,
+                    o => o.MapFrom(c => c.Author));
         }
     }
 }

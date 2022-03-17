@@ -27,8 +27,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => MapImages(r.ImagesUrls)));
 
             CreateMap<Review, PreviewViewModel>()
-                .ForMember(d => d.AuthorName,
-                    o => o.MapFrom(r => r.Author.DisplayName))
+                .ForMember(d => d.Author,
+                    o => o.MapFrom(r => r.Author))
                 .ForMember(d => d.AverageUserRating,
                     o => o.MapFrom(r => r.Product.GetAverageUserRating()))
                 .ForMember(d => d.PreviewImageUrl,
@@ -43,8 +43,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => FormatPreviewBody(r.Body)));
 
             CreateMap<Review, ReviewViewModel>()
-                .ForMember(d => d.AuthorName,
-                    o => o.MapFrom(r => r.Author.DisplayName))
+                .ForMember(d => d.Author,
+                    o => o.MapFrom(r => r.Author))
                 .ForMember(d => d.AverageUserRating,
                     o => o.MapFrom(r => r.Product.GetAverageUserRating()))
                 .ForMember(d => d.PreviewImageUrl,
@@ -73,8 +73,8 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(r => r.Product.Grades.Count));
 
             CreateMap<Review, TopRatedReviewViewModel>()
-                .ForMember(d => d.AuthorName,
-                    o => o.MapFrom(r => r.Author.DisplayName))
+                .ForMember(d => d.Author,
+                    o => o.MapFrom(r => r.Author))
                 .ForMember(d => d.AverageUserRating,
                     o => o.MapFrom(r => r.Product.GetAverageUserRating()))
                 .ForMember(d => d.ProductName,
