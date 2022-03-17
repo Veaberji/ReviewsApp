@@ -15,6 +15,7 @@ using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
 using ReviewsApp.Services;
+using ReviewsApp.Services.PageModelFactories;
 using ReviewsApp.Utils;
 using System;
 
@@ -83,10 +84,13 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SettingsService>();
 builder.Services.AddScoped<PaginationService>();
-builder.Services.AddScoped<TagsService>();
 builder.Services.AddScoped<ReviewService>();
-builder.Services.AddScoped<HomePageViewModelFactory>();
-builder.Services.AddScoped<ProfileViewModelFactory>();
+builder.Services.AddScoped<GradeService>();
+builder.Services.AddScoped<TagsService>();
+builder.Services.AddScoped<LikeService>();
+builder.Services.AddScoped<HomeViewModelFactory>();
+builder.Services.AddScoped<ProfileModelFactory>();
+builder.Services.AddScoped<ReviewPageViewModelFactory>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

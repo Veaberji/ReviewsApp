@@ -35,7 +35,7 @@
     function deleteUploadedFiles() {
         if ($('#ImagesUrls').val()) {
             $.ajax({
-                url: '/Review/DeleteImages',
+                url: '/Image/DeleteImages',
                 headers: { "RequestVerificationToken":
                     $('input[name="__RequestVerificationToken"]').val() },
                 data: { "urls": $('#ImagesUrls').val() },

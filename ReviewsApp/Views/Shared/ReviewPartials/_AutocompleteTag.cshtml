@@ -11,7 +11,7 @@
         $("#TagText").autocomplete({
             source: function (request, response) {
                 $.ajax({
-                    url: '/Review/AutoCompleteTag/',
+                    url: '/Tag/AutoCompleteTag/',
                     headers: { "RequestVerificationToken":
                         $('input[name="__RequestVerificationToken"]').val() },
                     data: { "prefix": $.trim(request.term)},

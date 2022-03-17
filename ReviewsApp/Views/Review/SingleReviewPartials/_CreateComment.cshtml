@@ -1,7 +1,7 @@
 ﻿@model CreateCommentViewModel
 
 <div class="card-body align-self-start pt-0">
-    <form asp-action="CreateComment" method="post">
+    <form asp-controller="Comment" asp-action="CreateComment" method="post">
         <div class="mb-3">
             <textarea class="form-control comment-textarea"
                       asp-for="Body"

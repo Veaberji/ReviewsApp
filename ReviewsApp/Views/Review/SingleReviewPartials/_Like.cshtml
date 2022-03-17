@@ -14,7 +14,7 @@
         $("#changeLike").on("click", function () {
             changeLike();
             $.ajax({
-                url: '/Review/ChangeLike/',
+                url: '/Like/ChangeLike/',
                 headers: {
                     "RequestVerificationToken":
                         $('input[name="__RequestVerificationToken"]').val()

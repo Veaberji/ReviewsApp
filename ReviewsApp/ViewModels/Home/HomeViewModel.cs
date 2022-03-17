@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ReviewsApp.ViewModels.Home
 {
-    public class HomePageViewModel
+    public class HomeViewModel
     {
         public IEnumerable<PreviewViewModel> Reviews { get; set; }
         public IEnumerable<TagCloudViewModel> TagCloud { get; set; }

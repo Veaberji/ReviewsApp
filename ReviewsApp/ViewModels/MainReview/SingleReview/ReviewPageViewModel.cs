@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ReviewsApp.ViewModels.MainReview.SingleReview
 {
-    public class SingleReviewViewModel
+    public class ReviewPageViewModel
     {
         public ReviewViewModel Review { get; set; }
         public StarRatingViewModel StarRating { get; set; }

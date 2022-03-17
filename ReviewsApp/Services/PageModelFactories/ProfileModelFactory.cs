@@ -7,15 +7,15 @@ using ReviewsApp.ViewModels.MainReview;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ReviewsApp.Services
+namespace ReviewsApp.Services.PageModelFactories
 {
-    public class ProfileViewModelFactory
+    public class ProfileModelFactory
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly PaginationService _paginationService;
 
-        public ProfileViewModelFactory(IMapper mapper,
+        public ProfileModelFactory(IMapper mapper,
             IUnitOfWork unitOfWork,
             PaginationService paginationService)
         {
@@ -24,7 +24,7 @@ namespace ReviewsApp.Services
             _paginationService = paginationService;
         }
 
-        public async Task<ProfileViewModel> Create(User user, int pageIndex)
+        public async Task<ProfileViewModel> CreateProfileModel(User user, int pageIndex)
         {
             var reviews =
                 await _unitOfWork.Reviews.GetPreviewsByAuthorIdAsync(user.Id, pageIndex);

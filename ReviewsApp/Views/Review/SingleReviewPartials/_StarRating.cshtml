@@ -72,7 +72,7 @@
 
     function sendChangeGradeRequest(gradeViewModel) {
         $.ajax({
-            url: '/Review/GradeReview/',
+            url: '/Rating/GradeReview/',
             headers: {
                 "RequestVerificationToken":
                     $('input[name="__RequestVerificationToken"]').val()
@@ -155,7 +155,7 @@
 
     function sendRemoveGradeRequest() {
         $.ajax({
-            url: '/Review/RemoveGrade/',
+            url: '/Rating/RemoveGrade/',
             headers: {
                 "RequestVerificationToken":
                     $('input[name="__RequestVerificationToken"]').val()

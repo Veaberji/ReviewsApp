@@ -11,12 +11,47 @@ namespace ReviewsApp.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ImageStoreService _imageStoreService;
+        private readonly TagsService _tagsService;
 
         public ReviewService(IUnitOfWork unitOfWork,
-            ImageStoreService imageStoreService)
+            ImageStoreService imageStoreService,
+            TagsService tagsService)
         {
             _unitOfWork = unitOfWork;
             _imageStoreService = imageStoreService;
+            _tagsService = tagsService;
+        }
+
+        public async Task CreateReview(Review review, string userId)
+        {
+            review.AuthorId = userId;
+            _tagsService.SetTags(review);
+            await _unitOfWork.Reviews.AddAsync(review);
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task UpdateReview(Review updatedReview, Review values,
+            string imagesToDelete)
+        {
+            updatedReview.Title = values.Title;
+            updatedReview.Body = values.Body;
+            updatedReview.AuthorGrade = values.AuthorGrade;
+            _tagsService.UpdateTags(updatedReview, values.Tags);
+            await UpdateImages(
+                updatedReview, values.Images, imagesToDelete);
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public async Task DeleteReview(Review review)
+        {
+            var imagesUrls = review.Images.Select(image => image.Url).ToList();
+            _unitOfWork.Products.Remove(review.Product);
+            _tagsService.DeleteTags(review.Tags);
+            await _imageStoreService.DeleteImagesAsync(imagesUrls);
+            _unitOfWork.Comments.RemoveRange(review.Comments);
+            _unitOfWork.Likes.RemoveRange(review.Likes);
+            _unitOfWork.Reviews.Remove(review);
+            await _unitOfWork.CompleteAsync();
         }
 
         public async Task UpdateImages(Review updatedReview,
@@ -25,6 +60,12 @@ namespace ReviewsApp.Services
         {
             await DeleteImagesAsync(updatedReview, imagesUrlsToDelete);
             updatedReview.Images.AddRange(newImages);
+        }
+
+        public bool IsLikedByUser(Review review, string userId)
+        {
+            return review.Likes
+                .FirstOrDefault(l => l.AuthorId == userId) != null;
         }
 
         private async Task DeleteImagesAsync(Review updatedReview, string imagesUrlsToDelete)

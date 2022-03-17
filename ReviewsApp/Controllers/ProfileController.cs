@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Services;
+using ReviewsApp.Services.PageModelFactories;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,11 +11,11 @@ namespace ReviewsApp.Controllers
     public class ProfileController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ProfileViewModelFactory _profileFactory;
+        private readonly ProfileModelFactory _profileFactory;
         private readonly UserService _userService;
 
         public ProfileController(IUnitOfWork unitOfWork,
-            ProfileViewModelFactory profileFactory,
+            ProfileModelFactory profileFactory,
             UserService userService)
         {
             _unitOfWork = unitOfWork;
@@ -31,7 +32,7 @@ namespace ReviewsApp.Controllers
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
 
-            var model = await _profileFactory.Create(user, pageIndex);
+            var model = await _profileFactory.CreateProfileModel(user, pageIndex);
 
             return View(model);
         }
