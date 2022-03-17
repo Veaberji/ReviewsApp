@@ -30,7 +30,7 @@ namespace ReviewsApp.Services
                 await _unitOfWork.Reviews.GetPreviewsByAuthorIdAsync(user.Id, pageIndex);
             var reviewsViewModels =
                 _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
-            var amount = await _unitOfWork.Reviews
+            int amount = await _unitOfWork.Reviews
                 .GetAmountOfReviewsByAuthorAsync(user);
             var pagination = _paginationService.CreatePagination(pageIndex,
                 amount, nameof(UserProfile));

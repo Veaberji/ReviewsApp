@@ -56,7 +56,7 @@ namespace ReviewsApp.Utils
         private static string GetPossibleName(List<string> users, string name)
         {
             int count = users.Count;
-            var possibleName = name;
+            string possibleName = name;
             while (users.Contains(possibleName))
             {
                 possibleName = name + ++count;

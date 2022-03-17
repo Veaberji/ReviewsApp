@@ -14,7 +14,6 @@ namespace ReviewsApp.Services
             _unitOfWork = unitOfWork;
         }
 
-
         public void UpdateTags(Review updatedReview, IList<Tag> tags)
         {
             DeleteTagsFromReview(updatedReview, tags);

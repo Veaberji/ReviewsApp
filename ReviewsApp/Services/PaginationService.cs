@@ -61,7 +61,7 @@ namespace ReviewsApp.Services
             return Math.Max(lastPageIndex, possibleLastPageIndex);
         }
 
-        private int GetPagesAmount(int amountReviews)
+        private static int GetPagesAmount(int amountReviews)
         {
             return (int)Math.Ceiling(amountReviews /
                 (double)AppConfigs.PreviewsPerPage - 1) + 1;

@@ -90,8 +90,8 @@ namespace ReviewsApp.Services
         private string GetUniqueFileName(string fileName)
         {
             string randomName = Path.GetRandomFileName();
-            var name = Path.GetFileNameWithoutExtension(fileName);
-            var cutFileName = name[..Math.Min(name.Length, AppConfigs.SizeToCutImageFileName)]
+            string name = Path.GetFileNameWithoutExtension(fileName);
+            string cutFileName = name[..Math.Min(name.Length, AppConfigs.SizeToCutImageFileName)]
                 .Replace(" ", "_");
             string extension = Path.GetExtension(fileName);
 

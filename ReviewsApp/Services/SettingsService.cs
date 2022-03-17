@@ -14,7 +14,7 @@ namespace ReviewsApp.Services
 
         public string GetTheme()
         {
-            var themeName = _httpContextAccessor.HttpContext?
+            string themeName = _httpContextAccessor.HttpContext?
                 .Request.Cookies[AppConfigs.ThemeCookie] ?? "";
             return (themeName.Length > 0 ?
                 themeName : AppConfigs.DefaultTheme) + ".min.css";

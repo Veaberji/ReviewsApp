@@ -28,7 +28,7 @@ namespace ReviewsApp.Services
         {
             var user = await _userManager
                 .GetUserAsync(_httpContextAccessor.HttpContext?.User);
-            var isAdmin = await _userManager.IsInRoleAsync(user, AppRoles.AdminRole);
+            bool isAdmin = await _userManager.IsInRoleAsync(user, AppRoles.AdminRole);
             return isAdmin || userId == user.Id;
         }
     }

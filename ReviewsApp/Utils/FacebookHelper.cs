@@ -65,7 +65,7 @@ namespace ReviewsApp.Utils
 
         private void InitJsonObject()
         {
-            var rawData = EncodeData(_payload);
+            string rawData = EncodeData(_payload);
             _jsonObject = JObject.Parse(rawData);
         }
 
