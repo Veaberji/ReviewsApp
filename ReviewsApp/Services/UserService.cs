@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -53,6 +55,57 @@ namespace ReviewsApp.Services
             return _unitOfWork.Users
                 .Find(u => u.UserName == userName)
                 .FirstOrDefault(); ;
+        }
+
+        public async Task SetDisplayName(string name)
+        {
+            var existingNames = (await _unitOfWork.Users.GetAllAsync())
+                .Select(u => u.DisplayName).ToList();
+            if (existingNames.Contains(name))
+            {
+                throw new ArgumentException(
+                    $"The name'{name}' is already exists");
+            }
+            var user = await GetCurrentUser();
+            user.DisplayName = name;
+            await _unitOfWork.CompleteAsync();
+        }
+
+        public string GetPossibleUserName(string name)
+        {
+            var users = _unitOfWork.Users
+                .Find(u => u.UserName.Contains(name))
+                .Select(u => u.UserName)
+                .ToList();
+
+            return GetPossibleName(users, name);
+        }
+
+        public string GetPossibleDisplayName(string name)
+        {
+            var users = _unitOfWork.Users
+                .Find(u => u.DisplayName.Contains(name))
+                .Select(u => u.DisplayName)
+                .ToList();
+
+            return GetPossibleName(users, name);
+        }
+
+        public Task<User> GetCurrentUser()
+        {
+            return _userManager.GetUserAsync(_httpContextAccessor.HttpContext?.User);
+        }
+
+        private static string GetPossibleName(List<string> users, string name)
+        {
+            int count = users.Count;
+            string possibleName = name;
+            while (users.Contains(possibleName))
+            {
+                possibleName = name + ++count;
+            }
+
+            return possibleName;
         }
     }
 }

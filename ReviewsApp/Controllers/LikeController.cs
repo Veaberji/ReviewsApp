@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Services;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
 {
+    [Authorize]
     public class LikeController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

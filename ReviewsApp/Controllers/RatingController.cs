@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Services;
 using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
 {
+    [Authorize]
     public class RatingController : Controller
     {
         private readonly GradeService _gradeService;

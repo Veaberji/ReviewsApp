@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.MainReview;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

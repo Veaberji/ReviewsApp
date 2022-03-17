@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Services;
 
 namespace ReviewsApp.Controllers
 {
+    [Authorize]
     public class TagController : Controller
     {
         private readonly TagsService _tagsService;
