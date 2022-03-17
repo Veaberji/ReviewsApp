@@ -15,6 +15,7 @@ using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.Settings;
 using ReviewsApp.Services;
+using ReviewsApp.Utils;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -75,6 +76,7 @@ builder.Services.AddAuthentication().AddFacebook(options =>
         options.ClientSecret = builder.Configuration[Secrets.GoogleWebClientSecret];
         options.AccessDeniedPath = "/Account/AccessDenied";
     });
+builder.Services.AddScoped<SocialLoginHelper>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddHttpContextAccessor();
@@ -82,8 +84,9 @@ builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<SettingsService>();
 builder.Services.AddScoped<PaginationService>();
 builder.Services.AddScoped<TagsService>();
-builder.Services.AddScoped<HomePageViewModelFactory>();
 builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<HomePageViewModelFactory>();
+builder.Services.AddScoped<ProfileViewModelFactory>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -124,7 +127,7 @@ app.UseEndpoints(endpoints =>
         endpoints.MapControllerRoute(
             name: "userProfile",
             pattern: "/profile-{userName}/{pageIndex?}",
-            defaults: new { controller = "Account", action = "UserProfile" });
+            defaults: new { controller = "Profile", action = "Index" });
         endpoints.MapControllerRoute(
             name: "adminPanel",
             pattern: "/admin",

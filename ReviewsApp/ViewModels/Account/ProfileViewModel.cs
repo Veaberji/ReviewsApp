@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ReviewsApp.ViewModels.Account
 {
-    public class UserProfileViewModel
+    public class ProfileViewModel
     {
         public string UserName { get; set; }
         public string DisplayName { get; set; }

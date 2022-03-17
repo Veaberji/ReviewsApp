@@ -45,8 +45,8 @@
                         @if (User.Identity?.IsAuthenticated ?? false)
                         {
                             <a class="dropdown-item"
-                           asp-controller="Account"
-                           asp-action="UserProfile"
+                           asp-controller="Profile"
+                           asp-action="Index"
                            asp-route-userName="@User.Identity.Name">
                                 <i class="fas fa-id-card"></i> Profile
                             </a>

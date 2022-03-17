@@ -32,7 +32,7 @@ namespace ReviewsApp.Utils
             return expectedHash;
         }
 
-        private string EncodeData(string data)
+        private static string EncodeData(string data)
         {
             return Encoding.UTF8.GetString(Convert.FromBase64String(data));
         }
@@ -50,7 +50,7 @@ namespace ReviewsApp.Utils
             }
         }
 
-        private string FormatData(string data)
+        private static string FormatData(string data)
         {
             int mod4 = data.Length % 4;
             if (mod4 > 0)

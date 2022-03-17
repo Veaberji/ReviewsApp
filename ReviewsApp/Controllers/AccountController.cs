@@ -2,18 +2,12 @@
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
-using ReviewsApp.Services;
 using ReviewsApp.Utils;
 using ReviewsApp.ViewModels.Account;
-using ReviewsApp.ViewModels.MainReview;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers
@@ -25,22 +19,19 @@ namespace ReviewsApp.Controllers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly PaginationService _paginationService;
-        private readonly UserService _userService;
+        private readonly SocialLoginHelper _loginHelper;
 
         public AccountController(UserManager<User> userManager,
             SignInManager<User> signInManager,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-            PaginationService paginationService,
-            UserService userService)
+            SocialLoginHelper loginHelper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _paginationService = paginationService;
-            _userService = userService;
+            _loginHelper = loginHelper;
         }
 
         [AllowAnonymous]
@@ -133,7 +124,7 @@ namespace ReviewsApp.Controllers
                 return RedirectToHomePage();
             }
 
-            var user = CreateUser(info);
+            var user = _loginHelper.CreateUser(info);
             if (await UserWithSameEmailRegistered(user))
             {
                 TempData["message"] = $"User with email '{user.Email}' already registered";
@@ -204,28 +195,6 @@ namespace ReviewsApp.Controllers
             return View();
         }
 
-        public async Task<IActionResult> UserProfile(string userName, int pageIndex = 1)
-        {
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user is null || !await _userService.IsAllowedUser(user.Id))
-            {
-                return StatusCode(StatusCodes.Status403Forbidden);
-            }
-            var reviews =
-                await _unitOfWork.Reviews.GetPreviewsByAuthorIdAsync(user.Id, pageIndex);
-            var reviewsViewModels =
-                _mapper.Map<IEnumerable<PreviewViewModel>>(reviews);
-            var amount = await _unitOfWork.Reviews
-                .GetAmountOfReviewsByAuthorAsync(user);
-            var pagination = _paginationService.CreatePagination(pageIndex,
-                amount, nameof(UserProfile));
-            var model = _mapper.Map<UserProfileViewModel>(user);
-            model.Reviews = reviewsViewModels;
-            model.Pagination = pagination;
-
-            return View(model);
-        }
-
         private ChallengeResult GetSocialLoginResult(string scheme)
         {
             string redirectUrl = Url.Action("SocialResponse");
@@ -247,38 +216,6 @@ namespace ReviewsApp.Controllers
         private IActionResult RedirectToLoginPage()
         {
             return RedirectToAction("Login");
-        }
-
-        private User CreateUser(ExternalLoginInfo info)
-        {
-            return new User
-            {
-                Email = info.Principal.FindFirst(ClaimTypes.Email).Value,
-                UserName = InitSocialUserName(info),
-                DisplayName = GetNameFromExternalInfo(info)
-            };
-        }
-
-        private string InitSocialUserName(ExternalLoginInfo info)
-        {
-            string name = GetNameFromExternalInfo(info).Replace(" ", "");
-            var users = _unitOfWork.Users
-                .Find(u => u.UserName.Contains(name))
-                .Select(u => u.UserName)
-                .ToList();
-            int count = users.Count;
-            var possibleName = name;
-            while (users.Contains(possibleName))
-            {
-                possibleName = name + ++count;
-            }
-
-            return possibleName;
-        }
-
-        private static string GetNameFromExternalInfo(ExternalLoginInfo info)
-        {
-            return info.Principal.FindFirst(ClaimTypes.Name).Value;
         }
 
         private void AddLoginError()

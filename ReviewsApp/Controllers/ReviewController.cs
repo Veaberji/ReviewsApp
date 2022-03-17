@@ -347,7 +347,7 @@ namespace ReviewsApp.Controllers
             _unitOfWork.Likes.RemoveRange(review.Likes);
             _unitOfWork.Reviews.Remove(review);
             await _unitOfWork.CompleteAsync();
-            return RedirectToAction("UserProfile", "Account",
+            return RedirectToAction("Index", "Profile",
                 new { userName = review.Author.UserName });
         }
 
