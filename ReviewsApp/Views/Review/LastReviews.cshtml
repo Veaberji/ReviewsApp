@@ -11,30 +11,33 @@
     }
 </head>
 
-@if (!Model.Reviews.Any())
-{
-    <div class="alert alert-warning m-3">
-        Reviews Not Found
-    </div>
-}
-else
-{
-    <div class="row m-3">
-        <div class="col-9">
-            @foreach (var review in Model.Reviews)
+<div class="row m-3">
+    <div class="col-9">
+        @if (!Model.Reviews.Any())
+        {
+            <div class="alert alert-warning m-3">
+                Reviews Not Found
+            </div>
+        }
+        else
+        {
+            foreach (var review in Model.Reviews)
             {
                 await Html.RenderPartialAsync("ReviewPartials/_Preview", review);
             }
-        </div>
-        <div class="col-3">
-            @{
-                await Html.RenderPartialAsync("LastReviewsPartials/_TopRatedReviews",
-                        Model.TopRatedReviews);
-            }
-            @{
-                await Html.RenderPartialAsync("LastReviewsPartials/_TagCloud", Model.TagCloud);
-            }
-        </div>
+        }
     </div>
+    <div class="col-3">
+        @{
+            await Html.RenderPartialAsync("LastReviewsPartials/_TopRatedReviews",
+                Model.TopRatedReviews);
+        }
+        @{
+            await Html.RenderPartialAsync("LastReviewsPartials/_TagCloud", Model.TagCloud);
+        }
+    </div>
+</div>
+@if (Model.Reviews.Any())
+{
     await Html.RenderPartialAsync("ReviewPartials/_Pagination", Model.Pagination);
 }

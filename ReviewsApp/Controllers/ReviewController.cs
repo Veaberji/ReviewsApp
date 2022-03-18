@@ -59,10 +59,7 @@ namespace ReviewsApp.Controllers
         public async Task<IActionResult> SingleReview(int id)
         {
             var review = await _unitOfWork.Reviews.GetNoCommentsFullReviewByIdAsync(id);
-            if (review is null)
-            {
-                return NotFound();
-            }
+            if (review is null) return NotFound();
             var model = await _reviewFactory.CreateReviewPageModel(review);
 
             return View(model);
