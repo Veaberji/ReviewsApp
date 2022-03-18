@@ -34,6 +34,10 @@
 
     $(function () {
         restrictProductInput();
+        $("#ProductViewModel_Type").on("change", function(event) {
+            event.preventDefault();
+
+        });
     });
 
     for (let i = 1; i <= @Model.OldImagesUrls.Count; i++) {

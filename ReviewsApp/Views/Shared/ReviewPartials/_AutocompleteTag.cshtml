@@ -32,6 +32,7 @@
 <script type="text/javascript">
     const maxTagsInReview = @TagConstrains.MaxTagsInReview;
     const tagsResultSeparator = '@TagViewModelConstrains.TagsSeparator';
+    const tagPattern = @TagViewModelConstrains.TagPattern;
     let tagsEntered = 0;
     document.getElementById("TagText")
         .addEventListener("keypress", function (event) {
@@ -73,7 +74,7 @@
 
     function restrictTagInput() {
         getAutoCompleteTagTextElement().addEventListener("keypress", function (event) {
-            if (!String.fromCharCode(event.keyCode).match(/[a-zA-Z0-9-]/g)) {
+            if (!String.fromCharCode(event.keyCode).match(tagPattern)) {
                 event.preventDefault();
             }
         });

@@ -11,7 +11,7 @@ namespace ReviewsApp.ViewModels.Account
 
         [Required]
         [MaxLength(UserRegistrationConstrains.MaxStringLength)]
-        [Display(Name = "Your displayed Name")]
+        [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
 
         [DataType(DataType.Password)]

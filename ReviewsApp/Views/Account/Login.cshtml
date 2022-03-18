@@ -10,16 +10,16 @@
 }
 
 <div class="card-body col-4 align-self-center pt-0">
-
-    <div asp-validation-summary="All" class="alert-danger"></div>
     <form asp-action="Login" method="post">
         <div class="mb-3">
             <label class="form-label" asp-for="Login"></label>
             <input class="form-control text-center" asp-for="Login" />
+            <span asp-validation-for="Login" class="text-danger"></span>
         </div>
         <div class="mb-3">
             <label class="form-label" asp-for="Password"></label>
             <input class="form-control text-center" asp-for="Password" />
+            <span asp-validation-for="Password" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">
             Log In
@@ -27,3 +27,7 @@
         <a asp-controller="Review" asp-action="LastReviews" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

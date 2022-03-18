@@ -6,13 +6,17 @@
         public static string DefaultTheme { get; set; }
         public static string ThemeCookie { get; set; }
         public static int CookieLivePeriodYears { get; set; }
+
         public static int TagCloudSize { get; set; }
+
         public static string AzureImagesContainer { get; set; }
         public static string BaseImagesUrl { get; set; }
         public static string DefaultImageUrl { get; set; }
         public static int MaxImageSizeInBytes { get; set; }
         public static int SizeToCutImageFileName { get; set; }
+
         public static int PaginationLinksAmount { get; set; }
+
         public static int PreviewsPerPage { get; set; }
         public static int PreviewBodySize { get; set; }
         public static int TopRatedReviewsAmount { get; set; }

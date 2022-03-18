@@ -6,6 +6,7 @@
             <textarea class="form-control comment-textarea"
                       asp-for="Body"
                       placeholder="Write a Comment"></textarea>
+            <span asp-validation-for="Body" class="text-danger"></span>
         </div>
         <input asp-for="ReviewId" hidden />
         <div>
@@ -23,3 +24,6 @@
         $("#ReviewId").val(reviewId);
     });
 </script>
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}

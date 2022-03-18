@@ -7,5 +7,10 @@ namespace ReviewsApp.ViewModels.MainReview
         public int Id { get; set; }
         public List<string> OldImagesUrls { get; set; }
         public string ImagesToDelete { get; set; }
+
+        public ReviewEditViewModel()
+        {
+            OldImagesUrls = new List<string>();
+        }
     }
 }

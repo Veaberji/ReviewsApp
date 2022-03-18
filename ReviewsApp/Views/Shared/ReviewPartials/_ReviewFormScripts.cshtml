@@ -16,6 +16,7 @@
     </div>
 </div>
 @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
     await Html.RenderPartialAsync("ReviewPartials/_AutocompleteTag");
     await Html.RenderPartialAsync("ReviewPartials/_Dropzone");
 }

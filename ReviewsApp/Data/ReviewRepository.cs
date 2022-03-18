@@ -82,7 +82,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
 
     private AppDbContext AppDbContext => Context as AppDbContext;
 
-    private IQueryable<Review> AddPreviewsIncludes(IQueryable<Review> reviews, int pageIndex)
+    private static IQueryable<Review> AddPreviewsIncludes(IQueryable<Review> reviews, int pageIndex)
     {
         return reviews.OrderByDescending(r => r.DateAdded)
             .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)

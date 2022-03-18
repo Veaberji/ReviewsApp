@@ -11,6 +11,7 @@
     <div class="col-10">
         <label class="form-label" asp-for="Title"></label>
         <input class="form-control" asp-for="Title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <div class="col-2">
         <label class="form-label" asp-for="AuthorGrade"></label>
@@ -22,15 +23,16 @@
                 <option value="@i" class="text-center">@i</option>
             }
         </select>
+        <span asp-validation-for="AuthorGrade" class="text-danger"></span>
     </div>
 </div>
-
 <div class="mb-3 row">
     <div class="col-10">
         <label class="form-label"
                asp-for="ProductViewModel.Name"></label>
         <input class="form-control"
                asp-for="ProductViewModel.Name" />
+        <span asp-validation-for="ProductViewModel.Name" class="text-danger"></span>
     </div>
     <div class="col-2">
         <label class="form-label"
@@ -45,13 +47,14 @@
                 </option>
             }
         </select>
+        <span asp-validation-for="ProductViewModel.Type" class="text-danger"></span>
     </div>
 </div>
 <div class="mb-3">
     <label class="form-label" asp-for="Body"></label>
     <textarea class="form-control review-textarea" asp-for="Body"></textarea>
+    <span asp-validation-for="Body" class="text-danger"></span>
 </div>
-
 <div class="row g-3 align-items-center">
     <div class="col-auto">
         <label class="col-form-label" for="TagText">
@@ -89,6 +92,7 @@
 <button type="submit" class="btn btn-primary position-absolute buttom-center">
     Save
 </button>
+
 @{
     await Html.RenderPartialAsync("ReviewPartials/_CancelDialog");
 }
