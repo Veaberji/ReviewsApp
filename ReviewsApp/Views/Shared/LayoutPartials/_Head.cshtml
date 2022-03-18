@@ -1,8 +1,6 @@
-﻿@inject SettingsService _service
-
-<meta name="viewport" content="width=device-width" />
+﻿<meta name="viewport" content="width=device-width, initial-scale=1" />
 @{
     await Html.RenderPartialAsync("LayoutPartials/_Favicons");
+    await Html.RenderPartialAsync("LayoutPartials/_Styles");
+    await Html.RenderPartialAsync("LayoutPartials/_UIScripts");
 }
-<link rel="stylesheet" href="~/css/Themes/@_service.GetTheme()" />
-<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />

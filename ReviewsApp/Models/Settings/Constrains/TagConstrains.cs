@@ -4,5 +4,6 @@
     {
         public const int TextMaxLength = 50;
         public const int MaxTagsInReview = 5;
+        public const int MinCharsForAutocomplete = 2;
     }
 }

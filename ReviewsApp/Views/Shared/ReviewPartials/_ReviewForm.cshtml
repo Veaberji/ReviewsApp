@@ -1,5 +1,12 @@
 ﻿@model CreateReviewViewModel
 
+<head>
+    <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css"
+          rel="Stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.css"
+          rel="Stylesheet" type="text/css" />
+</head>
+
 <div class="mb-3 row">
     <div class="col-10">
         <label class="form-label" asp-for="Title"></label>
@@ -48,7 +55,8 @@
 <div class="row g-3 align-items-center">
     <div class="col-auto">
         <label class="col-form-label" for="TagText">
-            Input tag, press enter (max 5 tags, only letters, numbers, '-'):
+            Input tag (max @TagConstrains.MaxTagsInReview
+            tags, only letters, numbers, '-'):
         </label>
     </div>
     <div class="col-auto" id="TagInputs" name="TagInputs">
