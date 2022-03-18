@@ -18,80 +18,45 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
 
     public async Task<IEnumerable<Review>> GetPreviewsAsync(int pageIndex)
     {
-        return await AppDbContext.Reviews
-            .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
-            .Take(AppConfigs.PreviewsPerPage)
-            .Include(r => r.Author)
-            .ThenInclude(a => a.Reviews)
-            .ThenInclude(r => r.Likes)
-            .Include(r => r.Product)
-            .ThenInclude(p => p.Grades)
-            .Include(r => r.Tags)
-            .Include(r => r.Images.Take(1))
-            .ToListAsync();
+        var reviews = AppDbContext.Reviews;
+        return await AddPreviewsIncludes(reviews, pageIndex).ToListAsync();
     }
 
     public async Task<IEnumerable<Review>> GetPreviewsWithTagAsync(Tag tag, int pageIndex)
     {
-        return await AppDbContext.Reviews.Where(r => r.Tags.Contains(tag))
-            .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
-            .Take(AppConfigs.PreviewsPerPage)
-            .Include(r => r.Author)
-            .ThenInclude(a => a.Reviews)
-            .ThenInclude(r => r.Likes)
-            .Include(r => r.Product)
-            .ThenInclude(p => p.Grades)
-            .Include(r => r.Tags)
-            .Include(r => r.Images.Take(1))
-            .ToListAsync();
+        var reviews = AppDbContext.Reviews.Where(r => r.Tags.Contains(tag));
+        return await AddPreviewsIncludes(reviews, pageIndex).ToListAsync();
     }
 
     public async Task<IEnumerable<Review>> GetPreviewsByAuthorIdAsync(string authorId, int pageIndex)
     {
+        var reviews = AppDbContext.Reviews.Where(r => r.AuthorId == authorId);
+        return await AddPreviewsIncludes(reviews, pageIndex).ToListAsync();
+    }
+
+    public async Task<IEnumerable<Review>> GetTopRatedReviewsHeadersAsync()
+    {
         return await AppDbContext.Reviews
-            .Where(r => r.AuthorId == authorId)
-            .OrderByDescending(r => r.DateAdded)
-            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
-            .Take(AppConfigs.PreviewsPerPage)
+            .Where(r => r.Product.Grades.Count > 0)
+            .OrderByDescending(r => r.Product.Grades.Average(g => g.Grade))
             .Include(r => r.Author)
             .ThenInclude(a => a.Reviews)
             .ThenInclude(r => r.Likes)
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
-            .Include(r => r.Tags)
-            .Include(r => r.Images.Take(1))
+            .Take(AppConfigs.TopRatedReviewsAmount)
             .ToListAsync();
     }
 
     public async Task<Review> GetNoCommentsFullReviewByIdAsync(int id)
     {
-        return await AppDbContext.Reviews
-            .Where(r => r.Id == id)
-            .Include(r => r.Author)
-            .ThenInclude(a => a.Reviews)
-            .ThenInclude(r => r.Likes)
-            .Include(r => r.Product)
-            .ThenInclude(p => p.Grades)
-            .Include(r => r.Tags)
-            .Include(r => r.Images)
-            .Include(r => r.Likes)
+        return await GetPreviewWithIncludes(id)
             .FirstOrDefaultAsync();
     }
 
     public async Task<Review> GetFullReviewByIdAsync(int id)
     {
-        return await AppDbContext.Reviews
-            .Where(r => r.Id == id)
-            .Include(r => r.Author)
-            .ThenInclude(a => a.Reviews)
-            .ThenInclude(r => r.Likes)
-            .Include(r => r.Product)
-            .ThenInclude(p => p.Grades)
-            .Include(r => r.Tags)
-            .Include(r => r.Images)
-            .Include(r => r.Likes)
+        return await GetPreviewWithIncludes(id)
             .Include(r => r.Comments)
             .FirstOrDefaultAsync();
     }
@@ -115,19 +80,32 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .CountAsync();
     }
 
-    public async Task<IEnumerable<Review>> GetTopRatedReviewsHeadersAsync()
+    private AppDbContext AppDbContext => Context as AppDbContext;
+
+    private IQueryable<Review> AddPreviewsIncludes(IQueryable<Review> reviews, int pageIndex)
     {
-        return await AppDbContext.Reviews
-            .Where(r => r.Product.Grades.Count > 0)
-            .OrderByDescending(r => r.Product.Grades.Average(g => g.Grade))
+        return reviews.OrderByDescending(r => r.DateAdded)
+            .Skip((pageIndex - 1) * AppConfigs.PreviewsPerPage)
+            .Take(AppConfigs.PreviewsPerPage)
             .Include(r => r.Author)
             .ThenInclude(a => a.Reviews)
             .ThenInclude(r => r.Likes)
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
-            .Take(AppConfigs.TopRatedReviewsAmount)
-            .ToListAsync();
+            .Include(r => r.Tags)
+            .Include(r => r.Images.Take(1));
     }
-
-    private AppDbContext AppDbContext => Context as AppDbContext;
+    private IQueryable<Review> GetPreviewWithIncludes(int id)
+    {
+        return AppDbContext.Reviews
+            .Where(r => r.Id == id)
+            .Include(r => r.Author)
+            .ThenInclude(a => a.Reviews)
+            .ThenInclude(r => r.Likes)
+            .Include(r => r.Product)
+            .ThenInclude(p => p.Grades)
+            .Include(r => r.Tags)
+            .Include(r => r.Images)
+            .Include(r => r.Likes);
+    }
 }
