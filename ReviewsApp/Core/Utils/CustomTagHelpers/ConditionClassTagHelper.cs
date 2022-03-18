@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReviewsApp.Utils.CustomTagHelpers
+namespace ReviewsApp.Core.Utils.CustomTagHelpers
 {
     [HtmlTargetElement(Attributes = TagHelperPrefix + "*")]
     public class ConditionClassTagHelper : TagHelper

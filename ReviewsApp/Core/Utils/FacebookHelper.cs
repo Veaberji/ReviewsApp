@@ -3,7 +3,7 @@ using ReviewsApp.Models.Settings;
 using System;
 using System.Text;
 
-namespace ReviewsApp.Utils
+namespace ReviewsApp.Core.Utils
 {
     public class FacebookHelper
     {

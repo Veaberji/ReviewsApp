@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ReviewsApp.Core.Utils;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
-using ReviewsApp.Utils;
 using ReviewsApp.ViewModels.Account;
 using System.Threading.Tasks;
 

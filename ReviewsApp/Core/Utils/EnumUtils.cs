@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ReviewsApp.Utils
+namespace ReviewsApp.Core.Utils
 {
     public static class EnumUtils
     {

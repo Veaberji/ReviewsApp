@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using ReviewsApp.Core.Utils;
 using ReviewsApp.Models;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Settings;
-using ReviewsApp.Utils;
 using System;
 
 namespace ReviewsApp.Core.DependencyInjection

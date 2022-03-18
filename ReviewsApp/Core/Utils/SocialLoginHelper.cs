@@ -3,7 +3,7 @@ using ReviewsApp.Models.Common;
 using ReviewsApp.Services;
 using System.Security.Claims;
 
-namespace ReviewsApp.Utils
+namespace ReviewsApp.Core.Utils
 {
     public class SocialLoginHelper
     {

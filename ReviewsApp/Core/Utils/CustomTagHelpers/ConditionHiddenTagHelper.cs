@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 
-namespace ReviewsApp.Utils.CustomTagHelpers
+namespace ReviewsApp.Core.Utils.CustomTagHelpers
 {
     [HtmlTargetElement(Attributes = TagHelperName)]
     public class ConditionHiddenTagHelper : TagHelper
