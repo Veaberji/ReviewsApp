@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ReviewsApp.Models.MainReview;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace ReviewsApp.Models.Common
 {
+    [Index(nameof(DisplayName), IsUnique = true,
+        Name = $"{nameof(DisplayName)}Index")]
     public class User : IdentityUser
     {
         [Required]
