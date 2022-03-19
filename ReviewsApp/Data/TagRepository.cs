@@ -23,7 +23,7 @@ public class TagRepository : Repository<Tag, int>, ITagRepository
     public List<Tag> GetTopTags()
     {
         return AppDbContext.Tags
-            .OrderBy(t => t.Count)
+            .OrderByDescending(t => t.Count)
             .Take(AppConfigs.TagCloudSize)
             .ToList();
     }

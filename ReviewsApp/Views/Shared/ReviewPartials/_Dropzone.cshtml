@@ -2,7 +2,10 @@
     Dropzone.options.imagesDropzone = {
     init: function() {
             this.on("successmultiple", function(file, responseText) {
-                $('#ImagesUrls').val(responseText);
+                let images = $('#ImagesUrls').val();
+                let result = images.length > 0 ?
+                    images + "," + responseText : responseText;
+                $('#ImagesUrls').val(result);
             });
 
             let imagesDropzone = this;
