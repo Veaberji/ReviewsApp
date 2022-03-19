@@ -30,7 +30,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Author,
                     o => o.MapFrom(r => r.Author))
                 .ForMember(d => d.AverageUserRating,
-                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                    o => o.MapFrom(r => RoundRating(r.Product.GetAverageUserRating())))
                 .ForMember(d => d.PreviewImageUrl,
                     o => o.MapFrom(r => r.Images.FirstOrDefault().Url))
                 .ForMember(d => d.Tags,
@@ -46,7 +46,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Author,
                     o => o.MapFrom(r => r.Author))
                 .ForMember(d => d.AverageUserRating,
-                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                    o => o.MapFrom(r => RoundRating(r.Product.GetAverageUserRating())))
                 .ForMember(d => d.PreviewImageUrl,
                     o => o.MapFrom(r => r.Images.FirstOrDefault().Url))
                 .ForMember(d => d.Tags,
@@ -68,7 +68,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
 
             CreateMap<Review, GradeResponseViewModel>()
                 .ForMember(d => d.Rating,
-                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                    o => o.MapFrom(r => RoundRating(r.Product.GetAverageUserRating())))
                 .ForMember(d => d.TotalRates,
                     o => o.MapFrom(r => r.Product.Grades.Count));
 
@@ -76,7 +76,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.Author,
                     o => o.MapFrom(r => r.Author))
                 .ForMember(d => d.AverageUserRating,
-                    o => o.MapFrom(r => r.Product.GetAverageUserRating()))
+                    o => o.MapFrom(r => RoundRating(r.Product.GetAverageUserRating())))
                 .ForMember(d => d.ProductName,
                     o => o.MapFrom(r => r.Product.Name))
                 .ForMember(d => d.ProductType,
@@ -169,5 +169,14 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             return Markdown.ToHtml(text, pipeline);
         }
+        private double? RoundRating(double? rating)
+        {
+            if (rating.HasValue)
+            {
+                return Math.Round(rating.Value, 2);
+            }
+            return null;
+        }
+
     }
 }
