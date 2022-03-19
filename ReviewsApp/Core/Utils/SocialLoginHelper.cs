@@ -26,7 +26,7 @@ namespace ReviewsApp.Core.Utils
 
         private string InitSocialUserName(ExternalLoginInfo info)
         {
-            string name = GetFormattedName(info);
+            string name = GetNameWithoutSpaces(info);
             return _userService.GetPossibleUserName(name);
         }
 
@@ -36,14 +36,14 @@ namespace ReviewsApp.Core.Utils
             return _userService.GetPossibleDisplayName(name);
         }
 
-        private string GetEmail(ExternalLoginInfo info)
+        private static string GetEmail(ExternalLoginInfo info)
         {
             return info.Principal.FindFirst(ClaimTypes.Email)?.Value;
         }
 
 
 
-        private static string GetFormattedName(ExternalLoginInfo info)
+        private static string GetNameWithoutSpaces(ExternalLoginInfo info)
         {
             return GetName(info).Replace(" ", "");
         }

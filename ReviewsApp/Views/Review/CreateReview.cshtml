@@ -5,7 +5,6 @@
 </head>
 
 <div class="card-body col-12 align-self-center pt-0 justify-content-center position-relative">
-    <div asp-validation-summary="All" class="text-danger m-1"></div>
     <form asp-action="CreateReview" asp-route-userName="@Model.UserName"
           method="post" enctype="multipart/form-data">
         @{

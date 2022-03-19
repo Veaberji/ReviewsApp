@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ReviewsApp.Controllers
 {
@@ -8,7 +9,7 @@ namespace ReviewsApp.Controllers
         {
             if (statusCode != null)
                 HttpContext.Response.StatusCode = statusCode.Value;
-            if (statusCode is 403)
+            if (statusCode is StatusCodes.Status403Forbidden)
             {
                 return View("Error403");
             }

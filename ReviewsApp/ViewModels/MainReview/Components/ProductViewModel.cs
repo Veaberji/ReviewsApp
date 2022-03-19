@@ -7,7 +7,7 @@ namespace ReviewsApp.ViewModels.MainReview.Components
     public class ProductViewModel
     {
         [Required]
-        [Display(Name = "Title of the described product")]
+        [Display(Name = "Name of the described product")]
         [MaxLength(ProductConstrains.NameMaxLength)]
         public string Name { get; set; }
 

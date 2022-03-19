@@ -1,6 +1,6 @@
 ﻿@model ReviewViewModel
 
-<form>
+<form asp-antiforgery="true">
     <span id="changeLike" class="cursor-pointer"
           condition-class-text-success="@Model.IsLikedByCurrentUser">
         @{

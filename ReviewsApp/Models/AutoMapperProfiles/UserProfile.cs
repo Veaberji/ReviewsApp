@@ -26,18 +26,11 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(u => MapLikes(u)));
         }
 
-        private int MapLikes(User author)
+        private static int MapLikes(User author)
         {
-            var result = 0;
             var reviews = author.Reviews;
-            foreach (var likes in reviews.Select(r => r.Likes))
-            {
-                var count = likes.Count;
-                result += count;
-            }
 
-            return result;
-            //return author.Reviews.Select(r => r.Likes).Sum(likes => likes.Count);
+            return reviews.Select(r => r.Likes).Sum(likes => likes.Count);
         }
     }
 }

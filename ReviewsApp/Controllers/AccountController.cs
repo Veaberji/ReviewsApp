@@ -171,7 +171,8 @@ namespace ReviewsApp.Controllers
 
             return Json(new
             {
-                url = Url.Action("FacebookInfo", "Account", new { id = userId }, HttpContext.Request.Scheme),
+                url = Url.Action("FacebookInfo", "Account",
+                    new { id = userId }, HttpContext.Request.Scheme),
                 confirmation_code = userId
             });
 

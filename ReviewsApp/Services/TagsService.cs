@@ -75,10 +75,6 @@ namespace ReviewsApp.Services
             var existingTags = updatedReview.Tags.Select(t => t.Text);
             var newTags = tags.Where(t => !existingTags.Contains(t.Text)).ToList();
             var updatedNewTags = GetTagsWithCounts(newTags);
-            //foreach (var tag in updatedNewTags)
-            //{
-            //    updatedReview.Tags.Add(tag);
-            //}
             updatedReview.Tags.AddRange(updatedNewTags);
 
         }
@@ -109,7 +105,7 @@ namespace ReviewsApp.Services
             return tempTags;
         }
 
-        private bool IsAdded(List<Tag> tempTags, Tag tag)
+        private static bool IsAdded(List<Tag> tempTags, Tag tag)
         {
             return tempTags.Any(tempTag => tempTag.Text == tag.Text);
         }

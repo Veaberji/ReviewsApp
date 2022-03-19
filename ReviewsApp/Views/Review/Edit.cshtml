@@ -5,7 +5,6 @@
 </head>
 
 <div class="card-body col-12 align-self-center pt-0 justify-content-center position-relative">
-    <div asp-validation-summary="All" class="text-danger m-1"></div>
     <form asp-action="Edit" method="post" asp-route-id="@Model.Id" enctype="multipart/form-data">
         @{
             await Html.RenderPartialAsync("ReviewPartials/_ReviewForm", Model);
@@ -21,8 +20,8 @@
             <div class="col-2 position-relative pe-0" id="old-image@(i)">
                 <img src="@Model.OldImagesUrls[i - 1]" class="img-thumbnail card-img">
                 <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                    title="Delete image"
-                    id="image@(i)-btn">
+                title="Delete image"
+                id="image@(i)-btn">
                 </button>
             </div>
         }

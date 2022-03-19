@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Services;
+using ReviewsApp.ViewModels.MainReview.Components.Constrains;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace ReviewsApp.Controllers
         public async Task DeleteImages(string urls)
         {
             if (string.IsNullOrWhiteSpace(urls)) return;
-            var files = urls.Split(",");
+            var files = urls.Split(ImageViewModelConstrains.ImagesSeparator);
             await _imageStoreService
                 .DeleteImagesAsync(files);
         }

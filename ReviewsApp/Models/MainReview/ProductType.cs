@@ -5,7 +5,7 @@
         Film = 1,
         Book = 2,
         Game = 3,
-        Literature = 4,
+        Music = 4,
         Art = 5
     }
 }

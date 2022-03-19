@@ -108,7 +108,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
 
         }
 
-        private IList<Tag> MapTags(string input)
+        private static IList<Tag> MapTags(string input)
         {
             var result = new List<Tag>();
             if (string.IsNullOrEmpty(input))
@@ -121,7 +121,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             return result;
         }
 
-        private IList<Image> MapImages(string imageUrls)
+        private static IList<Image> MapImages(string imageUrls)
         {
             var result = new List<Image>();
             if (string.IsNullOrEmpty(imageUrls))
@@ -133,7 +133,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
             return result;
         }
 
-        private List<string> MapOldImages(IList<Image> images)
+        private static List<string> MapOldImages(IList<Image> images)
         {
             return images.Select(image => image.Url).ToList();
         }
@@ -164,7 +164,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 textCutByLastValidChar[..lastSpaceIndex] + "...";
         }
 
-        private string ConvertMarkdownToHtml(string text)
+        private static string ConvertMarkdownToHtml(string text)
         {
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             return Markdown.ToHtml(text, pipeline);

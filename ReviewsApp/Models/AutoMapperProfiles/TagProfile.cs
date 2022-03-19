@@ -22,7 +22,7 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                     o => o.MapFrom(t => t.Text));
         }
 
-        private string GetTagCssClass(int count)
+        private static string GetTagCssClass(int count)
         {
             string cssClass;
             if (count <= 1)
