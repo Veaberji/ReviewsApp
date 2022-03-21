@@ -39,6 +39,8 @@ namespace ReviewsApp.Models.MainReview
         public List<Comment> Comments { get; set; }
         public List<Like> Likes { get; set; }
 
+        public int RowVersion { get; set; }
+
         public Review()
         {
             Tags = new List<Tag>();

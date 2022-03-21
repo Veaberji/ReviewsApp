@@ -34,6 +34,7 @@ namespace ReviewsApp.Controllers
             }
             var comment = _mapper.Map<Comment>(model);
             comment.AuthorId = _userService.GetCurrentUserId();
+            comment.RowVersion = 1;
             await _unitOfWork.Comments.AddAsync(comment);
             await _unitOfWork.CompleteAsync();
             return RedirectToReviewPage(model.ReviewId);

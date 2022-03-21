@@ -25,5 +25,7 @@ namespace ReviewsApp.Models.MainReview
         [ForeignKey("Review")]
         public int? ReviewId { get; set; }
         public Review Review { get; set; }
+
+        public int RowVersion { get; set; }
     }
 }

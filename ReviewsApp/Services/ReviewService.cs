@@ -25,6 +25,7 @@ namespace ReviewsApp.Services
         public async Task CreateReview(Review review, string userId)
         {
             review.AuthorId = userId;
+            review.RowVersion = 1;
             _tagsService.SetTags(review);
             await _unitOfWork.Reviews.AddAsync(review);
             await _unitOfWork.CompleteAsync();
@@ -39,6 +40,7 @@ namespace ReviewsApp.Services
             _tagsService.UpdateTags(updatedReview, values.Tags);
             await UpdateImages(
                 updatedReview, values.Images, imagesToDelete);
+            updatedReview.RowVersion++;
             await _unitOfWork.CompleteAsync();
         }
 
