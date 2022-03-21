@@ -15,9 +15,7 @@
     <div class="col-9">
         @if (!Model.Reviews.Any())
         {
-            <div class="alert alert-warning m-3">
-                Reviews Not Found
-            </div>
+            await Html.RenderPartialAsync("ReviewPartials/_ReviewsNotFound");
         }
         else
         {

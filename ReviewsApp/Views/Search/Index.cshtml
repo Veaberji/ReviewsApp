@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ReviewSearchResultViewModel>
+
+<head>
+    <title>@AppConfigs.Title - Search Results</title>
+</head>
+
+@if (!Model.Any())
+{
+    await Html.RenderPartialAsync("ReviewPartials/_ReviewsNotFound");
+}
+else
+{
+    <div class="card m-3 p-1">
+        <h5 class="card-title">@Model.Count() Result(s) was found</h5>
+        @foreach (var result in Model)
+        {
+            <div class="card-body">
+                <span class="text-warning"></span>
+                <h4 class="card-title">
+                    <a asp-controller="Review"
+               asp-action="SingleReview"
+               asp-route-id="@result.Id">
+                        @{
+                            await Html.RenderPartialAsync("ReviewPartials/_MarkdownBody", result.Title);
+                        }
+                    </a>
+                </h4>
+                <div class="card-text text-start">
+                    @{
+                        await Html.RenderPartialAsync("ReviewPartials/_MarkdownBody", result.HighlightedText);
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

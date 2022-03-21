@@ -11,6 +11,7 @@ builder.AddDbContextService();
 builder.AddImagesStoreService();
 builder.AddAuthenticationServices();
 builder.AddModelsServices();
+builder.AddFeaturesServices();
 builder.Services.AddControllersWithViews();
 builder.AddDevServices();
 
@@ -52,6 +53,10 @@ app.UseEndpoints(endpoints =>
             name: "adminPanel",
             pattern: "/admin",
             defaults: new { controller = "Admin", action = "Index" });
+        endpoints.MapControllerRoute(
+            name: "search",
+            pattern: "/search",
+            defaults: new { controller = "Search", action = "Index" });
         endpoints.MapControllerRoute(
             name: "createReview",
             pattern: "/{userName}-create",

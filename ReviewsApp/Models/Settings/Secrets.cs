@@ -10,5 +10,6 @@
 
         public static string AzureBlobConnectionString { get; set; }
 
+        public static string AzureSearchQueryKey { get; set; }
     }
 }
