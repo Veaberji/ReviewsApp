@@ -10,6 +10,9 @@ namespace ReviewsApp.Core.DependencyInjection
             this WebApplicationBuilder builder)
         {
             builder.Configuration.Bind("Data:ProjectConfigs", new AppConfigs());
+            builder.Configuration.Bind("Data:TagCloudConfigs", new TagCloudConfigs());
+            builder.Configuration.Bind("Data:ImageConfigs", new ImageConfigs());
+            builder.Configuration.Bind("Data:PageConfigs", new PageConfigs());
             builder.Configuration.Bind("Data:SearchConfigs", new SearchConfigs());
             builder.Configuration.Bind("Data:Secrets", new Secrets());
             builder.Configuration.Bind("Data:CultureConfigs", new CultureConfigs());

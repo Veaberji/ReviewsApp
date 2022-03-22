@@ -25,7 +25,7 @@ public class TagRepository : Repository<Tag, int>, ITagRepository
         return AppDbContext.Tags
             .OrderByDescending(t => t.Count)
             .ThenBy(t => t.Text)
-            .Take(AppConfigs.TagCloudSize)
+            .Take(TagCloudConfigs.TagCloudSize)
             .ToList();
     }
 

@@ -6,7 +6,7 @@ namespace ReviewsApp.Services
 {
     public class PaginationService
     {
-        private readonly int _maxLinksAmount = AppConfigs.PaginationLinksAmount;
+        private readonly int _maxLinksAmount = PageConfigs.PaginationLinksAmount;
         private int _pagesAmount;
         private int _pageIndex;
         private const int MinFirstPageIndex = 1;
@@ -64,7 +64,7 @@ namespace ReviewsApp.Services
         private static int GetPagesAmount(int amountReviews)
         {
             return (int)Math.Ceiling(amountReviews /
-                (double)AppConfigs.PreviewsPerPage - 1) + 1;
+                (double)PageConfigs.PreviewsPerPage - 1) + 1;
         }
     }
 }

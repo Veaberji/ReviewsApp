@@ -21,7 +21,7 @@ namespace ReviewsApp.Services
         {
             CheckFile(file);
             var blobContainer = _blobServiceClient
-                .GetBlobContainerClient(AppConfigs.AzureImagesContainer);
+                .GetBlobContainerClient(ImageConfigs.AzureImagesContainer);
             var blobClient = blobContainer.GetBlobClient(
                 GetUniqueFileName(file.FileName));
 
@@ -34,8 +34,8 @@ namespace ReviewsApp.Services
         public async Task DeleteImageAsync(string url)
         {
             var blobContainer = _blobServiceClient
-                .GetBlobContainerClient(AppConfigs.AzureImagesContainer);
-            var fileName = url.Replace(@AppConfigs.BaseImagesUrl, "");
+                .GetBlobContainerClient(ImageConfigs.AzureImagesContainer);
+            var fileName = url.Replace(ImageConfigs.BaseImagesUrl, "");
             var blobClient = blobContainer.GetBlobClient(fileName);
 
             await blobClient.DeleteIfExistsAsync();
@@ -84,14 +84,14 @@ namespace ReviewsApp.Services
 
         private static bool IsValidSize(IFormFile file)
         {
-            return file.Length <= AppConfigs.MaxImageSizeInBytes;
+            return file.Length <= ImageConfigs.MaxImageSizeInBytes;
         }
 
         private string GetUniqueFileName(string fileName)
         {
             string randomName = Path.GetRandomFileName();
             string name = Path.GetFileNameWithoutExtension(fileName);
-            string cutFileName = name[..Math.Min(name.Length, AppConfigs.SizeToCutImageFileName)]
+            string cutFileName = name[..Math.Min(name.Length, ImageConfigs.SizeToCutImageFileName)]
                 .Replace(" ", "_");
             string extension = Path.GetExtension(fileName);
 

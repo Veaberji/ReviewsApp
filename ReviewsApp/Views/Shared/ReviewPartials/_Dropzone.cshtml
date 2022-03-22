@@ -1,16 +1,16 @@
 ﻿<script language="javascript">
     Dropzone.options.imagesDropzone = {
-    init: function() {
-            this.on("successmultiple", function(file, responseText) {
-                let images = $('#ImagesUrls').val();
-                let result = images.length > 0 ?
-                    images + "," + responseText : responseText;
-                $('#ImagesUrls').val(result);
-            });
+        init: function() {
+            this.on("successmultiple",
+                function(file, responseText) {
+                    let images = $('#ImagesUrls').val();
+                    let result = images.length > 0 ? images + "," + responseText : responseText;
+                    $('#ImagesUrls').val(result);
+                });
 
             let imagesDropzone = this;
-            $('#clear-dropzone')
-                .on("click", function () {
+            $('#clear-dropzone').on("click",
+                function() {
                     imagesDropzone.removeAllFiles();
                     deleteUploadedFiles();
                 });
@@ -21,13 +21,13 @@
         acceptedFiles: "image/*",
         autoDiscover: false,
         uploadMultiple: true,
-        parallelUploads: @AppConfigs.ImagesToUploadInParallel,
-        maxFiles: @AppConfigs.MaxImages,
-        maxFilesize: @AppConfigs.MaxImageSizeInMegaBytes
+        parallelUploads: @ImageConfigs.ImagesToUploadInParallel,
+        maxFiles: @ImageConfigs.MaxImages,
+        maxFilesize: @ImageConfigs.MaxImageSizeInMegaBytes
     };
 
-    $('#confirm-cancel')
-        .on("click", function () {
+    $('#confirm-cancel').on("click",
+        function() {
             deleteUploadedFiles();
         });
 
@@ -35,17 +35,16 @@
         if ($('#ImagesUrls').val()) {
             $.ajax({
                 url: '/Image/DeleteImages',
-                headers: { "RequestVerificationToken":
-                    $('input[name="__RequestVerificationToken"]').val() },
+                headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
                 data: { "urls": $('#ImagesUrls').val() },
                 type: "POST",
-                success: function () {
+                success: function() {
                     $('#ImagesUrls').val("");
                 },
-                error: function (errorResponse) {
+                error: function(errorResponse) {
                     console.log(errorResponse.responseText);
                 },
-                failure: function (failureResponse) {
+                failure: function(failureResponse) {
                     console.log(failureResponse.responseText);
                 }
             });
