@@ -1,8 +1,10 @@
-﻿<div class="m-3 text-center">
+﻿@inject IViewLocalizer _localizer
+
+<div class="m-3 text-center">
     <a class="btn btn-outline-primary"
        asp-controller="Profile"
        asp-action="Index"
        asp-route-userName="@User.Identity.Name">
-        Back to Profile
+        @_localizer["Back to Profile"]
     </a>
 </div>

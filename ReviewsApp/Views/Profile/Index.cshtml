@@ -1,7 +1,8 @@
 ﻿@model ProfileViewModel
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - @Model.DisplayName's Profile</title>
+    <title>@AppConfigs.Title - @Model.DisplayName@_localizer["Profile"]</title>
 </head>
 
 <div class="card-title my-1">
@@ -33,7 +34,7 @@
                        asp-controller="Review"
                        asp-action="CreateReview"
                        asp-route-userName="@Model.UserName">
-                        New Review <i class="fas fa-plus"></i>
+                        @_localizer["New Review"] <i class="fas fa-plus"></i>
                     </a>
                 </li>
             </ul>

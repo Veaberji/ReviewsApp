@@ -1,8 +1,9 @@
 ﻿@model StarRatingViewModel
+@inject IViewLocalizer _localizer
 
 <form asp-antiforgery="true">
     <div class="fs-5 mt-2 col-auto" id="stars-container">
-        Grade @Model.ProductName
+        @_localizer["Grade"] @Model.ProductName
         @for (int i = UserGradeConstrains.UserMinGrade;
         i <= UserGradeConstrains.UserMaxGrade; i++)
         {
@@ -118,16 +119,16 @@
         if (totalRates > 0) {
             $("#TotalRates").text(totalRates);
         } else {
-            $("#TotalRates").text("Not Rated");
+            $("#TotalRates").text("@_localizer["Not Rated"]");
         }
     }
 
     function setDescription(totalRates) {
         let text = " )";
         if (totalRates === 1) {
-            text = "Rate )";
+            text = "@_localizer["Rate"] )";
         } else if (totalRates > 1) {
-            text = "Rates )";
+            text = "@_localizer["Rates"] )";
         }
         $("#RatingDescription").text(text);
     }

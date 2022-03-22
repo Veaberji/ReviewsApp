@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ReviewsApp.Core.DependencyInjection;
 
@@ -12,7 +11,8 @@ builder.AddImagesStoreService();
 builder.AddAuthenticationServices();
 builder.AddModelsServices();
 builder.AddFeaturesServices();
-builder.Services.AddControllersWithViews();
+builder.ConfigureControllersWithViews();
+
 builder.AddDevServices();
 
 
@@ -29,6 +29,8 @@ else
 }
 
 app.UseStaticFiles();
+
+app.UseRequestLocalization();
 
 app.UseRouting();
 

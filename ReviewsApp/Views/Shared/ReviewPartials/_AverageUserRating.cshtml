@@ -1,12 +1,13 @@
 ﻿@model PreviewViewModel
+@inject IViewLocalizer _localizer
 
 <div class="badge bg-secondary text-wrap fs-6 mb-2">
-    User`s rating:
+    @_localizer["User`s rating"]:
     @{
         var rating = Model.AverageUserRating;
         if (rating.HasValue)
         {
-            var word = @Model.TotalRates == 1 ? "Rate" : "Rates";
+            var word = @Model.TotalRates == 1 ? _localizer["Rate"].Value : _localizer["Rates"].Value;
             <span id="AverageUserRating">@rating</span>
             <span>(</span>
             <span id="TotalRates">@Model.TotalRates</span>
@@ -16,7 +17,7 @@
         {
             <span id="AverageUserRating"></span>
             <span>(</span>
-            <span id="TotalRates">Not Rated</span>
+            <span id="TotalRates">@_localizer["Not Rated"]</span>
             <span id="RatingDescription">)</span>
         }
     }

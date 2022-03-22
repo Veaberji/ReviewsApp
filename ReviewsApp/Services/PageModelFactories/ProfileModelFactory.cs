@@ -2,8 +2,8 @@
 using ReviewsApp.Models.AutoMapperProfiles;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
-using ReviewsApp.ViewModels.Account;
 using ReviewsApp.ViewModels.MainReview;
+using ReviewsApp.ViewModels.Profile;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

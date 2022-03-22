@@ -1,7 +1,8 @@
 ﻿@model CreateReviewViewModel
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - Create New Review</title>
+    <title>@AppConfigs.Title - @_localizer["Create New Review"]</title>
 </head>
 
 <div class="card-body col-12 align-self-center pt-0 justify-content-center position-relative">

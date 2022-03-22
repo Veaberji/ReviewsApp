@@ -1,7 +1,8 @@
 ﻿@model DateTime
+@inject IViewLocalizer _localizer
 
 <p class="card-text">
     <small class="text-muted">
-        Added: @Model.ToLocalTime()
+        @_localizer["Publication date"]: @Model.ToLocalTime()
     </small>
 </p>

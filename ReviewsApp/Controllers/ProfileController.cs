@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Services;
 using ReviewsApp.Services.PageModelFactories;
@@ -17,14 +18,17 @@ namespace ReviewsApp.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly ProfileModelFactory _profileFactory;
         private readonly UserService _userService;
+        private readonly IStringLocalizer<ProfileController> _localizer;
 
         public ProfileController(IUnitOfWork unitOfWork,
             ProfileModelFactory profileFactory,
-            UserService userService)
+            UserService userService,
+            IStringLocalizer<ProfileController> localizer)
         {
             _unitOfWork = unitOfWork;
             _profileFactory = profileFactory;
             _userService = userService;
+            _localizer = localizer;
         }
 
         public async Task<IActionResult> Index(string userName, int pageIndex = 1)
@@ -59,7 +63,7 @@ namespace ReviewsApp.Controllers
             }
             catch (ArgumentException e)
             {
-                ModelState.AddModelError(nameof(model.DisplayName), e.Message);
+                ModelState.AddModelError(nameof(model.DisplayName), _localizer[e.Message]);
                 return View(model);
             }
 

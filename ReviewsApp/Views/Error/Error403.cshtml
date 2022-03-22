@@ -1,7 +1,9 @@
-﻿<head>
+﻿@inject IViewLocalizer _localizer
+
+<head>
     <link rel="stylesheet" href="~/css/forbidden.min.css" />
     <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
-    <title>@AppConfigs.Title - Access Forbidden</title>
+    <title>@AppConfigs.Title - @_localizer["Access Forbidden"]</title>
 </head>
 
 <div class="forbidden-container">

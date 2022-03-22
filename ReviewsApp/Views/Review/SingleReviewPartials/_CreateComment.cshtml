@@ -1,19 +1,22 @@
 ﻿@model CreateCommentViewModel
+@inject IViewLocalizer _localizer
 
 <div class="card-body align-self-start pt-0">
     <form asp-controller="Comment" asp-action="CreateComment" method="post">
         <div class="mb-3">
             <textarea class="form-control comment-textarea"
                       asp-for="Body"
-                      placeholder="Write a Comment"></textarea>
+                      placeholder="@_localizer["Write a Comment"]"></textarea>
             <span asp-validation-for="Body" class="text-danger"></span>
         </div>
         <input asp-for="ReviewId" hidden />
         <div>
             <button type="submit" class="btn btn-primary me-3">
-                Add
+                @_localizer["Add"]
             </button>
-            <button type="reset" class="btn btn-secondary text-end">Clear</button>
+            <button type="reset" class="btn btn-secondary text-end">
+                @_localizer["Clear"]
+            </button>
         </div>
     </form>
 </div>

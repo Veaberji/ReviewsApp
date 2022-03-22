@@ -21,9 +21,9 @@
         acceptedFiles: "image/*",
         autoDiscover: false,
         uploadMultiple: true,
-        parallelUploads: 10,
-        maxFiles: 10,
-        maxFilesize: 2
+        parallelUploads: @AppConfigs.ImagesToUploadInParallel,
+        maxFiles: @AppConfigs.MaxImages,
+        maxFilesize: @AppConfigs.MaxImageSizeInMegaBytes
     };
 
     $('#confirm-cancel')

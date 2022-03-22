@@ -72,7 +72,13 @@ namespace ReviewsApp.Controllers
             {
                 return StatusCode(StatusCodes.Status403Forbidden);
             }
-            return View(new CreateReviewViewModel { UserName = userName });
+
+            var model = new CreateReviewViewModel
+            {
+                UserName = userName,
+                ProductTypes = ReviewService.GetProductTypes()
+            };
+            return View(model);
         }
 
         [HttpPost]

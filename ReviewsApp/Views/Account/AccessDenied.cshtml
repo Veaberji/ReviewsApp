@@ -1,17 +1,19 @@
-﻿<head>
-    <title>@AppConfigs.Title - Access Denied</title>
+﻿@inject IViewLocalizer _localizer
+
+<head>
+    <title>@AppConfigs.Title - @_localizer["Access Denied"]</title>
 </head>
 
 <div class="card">
-    <div class="card-header">Access Denied</div>
+    <div class="card-header">@_localizer["Access Denied"]</div>
     <div class="card-body">
         <ul>
-            <li>Remote authentication was canceled.</li>
-            <li>This app requires authentication.</li>
+            <li>@_localizer["Canceled"]</li>
+            <li>@_localizer["Authentication required"]</li>
             <li>
-                To try sign-in again, select the
-                <a asp-action="Login" asp-controller="Account">Login</a>
-                link.
+                @_localizer["Try again"]
+                <a asp-action="Login" asp-controller="Account">@_localizer["Login"]</a>
+                @_localizer["page"]
             </li>
         </ul>
     </div>

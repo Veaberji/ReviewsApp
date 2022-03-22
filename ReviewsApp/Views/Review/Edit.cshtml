@@ -1,7 +1,8 @@
 ﻿@model ReviewEditViewModel
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - @Model.Title Edit</title>
+    <title>@AppConfigs.Title - @Model.Title @_localizer["Edit"]</title>
 </head>
 
 <div class="card-body col-12 align-self-center pt-0 justify-content-center position-relative">
@@ -19,9 +20,9 @@
         {
             <div class="col-2 position-relative pe-0" id="old-image@(i)">
                 <img src="@Model.OldImagesUrls[i - 1]" class="img-thumbnail card-img">
-                <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                title="Delete image"
-                id="image@(i)-btn">
+                <button class="btn btn-close btn-warning position-absolute top-0 end-0"
+                    title="@_localizer["Delete image"]"
+                    id="image@(i)-btn">
                 </button>
             </div>
         }

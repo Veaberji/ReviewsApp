@@ -1,10 +1,11 @@
 ﻿@model RegisterViewModel
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - Register now</title>
+    <title>@AppConfigs.Title - @_localizer["Register now"]</title>
 </head>
 
-<div class="card-header fs-3">Register now</div>
+<div class="card-header fs-3">@_localizer["Register now"]</div>
 @{
     await Html.RenderPartialAsync("_SocialLogins");
 }
@@ -37,9 +38,11 @@
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
         <button type="submit" class="btn btn-primary">
-            Register now
+            @_localizer["Register now"]
         </button>
-        <a asp-controller="Review" asp-action="LastReviews" class="btn btn-secondary">Cancel</a>
+        @{
+            await Html.RenderPartialAsync("ReviewPartials/_CancelButton");
+        }
     </form>
 </div>
 

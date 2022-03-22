@@ -5,9 +5,10 @@ namespace ReviewsApp.ViewModels.Profile
 {
     public class UserDataViewModel
     {
-        [Required]
-        [MaxLength(UserRegistrationConstrains.MaxStringLength)]
-        [Display(Name = "New displayed Name")]
+        [Required(ErrorMessage = "New Display Name Required")]
+        [MaxLength(UserRegistrationConstrains.MaxStringLength,
+            ErrorMessage = "Maximum Display Name length")]
+        [Display(Name = "New Display Name")]
         public string DisplayName { get; set; }
     }
 }

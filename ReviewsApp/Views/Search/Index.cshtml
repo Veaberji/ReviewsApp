@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<ReviewSearchResultViewModel>
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - Search Results</title>
+    <title>@AppConfigs.Title - @_localizer["Search Results"]</title>
 </head>
 
 @if (!Model.Any())
@@ -11,7 +12,7 @@
 else
 {
     <div class="card m-3 p-1">
-        <h5 class="card-title">@Model.Count() Result(s) was found</h5>
+        <h5 class="card-title">@Model.Count() @_localizer["Review(s) was found"]</h5>
         @foreach (var result in Model)
         {
             <div class="card-body">

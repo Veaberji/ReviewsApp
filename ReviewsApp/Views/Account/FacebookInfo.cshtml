@@ -1,7 +1,8 @@
 ﻿@model string
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - User deleted</title>
+    <title>@AppConfigs.Title - @_localizer["User deleted"]</title>
 </head>
 
-<div class="card-body">User with Id @Model was deleted</div>
+<div class="card-body">@_localizer["User with Id"] @Model @_localizer["was deleted"]</div>

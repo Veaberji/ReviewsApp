@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.Services;
-using ReviewsApp.ViewModels.MainReview.Components;
+using ReviewsApp.ViewModels.MainReview.SingleReview;
 using System.Threading.Tasks;
 
 namespace ReviewsApp.Controllers

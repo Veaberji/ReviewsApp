@@ -3,6 +3,7 @@ using ReviewsApp.Models.Common;
 using ReviewsApp.ViewModels.Account;
 using ReviewsApp.ViewModels.Admin;
 using ReviewsApp.ViewModels.MainReview.Components;
+using ReviewsApp.ViewModels.Profile;
 using System.Linq;
 
 namespace ReviewsApp.Models.AutoMapperProfiles

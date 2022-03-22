@@ -1,14 +1,15 @@
 ﻿@model PreviewViewModel
+@inject IViewLocalizer _localizer
 
 <h6 class="text-warning">
     @Model.ProductViewModel.Type :
     @Model.ProductViewModel.Name
     <br />
-    Author:
+    @_localizer["Author"]:
     @{
         await Html.RenderPartialAsync("ReviewPartials/_Author", Model.Author);
     }
-    | Author's rating: @Model.AuthorGrade
+    | @_localizer["Author's rating"]: @Model.AuthorGrade
 </h6>
 
 @{

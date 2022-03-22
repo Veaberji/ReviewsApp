@@ -39,24 +39,24 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
         return await AppDbContext.Reviews
             .Where(r => r.Product.Grades.Count > 0)
             .OrderByDescending(r => r.Product.Grades.Average(g => g.Grade))
+            .Take(AppConfigs.TopRatedReviewsAmount)
             .Include(r => r.Author)
             .ThenInclude(a => a.Reviews)
             .ThenInclude(r => r.Likes)
             .Include(r => r.Product)
             .ThenInclude(p => p.Grades)
-            .Take(AppConfigs.TopRatedReviewsAmount)
             .ToListAsync();
     }
 
     public async Task<Review> GetNoCommentsFullReviewByIdAsync(int id)
     {
-        return await GetPreviewWithIncludes(id)
+        return await GetReviewWithIncludes(id)
             .FirstOrDefaultAsync();
     }
 
     public async Task<Review> GetFullReviewByIdAsync(int id)
     {
-        return await GetPreviewWithIncludes(id)
+        return await GetReviewWithIncludes(id)
             .Include(r => r.Comments)
             .FirstOrDefaultAsync();
     }
@@ -95,7 +95,7 @@ public class ReviewRepository : Repository<Review, int>, IReviewRepository
             .Include(r => r.Tags)
             .Include(r => r.Images.Take(1));
     }
-    private IQueryable<Review> GetPreviewWithIncludes(int id)
+    private IQueryable<Review> GetReviewWithIncludes(int id)
     {
         return AppDbContext.Reviews
             .Where(r => r.Id == id)

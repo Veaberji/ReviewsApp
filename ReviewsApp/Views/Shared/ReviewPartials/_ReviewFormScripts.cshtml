@@ -1,4 +1,6 @@
-﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"
+﻿@inject IViewLocalizer _localizer
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.min.js"
         type="text/javascript"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
         integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
@@ -11,8 +13,8 @@
           class="dropzone rounded"
           enctype="multipart/form-data"></form>
     <div id="clear-dropzone"
-         class="btn btn-secondary btn-close btn-warning position-absolute top-0 end-0"
-         title="Delete all images">
+         class="btn btn-close btn-warning position-absolute top-0 end-0"
+         title="@_localizer["Delete all images"]">
     </div>
 </div>
 

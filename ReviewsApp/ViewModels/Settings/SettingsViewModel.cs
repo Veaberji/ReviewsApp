@@ -1,9 +1,12 @@
-﻿using ReviewsApp.Models.Settings;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ReviewsApp.Models.Settings;
+using System.Collections.Generic;
 
 namespace ReviewsApp.ViewModels.Settings
 {
     public class SettingsViewModel
     {
-        public Themes Theme { get; set; }
+        public IEnumerable<Themes> Themes { get; set; }
+        public IEnumerable<SelectListItem> Cultures { get; set; }
     }
 }

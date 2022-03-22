@@ -1,16 +1,16 @@
 ﻿using ReviewsApp.Models.Settings.Constrains;
 using System.ComponentModel.DataAnnotations;
 
-namespace ReviewsApp.ViewModels.MainReview.Components
+namespace ReviewsApp.ViewModels.MainReview.SingleReview
 {
     public class CreateCommentViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Comment Required")]
         [Display(Name = "Comment")]
-        [MaxLength(CommentConstrains.BodyMaxLength)]
+        [MaxLength(CommentConstrains.BodyMaxLength,
+            ErrorMessage = "Maximum Comment length")]
         public string Body { get; set; }
 
-        [Required]
         public int ReviewId { get; set; }
     }
 }

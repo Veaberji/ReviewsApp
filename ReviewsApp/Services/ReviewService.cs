@@ -1,4 +1,5 @@
-﻿using ReviewsApp.Models.Interfaces;
+﻿using ReviewsApp.Core.Utils;
+using ReviewsApp.Models.Interfaces;
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.ViewModels.MainReview.Components.Constrains;
 using System.Collections.Generic;
@@ -68,6 +69,11 @@ namespace ReviewsApp.Services
         {
             return review.Likes
                 .FirstOrDefault(l => l.AuthorId == userId) != null;
+        }
+
+        public static IEnumerable<ProductType> GetProductTypes()
+        {
+            return EnumUtils.GetValues<ProductType>();
         }
 
         private async Task DeleteImagesAsync(Review updatedReview, string imagesUrlsToDelete)

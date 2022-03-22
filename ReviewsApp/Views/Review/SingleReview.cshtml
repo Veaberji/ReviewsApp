@@ -20,14 +20,12 @@
     @{
         await Html.RenderPartialAsync("SingleReviewPartials/_ImageSlider", Model.Review.ImagesUrls);
     }
-
     @{
         if (User.Identity?.IsAuthenticated ?? false)
         {
             await Html.RenderPartialAsync("SingleReviewPartials/_StarRating", Model.StarRating);
         }
     }
-
     <div class="card-body text-start">
         <p class="card-text">
             @{

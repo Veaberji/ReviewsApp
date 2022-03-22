@@ -1,13 +1,14 @@
 ﻿@model HomeViewModel
+@inject IViewLocalizer _localizer
 
 <head>
     @if (Model.Pagination.PageIndex == 1)
     {
-        <title>@AppConfigs.Title - Just Good Reviews!</title>
+        <title>@AppConfigs.Title - @_localizer["Just Good Reviews!"]</title>
     }
     else
     {
-        <title>@AppConfigs.Title - Last Reviews Page @Model.Pagination.PageIndex</title>
+        <title>@AppConfigs.Title - @_localizer["Last Reviews Page"] @Model.Pagination.PageIndex</title>
     }
 </head>
 

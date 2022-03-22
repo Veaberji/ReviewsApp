@@ -1,11 +1,12 @@
 ﻿@model AdminViewModel
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - Admin Panel</title>
+    <title>@AppConfigs.Title - @_localizer["Admin Panel"]</title>
 </head>
 
 <div class="m-3 col-4 align-self-center">
-    <h5 class="card-title">User's Profiles</h5>
+    <h5 class="card-title">@_localizer["User's Profiles"]</h5>
     @foreach (var user in Model.Users)
     {
         <div class="card-title">

@@ -6,13 +6,14 @@ namespace ReviewsApp.ViewModels.MainReview.Components
 {
     public class ProductViewModel
     {
-        [Required]
-        [Display(Name = "Name of the described product")]
-        [MaxLength(ProductConstrains.NameMaxLength)]
+        [Required(ErrorMessage = "Product Name Required")]
+        [Display(Name = "Described Product Name")]
+        [MaxLength(ProductConstrains.NameMaxLength,
+         ErrorMessage = "Maximum Product Name length")]
         public string Name { get; set; }
 
-        [Required]
-        [Display(Name = "Product type")]
+        [Required(ErrorMessage = "Product Type Required")]
+        [Display(Name = "Product Type")]
         public ProductType Type { get; set; }
     }
 }

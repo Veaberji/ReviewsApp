@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using ReviewsApp.Core.Utils;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
@@ -20,18 +21,21 @@ namespace ReviewsApp.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly SocialLoginHelper _loginHelper;
+        private readonly IStringLocalizer<AccountController> _localizer;
 
         public AccountController(UserManager<User> userManager,
             SignInManager<User> signInManager,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-            SocialLoginHelper loginHelper)
+            SocialLoginHelper loginHelper,
+            IStringLocalizer<AccountController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _loginHelper = loginHelper;
+            _localizer = localizer;
         }
 
         [AllowAnonymous]
@@ -87,7 +91,6 @@ namespace ReviewsApp.Controllers
             await _signInManager.SignOutAsync();
             var result = await _signInManager.PasswordSignInAsync(
                 user, model.Password, false, false);
-
             if (result.Succeeded)
             {
                 return RedirectToHomePage();
@@ -127,7 +130,7 @@ namespace ReviewsApp.Controllers
             var user = _loginHelper.CreateUser(info);
             if (await UserWithSameEmailRegistered(user))
             {
-                TempData["message"] = $"User with email '{user.Email}' already registered";
+                TempData["message"] = _localizer["Same Email"];
                 return RedirectToLoginPage();
             }
 
@@ -164,7 +167,7 @@ namespace ReviewsApp.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
-                return BadRequest("User not found");
+                return BadRequest();
             }
             _unitOfWork.Users.Remove(user);
             await _unitOfWork.CompleteAsync();
@@ -222,7 +225,7 @@ namespace ReviewsApp.Controllers
         private void AddLoginError()
         {
             ModelState.AddModelError(nameof(LoginViewModel.Login),
-                "Invalid Login or password");
+                _localizer["Invalid login or password"]);
         }
 
         private void AddErrorsFromResult(IdentityResult result)

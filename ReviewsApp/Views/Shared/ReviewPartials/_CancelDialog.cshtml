@@ -1,8 +1,10 @@
-﻿<div class="btn btn-secondary position-absolute buttom-right"
+﻿@inject IViewLocalizer _localizer
+
+<div class="btn btn-secondary position-absolute buttom-right"
      data-bs-toggle="modal"
      data-bs-target="#exampleModal"
      id="confirm-cancel">
-    Cancel
+    @_localizer["Cancel"]
 </div>
 
 <div class="modal fade"
@@ -14,7 +16,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">
-                    Are you sure you want to cancel?
+                    @_localizer["Are you sure"]
                 </h5>
                 <button type="button"
                         class="btn-close"
@@ -22,19 +24,19 @@
                         aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Changes won`t save.
+                @_localizer["Changes won`t save"]
             </div>
             <div class="modal-footer">
                 <button type="button"
                         class="btn btn-primary"
                         data-bs-dismiss="modal"
                         aria-label="Close">
-                    No, I`ll continue
+                    @_localizer["No"]
                 </button>
                 <a class="btn btn-secondary"
                    asp-controller="Review"
                    asp-action="LastReviews">
-                    Yes, Cancel
+                    @_localizer["Yes"]
                 </a>
             </div>
         </div>

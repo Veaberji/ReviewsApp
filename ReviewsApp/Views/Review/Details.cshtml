@@ -1,15 +1,16 @@
 ﻿@model ReviewDetailsViewModel
+@inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - @Model.Title Details</title>
+    <title>@AppConfigs.Title - @Model.Title @_localizer["Details"]</title>
 </head>
 
 <div class="card mt-3">
     <h5 class="card-title mb-0">@Model.Title</h5>
     <h6 class="text-warning">
-        Review on @Model.ProductViewModel.Type :
+        @_localizer["Review on"] @Model.ProductViewModel.Type :
         @Model.ProductViewModel.Name |
-        Author's rating: @Model.AuthorGrade
+        @_localizer["Author's rating"]: @Model.AuthorGrade
     </h6>
     @{
         await Html.RenderPartialAsync("ReviewPartials/_DateAdded", Model.DateAdded);

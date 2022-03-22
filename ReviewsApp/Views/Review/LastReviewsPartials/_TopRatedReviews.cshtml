@@ -14,15 +14,15 @@
                         @review.Title
                     </a>
                 </h5>
+                <div class="mt-2">
+                    <span class="fw-bolder">By:</span>
+                    @{
+                        await Html.RenderPartialAsync("ReviewPartials/_Author", review.Author);
+                    }
+                </div>
                 <div class="text-warning py-0">
                     @review.ProductType : @review.ProductName
                 </div>
-            </div>
-            <div class="mt-2">
-                <span class="fw-bolder">By:</span>
-                @{
-                    await Html.RenderPartialAsync("ReviewPartials/_Author", review.Author);
-                }
             </div>
         </div>
     }

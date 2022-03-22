@@ -1,4 +1,5 @@
 ﻿@model CreateReviewViewModel
+@inject IViewLocalizer _localizer
 
 <head>
     <link href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.min.css"
@@ -40,10 +41,10 @@
         <select class="form-control"
                 asp-for="ProductViewModel.Type">
             <option selected disabled></option>
-            @foreach (var value in EnumUtils.GetValues<ProductType>())
+            @foreach (var type in Model.ProductTypes)
             {
-                <option value="@value" class="text-center">
-                    @value
+                <option value="@type" class="text-center">
+                    @type
                 </option>
             }
         </select>
@@ -58,8 +59,8 @@
 <div class="row g-3 align-items-center">
     <div class="col-auto">
         <label class="col-form-label" for="TagText">
-            Input tag (max @TagConstrains.MaxTagsInReview
-            tags, only letters, numbers, '-'):
+            @_localizer["Input tag"] @TagConstrains.MaxTagsInReview
+            @_localizer["tags, only letters, numbers"], '-'):
         </label>
     </div>
     <div class="col-auto" id="TagInputs" name="TagInputs">
@@ -80,8 +81,8 @@
                type="text"
                id="Tag@(i)-Text"
                readonly>
-            <button class="btn btn-sm btn-close btn-warning position-absolute top-0 end-0"
-                title="Delete tag"
+            <button class="btn btn-close btn-warning position-absolute top-0 end-0"
+                title="@_localizer["Delete tag"]"
                 id="Tag@(i)btn">
             </button>
         </div>
@@ -89,9 +90,11 @@
 </div>
 
 <input asp-for="ImagesUrls" hidden />
-<button type="submit" class="btn btn-primary position-absolute buttom-center">
-    Save
-</button>
+<div class="position-absolute buttom-center">
+    @{
+        await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
+    }
+</div>
 
 @{
     await Html.RenderPartialAsync("ReviewPartials/_CancelDialog");

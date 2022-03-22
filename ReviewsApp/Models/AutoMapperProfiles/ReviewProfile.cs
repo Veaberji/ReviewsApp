@@ -2,6 +2,7 @@
 using Markdig;
 using ReviewsApp.Models.MainReview;
 using ReviewsApp.Models.Settings;
+using ReviewsApp.Services;
 using ReviewsApp.ViewModels.Home;
 using ReviewsApp.ViewModels.MainReview;
 using ReviewsApp.ViewModels.MainReview.Components.Constrains;
@@ -98,7 +99,9 @@ namespace ReviewsApp.Models.AutoMapperProfiles
                 .ForMember(d => d.ProductViewModel,
                     o => o.MapFrom(r => r.Product))
                 .ForMember(d => d.OldImagesUrls,
-                    o => o.MapFrom(r => MapOldImages(r.Images)));
+                    o => o.MapFrom(r => MapOldImages(r.Images)))
+                .ForMember(d => d.ProductTypes,
+                    o => o.MapFrom(r => ReviewService.GetProductTypes()));
 
             CreateMap<ReviewEditViewModel, Review>()
                 .ForMember(d => d.Tags,

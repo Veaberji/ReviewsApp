@@ -5,13 +5,17 @@ namespace ReviewsApp.ViewModels.Account
 {
     public class LoginViewModel
     {
-        [Required]
-        [MaxLength(UserRegistrationConstrains.MaxStringLength)]
+        [Required(ErrorMessage = "Login Required")]
+        [MaxLength(UserRegistrationConstrains.MaxStringLength,
+            ErrorMessage = "Maximum login length")]
+        [Display(Name = "Login")]
         public string Login { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Password Required")]
         [DataType(DataType.Password)]
-        [MaxLength(UserRegistrationConstrains.MaxStringLength)]
+        [MaxLength(UserRegistrationConstrains.MaxStringLength,
+            ErrorMessage = "Maximum password length")]
+        [Display(Name = "Password")]
         public string Password { get; set; }
     }
 }

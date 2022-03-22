@@ -1,6 +1,8 @@
-﻿<div class="card-body align-self-center">
-    <a class="btn btn-info" asp-action="FacebookLogin">Log in With FaceBook</a>
-    <a class="btn btn-success" asp-action="GoogleLogin">Log in With Google</a>
+﻿@inject IViewLocalizer _localizer
+
+<div class="card-body align-self-center">
+    <a class="btn btn-info" asp-action="FacebookLogin">@_localizer["Log in With FaceBook"]</a>
+    <a class="btn btn-success" asp-action="GoogleLogin">@_localizer["Log in With Google"]</a>
 
     @if (TempData["message"] is not null)
     {

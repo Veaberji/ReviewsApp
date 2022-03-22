@@ -64,7 +64,7 @@ namespace ReviewsApp.Services
             if (existingNames.Contains(name))
             {
                 throw new ArgumentException(
-                    $"The name'{name}' is already exists");
+                    "This name already exists");
             }
             var user = await GetCurrentUser();
             user.DisplayName = name;
