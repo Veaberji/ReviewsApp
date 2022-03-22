@@ -5,45 +5,55 @@
     <title>@AppConfigs.Title - @_localizer["Settings"]</title>
 </head>
 
-<div class="col-4 card-body align-self-center">
-    <form asp-controller="Settings" asp-action="SetTheme" method="post" class="row">
-        <div class="row-cols-auto mb-1">
-            <label class="col-form-label" for="theme">@_localizer["Theme"]</label>
-        </div>
-        <div class="col-9 mb-3">
-            <select class="form-control" name="theme" id="theme">
-                @foreach (var value in Model.Themes)
-                {
-                    <option value="@value" class="text-center">
-                        @_localizer[value.ToString()]
-                    </option>
-                }
-            </select>
-        </div>
-        <div class="col-3 align-text-bottom">
-            @{
-                await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
-            }
+<div class="col-3 card-body align-self-center">
+    <form asp-controller="Settings"
+          asp-action="SetTheme"
+          method="post"
+          class="row">
+        <div class="col">
+            <div class="mb-1">
+                <label class="col-form-label" for="theme">@_localizer["Theme"]</label>
+            </div>
+            <div class="row mb-3">
+                <select class="form-control" name="theme" id="theme">
+                    @foreach (var value in Model.Themes)
+                    {
+                        <option value="@value" class="text-center">
+                            @_localizer[value.ToString()]
+                        </option>
+                    }
+                </select>
+                <div class="mt-1">
+                    @{
+                        await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
+                    }
+                </div>
+            </div>
         </div>
     </form>
-    <form asp-controller="Settings" asp-action="SetCulture" method="post" class="row">
-        <div class="row-cols-auto mb-1">
-            <label class="col-form-label" for="culture">@_localizer["Language"]</label>
-        </div>
-        <div class="col-9 mb-3">
-            <select class="form-control" name="culture" id="culture">
-                @foreach (var item in Model.Cultures)
-                {
-                    <option value="@item.Value" class="text-center">
-                        @item.Text
-                    </option>
-                }
-            </select>
-        </div>
-        <div class="col-3 align-text-bottom">
-            @{
-                await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
-            }
+    <form asp-controller="Settings"
+          asp-action="SetCulture"
+          method="post"
+          class="row">
+        <div class="col">
+            <div class="mb-1">
+                <label class="col-form-label" for="culture">@_localizer["Language"]</label>
+            </div>
+            <div class="row mb-3">
+                <select class="form-control" name="culture" id="culture">
+                    @foreach (var item in Model.Cultures)
+                    {
+                        <option value="@item.Value" class="text-center">
+                            @item.Text
+                        </option>
+                    }
+                </select>
+                <div class="mt-1">
+                    @{
+                        await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
+                    }
+                </div>
+            </div>
         </div>
     </form>
 </div>

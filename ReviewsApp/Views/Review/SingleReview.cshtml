@@ -4,11 +4,11 @@
     <title>@AppConfigs.Title - @Model.Review.Title</title>
 </head>
 
-<div class="card mt-3">
+<div class="card m-3">
     <input id="single-review-id"
            value="@Model.Review.Id"
            hidden />
-    <h5 class="card-title mb-0">@Model.Review.Title</h5>
+    <h5 class="card-title mt-3 mb-0">@Model.Review.Title</h5>
     <div class="card-body">
         @{
             await Html.RenderPartialAsync("ReviewPartials/_ReviewHeader", Model.Review);
@@ -56,15 +56,17 @@
 </div>
 @if (User.Identity?.IsAuthenticated ?? false)
 {
-    <div class="text-start col-6">
-        @foreach (var comment in Model.Comments)
-        {
-            await Html.RenderPartialAsync("SingleReviewPartials/_Comments", comment);
-        }
-    </div>
-    <div class="card-body text-start">
-        @{
-            await Html.RenderPartialAsync("SingleReviewPartials/_CreateComment", Model.CreateComment);
-        }
+    <div class="mx-3">
+        <div class="text-start col-6">
+            @foreach (var comment in Model.Comments)
+            {
+                await Html.RenderPartialAsync("SingleReviewPartials/_Comments", comment);
+            }
+        </div>
+        <div class="card-body text-start">
+            @{
+                await Html.RenderPartialAsync("SingleReviewPartials/_CreateComment", Model.CreateComment);
+            }
+        </div>
     </div>
 }

@@ -1,11 +1,7 @@
 ﻿.app-content {
-    min-width: 900px;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto
+    min-width: 700px;
 }
 
-.app-content,
 .card,
 .error-container {
     border-radius: 10px;

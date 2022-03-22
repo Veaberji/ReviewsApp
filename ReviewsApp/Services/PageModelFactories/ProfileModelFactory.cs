@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ReviewsApp.Models.AutoMapperProfiles;
+using ReviewsApp.Controllers;
 using ReviewsApp.Models.Common;
 using ReviewsApp.Models.Interfaces;
 using ReviewsApp.ViewModels.MainReview;
@@ -33,10 +33,13 @@ namespace ReviewsApp.Services.PageModelFactories
             int amount = await _unitOfWork.Reviews
                 .GetAmountOfReviewsByAuthorAsync(user);
             var pagination = _paginationService.CreatePagination(pageIndex,
-                amount, nameof(UserProfile));
-            var model = _mapper.Map<ProfileViewModel>(user);
-            model.Reviews = reviewsViewModels;
-            model.Pagination = pagination;
+                amount, nameof(ProfileController.Index));
+            var model = new ProfileViewModel
+            {
+                Names = _mapper.Map<UserNamesViewModel>(user),
+                Reviews = reviewsViewModels,
+                Pagination = pagination
+            };
             return model;
         }
     }

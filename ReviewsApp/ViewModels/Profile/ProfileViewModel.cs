@@ -6,8 +6,7 @@ namespace ReviewsApp.ViewModels.Profile
 {
     public class ProfileViewModel
     {
-        public string UserName { get; set; }
-        public string DisplayName { get; set; }
+        public UserNamesViewModel Names { get; set; }
         public IEnumerable<PreviewViewModel> Reviews { get; set; }
         public PaginationViewModel Pagination { get; set; }
     }

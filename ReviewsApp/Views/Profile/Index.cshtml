@@ -2,12 +2,12 @@
 @inject IViewLocalizer _localizer
 
 <head>
-    <title>@AppConfigs.Title - @Model.DisplayName@_localizer["Profile"]</title>
+    <title>@AppConfigs.Title - @Model.Names.DisplayName@_localizer["Profile"]</title>
 </head>
 
 <div class="card-title my-1">
     <span class="fs-5">
-        @Model.DisplayName
+        @Model.Names.DisplayName
     </span>
     <a class="btn btn-sm text-info align-top p-0"
        asp-controller="Profile"
@@ -33,7 +33,7 @@
                     <a class="nav-link fs-6"
                        asp-controller="Review"
                        asp-action="CreateReview"
-                       asp-route-userName="@Model.UserName">
+                       asp-route-userName="@Model.Names.UserName">
                         @_localizer["New Review"] <i class="fas fa-plus"></i>
                     </a>
                 </li>

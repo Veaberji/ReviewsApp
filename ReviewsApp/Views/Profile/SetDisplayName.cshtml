@@ -5,21 +5,19 @@
     <title>@AppConfigs.Title - @_localizer["Change Display Name"]</title>
 </head>
 
-<div class="card col-4 align-self-center">
-    <div class="card-body">
-        <form asp-controller="Profile"
-              asp-action="SetDisplayName"
-              method="post">
-            <div class="mb-3">
-                <label class="form-label" asp-for="DisplayName"></label>
-                <input class="form-control text-center" asp-for="DisplayName" />
-                <span asp-validation-for="DisplayName" class="text-danger"></span>
-            </div>
-            @{
-                await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
-            }
-        </form>
-    </div>
+<div class="col-3 card-body align-self-center">
+    <form asp-controller="Profile"
+          asp-action="SetDisplayName"
+          method="post">
+        <div class="mb-1">
+            <label class="form-label" asp-for="DisplayName"></label>
+            <input class="form-control text-center" asp-for="DisplayName" />
+            <span asp-validation-for="DisplayName" class="text-danger"></span>
+        </div>
+        @{
+            await Html.RenderPartialAsync("ReviewPartials/_SaveButton");
+        }
+    </form>
 </div>
 
 @{

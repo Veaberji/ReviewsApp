@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Just Good Reviews!" xml:space="preserve">
-    <value>Только хорошие отзывы!</value>
+    <value>Просто хорошие отзывы!</value>
   </data>
   <data name="Last Reviews Page" xml:space="preserve">
     <value>Последние обзоры, страница</value>

@@ -7,15 +7,16 @@
     }
 </head>
 <body>
-
-    @{
-        await Html.RenderPartialAsync("LayoutPartials/_Navbar");
-    }
-    <div class="app-content shadow text-center mt-3">
-        <div class="card text-break">@RenderBody()</div>
+    <div class="app-content">
+        @{
+            await Html.RenderPartialAsync("LayoutPartials/_Navbar");
+        }
+        <div class="shadow text-center m-4">
+            <div class="card text-break">@RenderBody()</div>
+        </div>
+        @{
+            await Html.RenderPartialAsync("LayoutPartials/_Footer");
+        }
     </div>
-    @{
-        await Html.RenderPartialAsync("LayoutPartials/_Footer");
-    }
 </body>
 </html>
